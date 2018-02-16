@@ -37,11 +37,33 @@ func TestTensorInfo(t *testing.T) {
 			Shape:    []int{6},
 			DataSize: 6,
 		},
+		{
+			// 4 //
+			Tensor:   tacvs.NewTensor(),
+			Shape:    []int{},
+			DataSize: 0,
+		},
+		{
+			// 5 //
+			Tensor:   &tacvs.Tensor{},
+			Shape:    []int{},
+			DataSize: 0,
+		},
+		{
+			// 6 //
+			Tensor:   tacvs.NewTensor(2),
+			Shape:    []int{2},
+			DataSize: 2,
+		},
 	}
 
 	sizeOf := func(shape []int) int {
+		if len(shape) == 0 {
+			return 0
+		}
+
 		size := 1
-		for i := 1; i < len(shape); i++ {
+		for i := 0; i < len(shape); i++ {
 			size *= shape[i]
 		}
 		return size
@@ -105,19 +127,19 @@ func TestTensorIndexing(t *testing.T) {
 		{
 			// 5 //
 			Tensor: tensorEnum(6, 1),
-			Pos:    []int{0, 0},
+			Pos:    []int{0},
 			Val:    0,
 		},
 		{
 			// 6 //
 			Tensor: tensorEnum(6, 1),
-			Pos:    []int{5, 0},
+			Pos:    []int{5},
 			Val:    5,
 		},
 		{
 			// 7 //
 			Tensor: tensorEnum(6, 1),
-			Pos:    []int{4, 0},
+			Pos:    []int{4},
 			Val:    4,
 		},
 		{
@@ -174,8 +196,8 @@ func TestTensorIndexing(t *testing.T) {
 
 // tensorEnum creates a new tensor and fills its internal buffer with numbers
 // that indicate element position in the memory.
-func tensorEnum(first, second int, rest ...int) *tacvs.Tensor {
-	t := tacvs.NewTensor(first, second, rest...)
+func tensorEnum(shape ...int) *tacvs.Tensor {
+	t := tacvs.NewTensor(shape...)
 
 	for i, data := 0, t.Data(); i < len(data); i++ {
 		data[i] = complex(float64(i), 0)

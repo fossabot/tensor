@@ -7,10 +7,19 @@ type Tensor struct {
 	shape []int
 }
 
-func NewTensor(first, second int, rest ...int) *Tensor {
-	shape := append([]int{first, second}, rest...)
+func NewTensor(shape ...int) *Tensor {
+	var size int
+	if len(shape) > 0 {
+		size = 1
+	}
 
-	size := 1
+	// Shrink redundant dimmensions.
+	for i := len(shape) - 1; i > 0; i-- {
+		if shape[i] == 1 {
+			shape = shape[:i]
+		}
+	}
+
 	for _, n := range shape {
 		if n == 0 {
 			panic(fmt.Sprintf("zero rank in shape: %v", shape))
@@ -28,6 +37,10 @@ func NewTensor(first, second int, rest ...int) *Tensor {
 func (t *Tensor) At(idx ...int) complex128 {
 	if len(idx) != len(t.shape) {
 		panic(fmt.Sprintf("invalid tensor index %v for shape %v", idx, t.shape))
+	}
+
+	if len(idx) == 0 {
+		panic("cannot index empty tensor")
 	}
 
 	var pos int
@@ -50,6 +63,10 @@ func (t *Tensor) Slice(dim, from, to int) []*Tensor {
 // Size returns the total number of elements stored in tensor. It is equal to
 // the product of shape elements.
 func (t *Tensor) Size() int {
+	if len(t.shape) == 0 {
+		return 0
+	}
+
 	size := 1
 	for i := range t.shape {
 		size *= t.shape[i]
