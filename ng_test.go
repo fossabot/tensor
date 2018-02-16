@@ -1,10 +1,70 @@
 package ng_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/ppknap/cxnn/ng"
 )
+
+func TestTensorInfo(t *testing.T) {
+	tests := []struct {
+		Tensor   *ng.Tensor
+		Shape    []int
+		DataSize int
+	}{
+		{
+			// 0 //
+			Tensor:   ng.NewTensor(1, 1),
+			Shape:    []int{1},
+			DataSize: 1,
+		},
+		{
+			// 1 //
+			Tensor:   ng.NewTensor(1, 2, 3, 4),
+			Shape:    []int{1, 2, 3, 4},
+			DataSize: 24,
+		},
+		{
+			// 2 //
+			Tensor:   ng.NewTensor(1, 1, 1, 1),
+			Shape:    []int{1},
+			DataSize: 1,
+		},
+		{
+			// 3 //
+			Tensor:   ng.NewTensor(6, 1, 1, 1, 1),
+			Shape:    []int{6},
+			DataSize: 6,
+		},
+	}
+
+	sizeOf := func(shape []int) int {
+		size := 1
+		for i := 1; i < len(shape); i++ {
+			size *= shape[i]
+		}
+		return size
+	}
+
+	for i, test := range tests {
+		if ndim, want := test.Tensor.NDim(), len(test.Shape); ndim != want {
+			t.Errorf("want ndim=%v; got %v (i:%d)", ndim, want, i)
+		}
+
+		if shape := test.Tensor.Shape(); !reflect.DeepEqual(shape, test.Shape) {
+			t.Errorf("want shape=%v; got %v (i:%d)", test.Shape, shape, i)
+		}
+
+		if size, want := test.Tensor.Size(), sizeOf(test.Shape); size != want {
+			t.Errorf("want size=%v; got %v (i:%d)", want, size, i)
+		}
+
+		if dataSize := len(test.Tensor.Data()); dataSize != test.DataSize {
+			t.Errorf("want data size=%v; got %v (i:%d)", test.DataSize, dataSize, i)
+		}
+	}
+}
 
 func TestTensorIndexing(t *testing.T) {
 	tests := []struct {
@@ -107,7 +167,7 @@ func TestTensorIndexing(t *testing.T) {
 	for i, test := range tests {
 		val := test.Tensor.At(test.Pos...)
 		if val != test.Val {
-			t.Errorf("want %v; got %v (i:%d)", test.Val, val, i)
+			t.Errorf("want pos=%v; got %v (i:%d)", test.Val, val, i)
 		}
 	}
 }

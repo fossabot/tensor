@@ -43,10 +43,36 @@ func (t *Tensor) At(idx ...int) complex128 {
 	return t.data[pos]
 }
 
-func (t *Tensor) Data() []complex128 {
-	return t.data
-}
-
 func (t *Tensor) Slice(dim, from, to int) []*Tensor {
 	return nil
+}
+
+// Size returns the total number of elements stored in tensor. It is equal to
+// the product of shape elements.
+func (t *Tensor) Size() int {
+	size := 1
+	for i := range t.shape {
+		size *= t.shape[i]
+	}
+
+	return size
+}
+
+// NDim returns the number of tensor dimensions.
+func (t *Tensor) NDim() int {
+	return len(t.shape)
+}
+
+// Shape returns the size of the tensor in each dimension.
+func (t *Tensor) Shape() []int {
+	cp := make([]int, len(t.shape))
+	copy(cp, t.shape)
+
+	return cp
+}
+
+// Data returns the internal root buffer of the tensor. Thus, the returned slice
+// may not point to the data when called on views.
+func (t *Tensor) Data() []complex128 {
+	return t.data
 }
