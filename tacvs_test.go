@@ -184,6 +184,18 @@ func TestTensorIndexing(t *testing.T) {
 			Pos:    []int{1, 1, 2},
 			Val:    11,
 		},
+		{
+			// 15 //
+			Tensor: tensorEnum(3, 3, 1, 1),
+			Pos:    []int{1, 1, 0, 0, 0},
+			Val:    4,
+		},
+		{
+			// 16 //
+			Tensor: tensorEnum(6, 1, 1, 1, 1),
+			Pos:    []int{0, 0, 0, 0},
+			Val:    0,
+		},
 	}
 
 	for i, test := range tests {

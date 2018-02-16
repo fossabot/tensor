@@ -14,11 +14,7 @@ func NewTensor(shape ...int) *Tensor {
 	}
 
 	// Shrink redundant dimmensions.
-	for i := len(shape) - 1; i > 0; i-- {
-		if shape[i] == 1 {
-			shape = shape[:i]
-		}
-	}
+	shape = shrinkRight(shape, 1, 1)
 
 	for _, n := range shape {
 		if n == 0 {
@@ -35,6 +31,9 @@ func NewTensor(shape ...int) *Tensor {
 }
 
 func (t *Tensor) At(idx ...int) complex128 {
+	// Shrink redundant indexes.
+	idx = shrinkRight(idx, 0, len(t.shape))
+
 	if len(idx) != len(t.shape) {
 		panic(fmt.Sprintf("invalid tensor index %v for shape %v", idx, t.shape))
 	}
@@ -92,4 +91,14 @@ func (t *Tensor) Shape() []int {
 // may not point to the data when called on views.
 func (t *Tensor) Data() []complex128 {
 	return t.data
+}
+
+func shrinkRight(slice []int, val, till int) []int {
+	for i := len(slice) - 1; i >= till; i-- {
+		if slice[i] == val {
+			slice = slice[:i]
+		}
+	}
+
+	return slice
 }
