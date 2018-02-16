@@ -1,39 +1,39 @@
-package ng_test
+package tacvs_test
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/ppknap/cxnn/ng"
+	"github.com/ppknap/tacvs"
 )
 
 func TestTensorInfo(t *testing.T) {
 	tests := []struct {
-		Tensor   *ng.Tensor
+		Tensor   *tacvs.Tensor
 		Shape    []int
 		DataSize int
 	}{
 		{
 			// 0 //
-			Tensor:   ng.NewTensor(1, 1),
+			Tensor:   tacvs.NewTensor(1, 1),
 			Shape:    []int{1},
 			DataSize: 1,
 		},
 		{
 			// 1 //
-			Tensor:   ng.NewTensor(1, 2, 3, 4),
+			Tensor:   tacvs.NewTensor(1, 2, 3, 4),
 			Shape:    []int{1, 2, 3, 4},
 			DataSize: 24,
 		},
 		{
 			// 2 //
-			Tensor:   ng.NewTensor(1, 1, 1, 1),
+			Tensor:   tacvs.NewTensor(1, 1, 1, 1),
 			Shape:    []int{1},
 			DataSize: 1,
 		},
 		{
 			// 3 //
-			Tensor:   ng.NewTensor(6, 1, 1, 1, 1),
+			Tensor:   tacvs.NewTensor(6, 1, 1, 1, 1),
 			Shape:    []int{6},
 			DataSize: 6,
 		},
@@ -68,7 +68,7 @@ func TestTensorInfo(t *testing.T) {
 
 func TestTensorIndexing(t *testing.T) {
 	tests := []struct {
-		Tensor *ng.Tensor
+		Tensor *tacvs.Tensor
 		Pos    []int
 		Val    complex128
 	}{
@@ -174,8 +174,8 @@ func TestTensorIndexing(t *testing.T) {
 
 // tensorEnum creates a new tensor and fills its internal buffer with numbers
 // that indicate element position in the memory.
-func tensorEnum(first, second int, rest ...int) *ng.Tensor {
-	t := ng.NewTensor(first, second, rest...)
+func tensorEnum(first, second int, rest ...int) *tacvs.Tensor {
+	t := tacvs.NewTensor(first, second, rest...)
 
 	for i, data := 0, t.Data(); i < len(data); i++ {
 		data[i] = complex(float64(i), 0)
