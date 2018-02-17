@@ -55,7 +55,11 @@ func (t *Tensor) At(idx ...int) complex128 {
 	return t.data[pos]
 }
 
-func (t *Tensor) Slice(dim, from, to int) []*Tensor {
+func (t *Tensor) Split(dim int) []*Tensor {
+	return nil
+}
+
+func (t *Tensor) Slice(dim, from, to int) *Tensor {
 	return nil
 }
 
