@@ -202,6 +202,46 @@ func TestTensorIndexing(t *testing.T) {
 	}
 }
 
+func TestTensorIndexingPanic(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Pos    []int
+	}{
+		"too many nonzero indexes": {
+			Tensor: tensorEnum(2, 2),
+			Pos:    []int{0, 1, 1},
+		},
+		"negative index": {
+			Tensor: tensorEnum(2),
+			Pos:    []int{-1},
+		},
+		"nil index": {
+			Tensor: tensorEnum(2),
+			Pos:    nil,
+		},
+		"out of range index": {
+			Tensor: tensorEnum(2, 2),
+			Pos:    []int{3, 0},
+		},
+		"out of range second index": {
+			Tensor: tensorEnum(2, 2),
+			Pos:    []int{0, 3},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			defer func() {
+				if r := recover(); r == nil {
+					t.Errorf("test should have panicked, but it did not")
+				}
+			}()
+
+			_ = test.Tensor.At(test.Pos...)
+		})
+	}
+}
+
 func TestTensorSplit(t *testing.T) {
 	// nVal2Pos stores slice index and expected values at given positions.
 	type nVal2Pos []map[complex128][]int
