@@ -296,6 +296,24 @@ func TestTensorSplit(t *testing.T) {
 				},
 			},
 		},
+		{
+			// 5 //
+			Tensor: tensorEnum(3, 2, 2),
+			Dim:    2,
+			Shape:  []int{3, 2},
+			ValAtPos: nVal2Pos{
+				{
+					2: []int{2, 0},
+					3: []int{0, 1},
+					5: []int{2, 1},
+				},
+				{
+					6:  []int{0, 0},
+					8:  []int{2, 0},
+					11: []int{2, 1},
+				},
+			},
+		},
 	}
 
 	for i, test := range tests {
