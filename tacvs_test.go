@@ -342,6 +342,34 @@ func TestTensorSplit(t *testing.T) {
 	}
 }
 
+func TestTensorSplitPanic(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Dim    int
+	}{
+		"invalid dimension": {
+			Tensor: tensorEnum(2, 2),
+			Dim:    3,
+		},
+		"negative dimension": {
+			Tensor: tensorEnum(2, 2),
+			Dim:    -1,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			defer func() {
+				if r := recover(); r == nil {
+					t.Errorf("test should have panicked, but it did not")
+				}
+			}()
+
+			_ = test.Tensor.Split(test.Dim)
+		})
+	}
+}
+
 // tensorEnum creates a new tensor and fills its internal buffer with numbers
 // that indicate element position in the memory.
 func tensorEnum(shape ...int) *tacvs.Tensor {
