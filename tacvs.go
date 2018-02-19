@@ -14,13 +14,9 @@ func NewTensor(shape ...int) *Tensor {
 	}
 
 	// Shrink redundant dimmensions.
-	shape = shrinkRight(shape, 1, 1)
+	shape = mustGe(1, shrinkRight(shape, 1, 1))
 
 	for _, n := range shape {
-		if n == 0 {
-			panic(fmt.Sprintf("zero rank in shape: %v", shape))
-		}
-
 		size *= n
 	}
 
@@ -32,7 +28,7 @@ func NewTensor(shape ...int) *Tensor {
 
 func (t *Tensor) At(idx ...int) complex128 {
 	// Shrink redundant indexes.
-	idx = shrinkRight(idx, 0, len(t.shape))
+	idx = mustGe(0, shrinkRight(idx, 0, len(t.shape)))
 
 	if len(idx) != len(t.shape) {
 		panic(fmt.Sprintf("invalid tensor index %v for shape %v", idx, t.shape))
@@ -101,6 +97,18 @@ func shrinkRight(slice []int, val, till int) []int {
 	for i := len(slice) - 1; i >= till; i-- {
 		if slice[i] == val {
 			slice = slice[:i]
+		} else {
+			break
+		}
+	}
+
+	return slice
+}
+
+func mustGe(min int, slice []int) []int {
+	for _, n := range slice {
+		if n < min {
+			panic(fmt.Sprintf("invalid value in: %v (min:%d)", slice, min))
 		}
 	}
 
