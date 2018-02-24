@@ -55,7 +55,23 @@ func (t *Tensor) Split(dim int) []*Tensor {
 	return nil
 }
 
-func (t *Tensor) Slice(dim, from, to int) *Tensor {
+func (t *Tensor) Slice(dim, from int, to ...int) *Tensor {
+	return nil
+}
+
+func (t *Tensor) T(perms ...int) *Tensor {
+	return nil
+}
+
+func (t *Tensor) ConjT(perms ...int) *Tensor {
+	return nil
+}
+
+func (t *Tensor) SMul(val complex128) *Tensor {
+	return nil
+}
+
+func (t *Tensor) Mul(rhs *Tensor) *Tensor {
 	return nil
 }
 

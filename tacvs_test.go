@@ -439,6 +439,114 @@ func TestTensorSplitPanic(t *testing.T) {
 	}
 }
 
+func TestTensorSlice(t *testing.T) {
+	// val2Pos stores expected value at given position.
+	type val2Pos map[complex128][]int
+
+	tests := []struct {
+		Tensor   *tacvs.Tensor
+		Args     []int
+		Shape    []int
+		ValAtPos val2Pos
+	}{
+		{
+			// 0 //
+			Tensor: tensorEnum(4, 2),
+			Args:   []int{0, 1},
+			Shape:  []int{3, 2},
+			ValAtPos: val2Pos{
+				1: []int{0},
+				7: []int{2, 1},
+			},
+		},
+		{
+			// 1 //
+			Tensor: tensorEnum(4, 1),
+			Args:   []int{0, 0, 3},
+			Shape:  []int{3, 1},
+			ValAtPos: val2Pos{
+				0: []int{0},
+				2: []int{2},
+			},
+		},
+		{
+			// 2 //
+			Tensor: tensorEnum(2, 1),
+			Args:   []int{0, 0, 2},
+			Shape:  []int{2, 1},
+			ValAtPos: val2Pos{
+				0: []int{0},
+				1: []int{1},
+			},
+		},
+		{
+			// 3 //
+			Tensor: tensorEnum(2, 3),
+			Args:   []int{1, 1, 2},
+			Shape:  []int{2, 1},
+			ValAtPos: val2Pos{
+				2: []int{0},
+				3: []int{1},
+			},
+		},
+		{
+			// 4 //
+			Tensor:   tensorEnum(1, 2),
+			Args:     []int{1, 1, 1},
+			Shape:    []int{},
+			ValAtPos: nil,
+		},
+		{
+			// 5 //
+			Tensor: tensorEnum(1, 3),
+			Args:   []int{1, 2},
+			Shape:  []int{1, 1},
+			ValAtPos: val2Pos{
+				2: []int{0},
+			},
+		},
+		{
+			// 6 //
+			Tensor: tensorEnum(2, 2, 2),
+			Args:   []int{2, 1},
+			Shape:  []int{2, 2},
+			ValAtPos: val2Pos{
+				4: []int{0, 0},
+				7: []int{1, 1},
+			},
+		},
+		{
+			// 7 //
+			Tensor: tensorEnum(2, 1, 4),
+			Args:   []int{2, 1, 3},
+			Shape:  []int{2, 1, 2},
+			ValAtPos: val2Pos{
+				2: []int{0, 0, 0},
+				3: []int{1, 0, 0},
+				4: []int{0, 0, 1},
+				5: []int{1, 0, 1},
+			},
+		},
+	}
+
+	for i, test := range tests {
+		slice := test.Tensor.Slice(test.Args[0], test.Args[1], test.Args[2:]...)
+		if slice == nil {
+			t.Fatalf("want non-nil slice (i:%d)", i)
+		}
+
+		if shape := slice.Shape(); !reflect.DeepEqual(shape, test.Shape) {
+			t.Errorf("want tensor shape=%v; got %v (i:%d)", test.Shape, shape, i)
+		}
+
+		for want, pos := range test.ValAtPos {
+			if val := slice.At(pos...); val != want {
+				t.Errorf("want val=%v; got %v (i:%d,pos:%v)", want, val, i, pos)
+			}
+		}
+	}
+}
+
 // tensorEnum creates a new tensor and fills its internal buffer with numbers
 // that indicate element position in the memory.
 func tensorEnum(shape ...int) *tacvs.Tensor {
