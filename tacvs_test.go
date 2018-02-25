@@ -547,6 +547,54 @@ func TestTensorSlice(t *testing.T) {
 	}
 }
 
+func TestTensorSlicePanic(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Args   []int
+	}{
+		"out of range from": {
+			Tensor: tensorEnum(2, 2),
+			Args:   []int{0, 5},
+		},
+		"out of range to": {
+			Tensor: tensorEnum(2, 2),
+			Args:   []int{0, 1, 7},
+		},
+		"invalid slice index": {
+			Tensor: tensorEnum(2, 2),
+			Args:   []int{0, 1, 0},
+		},
+		"too many arguments": {
+			Tensor: tensorEnum(2, 2),
+			Args:   []int{0, 1, 2, 3},
+		},
+		"negative dimension": {
+			Tensor: tensorEnum(2, 2),
+			Args:   []int{-1, 1},
+		},
+		"negative from": {
+			Tensor: tensorEnum(2, 2),
+			Args:   []int{0, -1},
+		},
+		"negative to": {
+			Tensor: tensorEnum(2, 2),
+			Args:   []int{0, 0, -1},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			defer func() {
+				if r := recover(); r == nil {
+					t.Errorf("test should have panicked, but it did not")
+				}
+			}()
+
+			_ = test.Tensor.Slice(test.Args[0], test.Args[1], test.Args[2:]...)
+		})
+	}
+}
+
 // tensorEnum creates a new tensor and fills its internal buffer with numbers
 // that indicate element position in the memory.
 func tensorEnum(shape ...int) *tacvs.Tensor {
