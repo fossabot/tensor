@@ -3,6 +3,10 @@ package tacvs
 import "fmt"
 
 type Tensor struct {
+	// FmtMaxElems defines the number of elements returned when pretty printed.
+	// It defaults to DefaultMaxFmtElements when less than two.
+	FmtMaxElems int `json:"fmt_max_elems"`
+
 	data  []complex128
 	shape []int
 }
@@ -67,11 +71,13 @@ func (t *Tensor) ConjT(perms ...int) *Tensor {
 	return nil
 }
 
-func (t *Tensor) SMul(val complex128) *Tensor {
-	return nil
-}
-
-func (t *Tensor) Mul(rhs *Tensor) *Tensor {
+// Resize changes shape and size of the tensor. Elements from returned array
+// will be at the same positions as they were in the old shape. Empty space will
+// be filled with zero values.
+//
+// This function changes the underlying tensor but, it returns a new one
+// when called on views.
+func (t *Tensor) Resize(shape ...int) *Tensor {
 	return nil
 }
 
@@ -95,7 +101,7 @@ func (t *Tensor) NDim() int {
 	return len(t.shape)
 }
 
-// Shape returns the size of the tensor in each dimension.
+// Shape returns the size of the tensor in each of its dimensions.
 func (t *Tensor) Shape() []int {
 	cp := make([]int, len(t.shape))
 	copy(cp, t.shape)
@@ -103,8 +109,8 @@ func (t *Tensor) Shape() []int {
 	return cp
 }
 
-// Data returns the internal root buffer of the tensor. Thus, the returned slice
-// may not point to the data when called on views.
+// Data returns the internal root buffer of the tensor. The returned slice may
+// not point to the data when called on views.
 func (t *Tensor) Data() []complex128 {
 	return t.data
 }
