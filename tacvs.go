@@ -5,7 +5,7 @@ import "fmt"
 type Tensor struct {
 	// FmtMaxElems defines the number of elements returned when pretty printed.
 	// It defaults to DefaultMaxFmtElements when less than two.
-	FmtMaxElems int `json:"fmt_max_elems"`
+	FmtMaxElems int `json:"-"`
 
 	data  []complex128
 	shape []int
