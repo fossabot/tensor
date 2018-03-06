@@ -648,6 +648,30 @@ func TestTensorFill(t *testing.T) {
 	}
 }
 
+func TestTensorFillPanic(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Vs     []complex128
+	}{
+		"invalid source size": {
+			Tensor: tensorEnum(2, 2),
+			Vs:     []complex128{1, 2, 3},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			defer func() {
+				if r := recover(); r == nil {
+					t.Errorf("test should have panicked, but it did not")
+				}
+			}()
+
+			_ = test.Tensor.Fill(test.Vs)
+		})
+	}
+}
+
 // tensorEnum creates a new tensor and fills its internal buffer with numbers
 // that indicate element position in the memory.
 func tensorEnum(shape ...int) *tacvs.Tensor {
