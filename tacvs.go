@@ -30,10 +30,29 @@ func NewTensor(shape ...int) *Tensor {
 	}
 }
 
+// At returns a tensor value at a given position. It panics when called on empty
+// tensor or when the index is out of tensor shape range.
 func (t *Tensor) At(idx ...int) complex128 {
 	// Shrink redundant indexes.
 	idx = mustGe(0, shrinkRight(idx, 0, len(t.shape)))
 
+	t.checkIdxConst(idx)
+	return t.data[t.position(idx)]
+}
+
+// Set inserts a value on a given position. It panics when called on empty
+// tensor or when the index is out of tensor shape range.
+func (t *Tensor) Set(val complex128, idx ...int) *Tensor {
+	// Shrink redundant indexes.
+	idx = mustGe(0, shrinkRight(idx, 0, len(t.shape)))
+
+	t.checkIdxConst(idx)
+	t.data[t.position(idx)] = val
+	return t
+}
+
+// checkIdxConst checks if index is valid in terms of its shape.
+func (t *Tensor) checkIdxConst(idx []int) {
 	if len(idx) != len(t.shape) {
 		panic(fmt.Sprintf("invalid tensor index %v for shape %v", idx, t.shape))
 	}
@@ -41,8 +60,10 @@ func (t *Tensor) At(idx ...int) complex128 {
 	if len(idx) == 0 {
 		panic("cannot index empty tensor")
 	}
+}
 
-	var pos int
+// position computes the index of value described by column-wise coordinates.
+func (t *Tensor) position(idx []int) (pos int) {
 	for k := 0; k < len(t.shape); k++ {
 		stride := 1
 		for j := 0; j < k; j++ {
@@ -52,7 +73,7 @@ func (t *Tensor) At(idx ...int) complex128 {
 		pos += stride * idx[k]
 	}
 
-	return t.data[pos]
+	return pos
 }
 
 func (t *Tensor) Split(dim int) []*Tensor {
@@ -81,21 +102,6 @@ func (t *Tensor) Resize(shape ...int) *Tensor {
 	return nil
 }
 
-// Size returns the total number of elements stored in tensor. It is equal to
-// the product of shape elements.
-func (t *Tensor) Size() int {
-	if len(t.shape) == 0 {
-		return 0
-	}
-
-	size := 1
-	for i := range t.shape {
-		size *= t.shape[i]
-	}
-
-	return size
-}
-
 // Fill copies provided buffer to tensor in column-wise order. The size of
 // provided slice must be identical as the size of the tensor.
 func (t *Tensor) Fill(vs []complex128) *Tensor {
@@ -108,25 +114,6 @@ func (t *Tensor) Fill(vs []complex128) *Tensor {
 	}
 
 	return t
-}
-
-// NDim returns the number of tensor dimensions.
-func (t *Tensor) NDim() int {
-	return len(t.shape)
-}
-
-// Shape returns the size of the tensor in each of its dimensions.
-func (t *Tensor) Shape() []int {
-	cp := make([]int, len(t.shape))
-	copy(cp, t.shape)
-
-	return cp
-}
-
-// Data returns the internal root buffer of the tensor. The returned slice may
-// not point to the data when called on views.
-func (t *Tensor) Data() []complex128 {
-	return t.data
 }
 
 func shrinkRight(slice []int, val, till int) []int {
