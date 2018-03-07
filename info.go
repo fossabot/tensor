@@ -11,7 +11,7 @@ func (t *Tensor) NDim() int {
 	return len(t.shape)
 }
 
-// Size returns the total number of elements stored in tensor. It is equal to
+// Size returns the total number of elements stored in a tensor. It is equal to
 // the product of shape elements.
 func (t *Tensor) Size() int {
 	if len(t.shape) == 0 {
