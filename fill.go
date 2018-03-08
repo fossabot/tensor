@@ -1,6 +1,9 @@
 package tacvs
 
-import "math/rand"
+import (
+	"math/rand"
+	"time"
+)
 
 // Zeros sets each tensor element to its zero value.
 func (t *Tensor) Zeros() *Tensor {
@@ -40,15 +43,35 @@ func (t *Tensor) Linspace(start, end complex128) *Tensor {
 // elements will be set to zero.
 func (t *Tensor) Eye() *Tensor {
 	// TODO: tests
-	return nil
+	return t.Apply(func(t *Tensor, idx []int) complex128 {
+		var first = idx[0] // len(idx) is always > 0.
+		for i := 1; i < len(idx); i++ {
+			if first != idx[i] {
+				return 0
+			}
+		}
+
+		return 1
+	})
 }
+
+var defaultRandSource = rand.NewSource(time.Now().UnixNano())
 
 // Random sets each element's real part value to a pseudo-random number in
 // [0.0,1.0) range using provided random source. If the provided argument is
-// nil, default random source will be used.
+// nil, a new random source will be created and used.
 func (t *Tensor) Random(source rand.Source) *Tensor {
 	// TODO: tests
-	return nil
+	if source == nil {
+		source = defaultRandSource
+	}
+
+	var r = rand.New(source)
+	for i := range t.data {
+		t.data[i] = complex(r.Float64(), 0)
+	}
+
+	return t
 }
 
 // Re removes imaginary part value from each element of a tensor.
