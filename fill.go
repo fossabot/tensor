@@ -77,13 +77,21 @@ func (t *Tensor) Random(source rand.Source) *Tensor {
 // Re removes imaginary part value from each element of a tensor.
 func (t *Tensor) Re() *Tensor {
 	// TODO: tests
-	return nil
+	for i := range t.data {
+		t.data[i] = complex(real(t.data[i]), 0)
+	}
+
+	return t
 }
 
 // Im removes real part value from each element of a tensor.
 func (t *Tensor) Im() *Tensor {
 	// TODO: tests
-	return nil
+	for i := range t.data {
+		t.data[i] = complex(0, imag(t.data[i]))
+	}
+
+	return t
 }
 
 // Apply iterates over all tensor elements and calls f. The returned value will
