@@ -8,19 +8,23 @@ import (
 // Zeros sets each tensor element to its zero value.
 func (t *Tensor) Zeros() *Tensor {
 	// TODO: tests
-	return nil
+	return t.Full(0)
 }
 
 // Ones fills all elements of the tensor with ones.
 func (t *Tensor) Ones() *Tensor {
 	// TODO: tests
-	return nil
+	return t.Full(1)
 }
 
 // Full replaces all tensor elements with a given constant.
 func (t *Tensor) Full(val complex128) *Tensor {
 	// TODO: tests
-	return nil
+	for i := range t.data {
+		t.data[i] = val
+	}
+
+	return t
 }
 
 // Arrange creates evenly spaced values with respect to tensor index. Start
@@ -95,7 +99,7 @@ func (t *Tensor) Im() *Tensor {
 }
 
 // Apply iterates over all tensor elements and calls f. The returned value will
-// be set at given tensor index.
+// be set at given tensor index. The index order is preserved.
 func (t *Tensor) Apply(f func(t *Tensor, idx []int) complex128) *Tensor {
 	// TODO: tests
 	return nil

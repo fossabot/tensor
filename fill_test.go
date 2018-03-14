@@ -1,10 +1,54 @@
 package tacvs_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/ppknap/tacvs"
 )
+
+func TestTensorFull(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Val    complex128
+	}{
+		"zeros": {
+			Tensor: tensorEnum(2, 3, 4).Zeros(),
+			Val:    0,
+		},
+		"ones": {
+			Tensor: tensorEnum(2, 2).Ones(),
+			Val:    1,
+		},
+		"real full": {
+			Tensor: tensorEnum(2, 2).Full(34),
+			Val:    34,
+		},
+		"complex full": {
+			Tensor: tensorEnum(2, 2).Full(1 + 45i),
+			Val:    1 + 45i,
+		},
+		"empty full": {
+			Tensor: tacvs.NewTensor().Full(34),
+			Val:    0,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			data := test.Tensor.Data()
+			buf := make([]complex128, len(data))
+
+			for i := range buf {
+				buf[i] = test.Val
+			}
+
+			if !reflect.DeepEqual(buf, data) {
+				t.Errorf("want val=%v; got %v", buf, data)
+			}
+		})
+	}
+}
 
 func TestTensorFill(t *testing.T) {
 	// val2Pos stores expected value at given position.
