@@ -50,6 +50,67 @@ func TestTensorFull(t *testing.T) {
 	}
 }
 
+func TestTensorEye(t *testing.T) {
+	// val2Pos stores expected value at given positions.
+	type val2Pos map[complex128][][]int
+
+	tests := map[string]struct {
+		Tensor   *tacvs.Tensor
+		Sum      complex128
+		ValAtPos val2Pos
+	}{
+		"empty": {
+			Tensor:   tacvs.NewTensor().Eye(),
+			Sum:      0,
+			ValAtPos: nil,
+		},
+		"scalar": {
+			Tensor: tensorEnum(1).Eye(),
+			Sum:    1,
+			ValAtPos: val2Pos{
+				1: [][]int{{0}},
+			},
+		},
+		"vector": {
+			Tensor: tensorEnum(5).Eye(),
+			Sum:    1,
+			ValAtPos: val2Pos{
+				1: [][]int{{0}},
+			},
+		},
+		"matrix": {
+			Tensor: tensorEnum(3, 3).Eye(),
+			Sum:    3,
+			ValAtPos: val2Pos{
+				1: [][]int{{0, 0}, {1, 1}, {2, 2}},
+			},
+		},
+		"tensor": {
+			Tensor: tensorEnum(4, 4, 4).Eye(),
+			Sum:    4,
+			ValAtPos: val2Pos{
+				1: [][]int{{0, 0, 0}, {1, 1, 1}, {2, 2, 2}, {3, 3, 3}},
+			},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			if sum := test.Tensor.Sum(); sum != test.Sum {
+				t.Fatalf("want element sum=%v; got %v", test.Sum, sum)
+			}
+
+			for want, poss := range test.ValAtPos {
+				for _, pos := range poss {
+					if val := test.Tensor.At(pos...); val != want {
+						t.Errorf("want val=%v; got %v (pos:%v)", want, val, pos)
+					}
+				}
+			}
+		})
+	}
+}
+
 func TestTensorFill(t *testing.T) {
 	// val2Pos stores expected value at given position.
 	type val2Pos map[complex128][]int

@@ -7,19 +7,16 @@ import (
 
 // Zeros sets each tensor element to its zero value.
 func (t *Tensor) Zeros() *Tensor {
-	// TODO: tests
 	return t.Full(0)
 }
 
 // Ones fills all elements of the tensor with ones.
 func (t *Tensor) Ones() *Tensor {
-	// TODO: tests
 	return t.Full(1)
 }
 
 // Full replaces all tensor elements with a given constant.
 func (t *Tensor) Full(val complex128) *Tensor {
-	// TODO: tests
 	for i := range t.data {
 		t.data[i] = val
 	}
@@ -102,7 +99,7 @@ func (t *Tensor) Im() *Tensor {
 // be set at given tensor index. The index order is preserved.
 func (t *Tensor) Apply(f func(t *Tensor, idx []int) complex128) *Tensor {
 	// TODO: tests
-	return nil
+	return t
 }
 
 // Fill copies provided buffer to tensor in column-wise order. The size of
