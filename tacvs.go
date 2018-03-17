@@ -92,6 +92,17 @@ func (t *Tensor) ConjT(perms ...int) *Tensor {
 	return nil
 }
 
+// IsZero reports whether t represents a zero length tensor.
+func (t *Tensor) IsZero() bool {
+	return len(t.data) == 0
+}
+
+// Clone creates an exact copy of called tensor. When called on views, they will
+// be converted to new Tensor instances.
+func (t *Tensor) Clone() *Tensor {
+	return nil
+}
+
 // Resize changes shape and size of the tensor. Elements from returned array
 // will be at the same positions as they were in the old shape. Empty space will
 // be filled with zero values.

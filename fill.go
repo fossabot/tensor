@@ -17,8 +17,15 @@ func (t *Tensor) Ones() *Tensor {
 
 // Full replaces all tensor elements with a given constant.
 func (t *Tensor) Full(val complex128) *Tensor {
+	return t.Each(func(complex128) complex128 { return val })
+}
+
+// Each walks trough each tensor element and applies a provided function on it.
+// The argument passed to f will be a current element's value.
+func (t *Tensor) Each(f func(complex128) complex128) *Tensor {
+	// TODO: tests
 	for i := range t.data {
-		t.data[i] = val
+		t.data[i] = f(t.data[i])
 	}
 
 	return t
