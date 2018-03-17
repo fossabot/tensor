@@ -32,6 +32,10 @@ func TestTensorFull(t *testing.T) {
 			Tensor: tacvs.NewTensor().Full(34),
 			Val:    0,
 		},
+		"each": {
+			Tensor: tensorEnum(2, 2).Each(func(complex128) complex128 { return 2 }),
+			Val:    2,
+		},
 	}
 
 	for name, test := range tests {
