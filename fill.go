@@ -23,7 +23,6 @@ func (t *Tensor) Full(val complex128) *Tensor {
 // Each walks trough each tensor element and applies a provided function on it.
 // The argument passed to f will be a current element's value.
 func (t *Tensor) Each(f func(complex128) complex128) *Tensor {
-	// TODO: tests
 	for i := range t.data {
 		t.data[i] = f(t.data[i])
 	}
@@ -50,7 +49,6 @@ func (t *Tensor) Linspace(start, end complex128) *Tensor {
 // Eye sets one to tensor elements with equal indexes on each axe. The remaining
 // elements will be set to zero.
 func (t *Tensor) Eye() *Tensor {
-	// TODO: tests
 	return t.Apply(func(t *Tensor, idx []int) complex128 {
 		var first = idx[0] // len(idx) is always > 0.
 		for i := 1; i < len(idx); i++ {
