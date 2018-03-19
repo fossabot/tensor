@@ -134,14 +134,6 @@ func (t *Tensor) Slice(dim, from int, to ...int) *Tensor {
 	return newTensor(t, from, dim, shape...)
 }
 
-func (t *Tensor) T(perms ...int) *Tensor {
-	return nil
-}
-
-func (t *Tensor) ConjT(perms ...int) *Tensor {
-	return nil
-}
-
 // IsZero reports whether t represents a zero length tensor.
 func (t *Tensor) IsZero() bool {
 	return len(t.data) == 0
