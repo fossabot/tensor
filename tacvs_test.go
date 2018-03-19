@@ -229,7 +229,7 @@ func TestTensorSplit(t *testing.T) {
 			// 1 //
 			Tensor: tensorEnum(3),
 			Dim:    0,
-			Shape:  []int{1},
+			Shape:  []int{1, 1},
 			ValAtPos: nVal2Pos{
 				{
 					0: []int{0},
@@ -246,7 +246,7 @@ func TestTensorSplit(t *testing.T) {
 			// 2 //
 			Tensor: tensorEnum(3),
 			Dim:    1,
-			Shape:  []int{3},
+			Shape:  []int{3, 1},
 			ValAtPos: nVal2Pos{
 				{
 					0: []int{0},
@@ -273,7 +273,7 @@ func TestTensorSplit(t *testing.T) {
 			// 4 //
 			Tensor: tensorEnum(1, 4),
 			Dim:    1,
-			Shape:  []int{1},
+			Shape:  []int{1, 1},
 			ValAtPos: nVal2Pos{
 				{
 					0: []int{0},

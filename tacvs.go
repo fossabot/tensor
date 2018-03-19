@@ -83,7 +83,6 @@ func (t *Tensor) getResizedIdx(idx []int) []int {
 
 // position computes the index of value described by column-wise coordinates.
 func (t *Tensor) position(idx []int) (pos int) {
-	fmt.Println(t.shape, idx)
 	for k := 0; k < len(t.shape); k++ {
 		stride := 1
 		for j := 0; j < k; j++ {
@@ -97,7 +96,21 @@ func (t *Tensor) position(idx []int) (pos int) {
 }
 
 func (t *Tensor) Split(dim int) []*Tensor {
-	return nil
+	if dim >= t.NDim() {
+		panic("tensor: invalid dimension")
+	}
+
+	size := 1
+	if dim < len(t.shape) {
+		size = t.shape[dim]
+	}
+
+	splits := make([]*Tensor, size)
+	for i := range splits {
+		splits[i] = t.slice(dim, i, i+1)
+	}
+
+	return splits
 }
 
 func (t *Tensor) Slice(dim, from int, to ...int) *Tensor {
@@ -105,11 +118,19 @@ func (t *Tensor) Slice(dim, from int, to ...int) *Tensor {
 		panic("tensor: invalid dimension")
 	}
 
+	return t.slice(dim, from, to...)
+}
+
+func (t *Tensor) slice(dim, from int, to ...int) *Tensor {
 	if len(to) > 1 {
 		panic("tensor: too many slice arguments")
 	}
 
-	dimsize := t.shape[dim]
+	dimsize := 1
+	if dim < len(t.shape) {
+		dimsize = t.shape[dim]
+	}
+
 	if from < 0 || from >= dimsize {
 		panic(fmt.Sprintf("tensor: invalid from range %d for [0, %d)", from, dimsize))
 	}
@@ -129,6 +150,9 @@ func (t *Tensor) Slice(dim, from int, to ...int) *Tensor {
 
 	shape := make([]int, len(t.shape))
 	copy(shape, t.shape)
+	for len(shape) <= dim {
+		shape = append(shape, 1)
+	}
 	shape[dim] = limit - from
 
 	return newTensor(t, from, dim, shape...)
