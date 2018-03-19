@@ -7,18 +7,38 @@ type Tensor struct {
 	// It defaults to DefaultMaxFmtElements when less than two.
 	FmtMaxElems int `json:"-"`
 
-	data  []complex128
-	shape []int
+	data []complex128 // tensor buffer, nil for views.
+
+	parent *Tensor // true for tensor views.
+	offset int     // offset along dim.
+	dim    int
+
+	shape []int // tensor shape.
 }
 
+// NewTensor creates a new Tensor object.
 func NewTensor(shape ...int) *Tensor {
+	return newTensor(nil, 0, 0, shape...)
+}
+
+func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
+	// Shrink redundant dimmensions.
+	shape = mustGe(1, shrinkRight(shape, 1, 1))
+
+	// Return a view if parent is present.
+	if parent != nil {
+		return &Tensor{
+			parent: parent,
+			offset: offset,
+			dim:    dim,
+			shape:  shape,
+		}
+	}
+
 	var size int
 	if len(shape) > 0 {
 		size = 1
 	}
-
-	// Shrink redundant dimmensions.
-	shape = mustGe(1, shrinkRight(shape, 1, 1))
 
 	for _, n := range shape {
 		size *= n
@@ -54,11 +74,11 @@ func (t *Tensor) Set(val complex128, idx ...int) *Tensor {
 // checkIdxConst checks if index is valid in terms of its shape.
 func (t *Tensor) checkIdxConst(idx []int) {
 	if len(idx) != len(t.shape) {
-		panic(fmt.Sprintf("invalid tensor index %v for shape %v", idx, t.shape))
+		panic(fmt.Sprintf("tensor: invalid tensor index %v for shape %v", idx, t.shape))
 	}
 
 	if len(idx) == 0 {
-		panic("cannot index empty tensor")
+		panic("tensor: cannot index empty tensor")
 	}
 }
 
@@ -81,7 +101,37 @@ func (t *Tensor) Split(dim int) []*Tensor {
 }
 
 func (t *Tensor) Slice(dim, from int, to ...int) *Tensor {
-	return nil
+	if dim >= t.NDim() {
+		panic("tensor: invalid dimension")
+	}
+
+	if len(to) > 1 {
+		panic("tensor: too many slice arguments")
+	}
+
+	dimsize := t.shape[dim]
+	if from < 0 || from >= dimsize {
+		panic(fmt.Sprintf("tensor: invalid from range %d for [0, %d)", from, dimsize))
+	}
+
+	limit := dimsize
+	if len(to) > 0 {
+		limit = to[0]
+	}
+
+	if limit < 0 || limit > dimsize {
+		panic(fmt.Sprintf("tensor: invalid to range %d for [0, %d]", limit, dimsize))
+	}
+
+	if limit-from <= 0 {
+		panic("tensor: invalid slice range")
+	}
+
+	shape := make([]int, len(t.shape))
+	copy(shape, t.shape)
+	shape[dim] = limit - from
+
+	return newTensor(t, from, dim, shape...)
 }
 
 func (t *Tensor) T(perms ...int) *Tensor {
