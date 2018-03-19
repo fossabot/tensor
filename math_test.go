@@ -27,6 +27,10 @@ func TestTensorSum(t *testing.T) {
 			Tensor: tacvs.NewTensor(),
 			Sum:    0,
 		},
+		"slice": {
+			Tensor: tensorEnum(2, 2).Slice(1, 0),
+			Sum:    5,
+		},
 	}
 
 	for name, test := range tests {
