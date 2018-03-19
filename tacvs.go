@@ -22,8 +22,12 @@ func NewTensor(shape ...int) *Tensor {
 }
 
 func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
-	// Shrink redundant dimmensions.
-	shape = mustGe(1, shrinkRight(shape, 1, 1))
+	if len(shape) == 0 {
+		return &Tensor{}
+	}
+
+	// Flat dimmensions.
+	shape = mustGe(1, fitIndex(shape, 1, 1))
 
 	// Return a view if parent is present.
 	if parent != nil {
@@ -35,11 +39,7 @@ func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
 		}
 	}
 
-	var size int
-	if len(shape) > 0 {
-		size = 1
-	}
-
+	var size = 1
 	for _, n := range shape {
 		size *= n
 	}
@@ -53,37 +53,29 @@ func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
 // At returns a tensor value at a given position. It panics when called on empty
 // tensor or when the index is out of tensor shape range.
 func (t *Tensor) At(idx ...int) complex128 {
-	// Shrink redundant indexes.
-	idx = mustGe(0, shrinkRight(idx, 0, len(t.shape)))
-
-	t.checkIdxConst(idx)
-	return t.data[t.position(idx)]
+	//	fmt.Println(t.position(idx), len(t.data))
+	return t.data[t.position(t.getResizedIdx(idx))]
 }
 
 // Set inserts a value on a given position. It panics when called on empty
 // tensor or when the index is out of tensor shape range.
 func (t *Tensor) Set(val complex128, idx ...int) *Tensor {
-	// Shrink redundant indexes.
-	idx = mustGe(0, shrinkRight(idx, 0, len(t.shape)))
-
-	t.checkIdxConst(idx)
-	t.data[t.position(idx)] = val
+	t.data[t.position(t.getResizedIdx(idx))] = val
 	return t
 }
 
 // checkIdxConst checks if index is valid in terms of its shape.
-func (t *Tensor) checkIdxConst(idx []int) {
-	if len(idx) != len(t.shape) {
-		panic(fmt.Sprintf("tensor: invalid tensor index %v for shape %v", idx, t.shape))
-	}
-
+func (t *Tensor) getResizedIdx(idx []int) []int {
 	if len(idx) == 0 {
 		panic("tensor: cannot index empty tensor")
 	}
+
+	return checkRange(t.shape, fitIndex(idx, 0, len(t.shape)))
 }
 
 // position computes the index of value described by column-wise coordinates.
 func (t *Tensor) position(idx []int) (pos int) {
+	fmt.Println(t.shape, idx)
 	for k := 0; k < len(t.shape); k++ {
 		stride := 1
 		for j := 0; j < k; j++ {
@@ -163,7 +155,13 @@ func (t *Tensor) Resize(shape ...int) *Tensor {
 	return nil
 }
 
-func shrinkRight(slice []int, val, till int) []int {
+func fitIndex(slice []int, val, till int) []int {
+	for len(slice) < till {
+		slice = append(slice, val)
+	}
+
+	fmt.Println(slice)
+
 	for i := len(slice) - 1; i >= till; i-- {
 		if slice[i] == val {
 			slice = slice[:i]
@@ -172,15 +170,31 @@ func shrinkRight(slice []int, val, till int) []int {
 		}
 	}
 
+	fmt.Println("UU", till, slice)
+
 	return slice
 }
 
 func mustGe(min int, slice []int) []int {
 	for _, n := range slice {
 		if n < min {
-			panic(fmt.Sprintf("invalid value in: %v (min:%d)", slice, min))
+			panic(fmt.Sprintf("tensor: invalid value in: %v (min:%d)", slice, min))
 		}
 	}
 
 	return slice
+}
+
+func checkRange(shape, idx []int) []int {
+	if len(idx) != len(shape) {
+		panic("tensor: invalid index")
+	}
+
+	for i := range shape {
+		if idx[i] < 0 || idx[i] >= shape[i] {
+			panic(fmt.Sprintf("tensor: invalid index %v on shape %v", idx, shape))
+		}
+	}
+
+	return idx
 }
