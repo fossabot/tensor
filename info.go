@@ -8,7 +8,12 @@ func (t *Tensor) Data() []complex128 {
 
 // NDim returns the number of tensor dimensions.
 func (t *Tensor) NDim() int {
-	return len(t.shape)
+	l := len(t.shape)
+	if l == 1 {
+		return 2
+	}
+
+	return l
 }
 
 // Size returns the total number of elements stored in a tensor. It is equal to
@@ -30,6 +35,10 @@ func (t *Tensor) Size() int {
 func (t *Tensor) Shape() []int {
 	cp := make([]int, len(t.shape))
 	copy(cp, t.shape)
+
+	if len(cp) == 1 {
+		cp = append(cp, 1)
+	}
 
 	return cp
 }

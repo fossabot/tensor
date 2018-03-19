@@ -22,12 +22,8 @@ func NewTensor(shape ...int) *Tensor {
 }
 
 func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
-	if len(shape) == 0 {
-		return &Tensor{}
-	}
-
 	// Flat dimmensions.
-	shape = mustGe(1, fitIndex(shape, 1, 1))
+	shape = mustGe(0, fitIndex(shape, 1, 1))
 
 	// Return a view if parent is present.
 	if parent != nil {
@@ -37,6 +33,10 @@ func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
 			dim:    dim,
 			shape:  shape,
 		}
+	}
+
+	if len(shape) == 0 {
+		return &Tensor{}
 	}
 
 	var size = 1
@@ -53,7 +53,15 @@ func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
 // At returns a tensor value at a given position. It panics when called on empty
 // tensor or when the index is out of tensor shape range.
 func (t *Tensor) At(idx ...int) complex128 {
-	//	fmt.Println(t.position(idx), len(t.data))
+	if t.parent != nil {
+		idx := t.getResizedIdx(idx)
+		for len(idx) <= t.dim {
+			idx = append(idx, 0)
+		}
+		idx[t.dim] += t.offset
+		return t.parent.At(idx...)
+	}
+
 	return t.data[t.position(t.getResizedIdx(idx))]
 }
 
@@ -115,7 +123,7 @@ func (t *Tensor) Slice(dim, from int, to ...int) *Tensor {
 		panic(fmt.Sprintf("tensor: invalid to range %d for [0, %d]", limit, dimsize))
 	}
 
-	if limit-from <= 0 {
+	if limit-from < 0 {
 		panic("tensor: invalid slice range")
 	}
 
@@ -160,8 +168,6 @@ func fitIndex(slice []int, val, till int) []int {
 		slice = append(slice, val)
 	}
 
-	fmt.Println(slice)
-
 	for i := len(slice) - 1; i >= till; i-- {
 		if slice[i] == val {
 			slice = slice[:i]
@@ -169,8 +175,6 @@ func fitIndex(slice []int, val, till int) []int {
 			break
 		}
 	}
-
-	fmt.Println("UU", till, slice)
 
 	return slice
 }

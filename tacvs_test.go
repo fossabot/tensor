@@ -11,11 +11,6 @@ func TestTensorInitializationPanic(t *testing.T) {
 	tests := map[string]struct {
 		Init func()
 	}{
-		"zero axis size": {
-			Init: func() {
-				_ = tacvs.NewTensor(0)
-			},
-		},
 		"negative axis size": {
 			Init: func() {
 				_ = tacvs.NewTensor(3, -2)
@@ -422,7 +417,7 @@ func TestTensorSlice(t *testing.T) {
 			// 4 //
 			Tensor:   tensorEnum(1, 2),
 			Args:     []int{1, 1, 1},
-			Shape:    []int{},
+			Shape:    []int{1, 0},
 			ValAtPos: nil,
 		},
 		{
@@ -459,9 +454,6 @@ func TestTensorSlice(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		if i != 0 {
-			continue
-		}
 		slice := test.Tensor.Slice(test.Args[0], test.Args[1], test.Args[2:]...)
 		if slice == nil {
 			t.Fatalf("want non-nil slice (i:%d)", i)
