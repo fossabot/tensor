@@ -178,7 +178,26 @@ func (t *Tensor) slice(dim, from int, to ...int) *Tensor {
 // Clone creates an exact copy of called tensor. When called on views, they will
 // be converted to new Tensor instances.
 func (t *Tensor) Clone() *Tensor {
-	return t
+	if t.parent == nil && t.data == nil {
+		return &Tensor{}
+	}
+
+	cpy := &Tensor{
+		shape: make([]int, len(t.shape)),
+		data:  make([]complex128, t.Size()),
+	}
+	copy(cpy.shape, t.shape)
+
+	if t.data != nil {
+		copy(cpy.data, t.data)
+		return cpy
+	}
+
+	cpy.Apply(func(_ *Tensor, idx []int) {
+		cpy.Set(t.At(idx...), idx...)
+	})
+
+	return cpy
 }
 
 // Resize changes shape and size of the tensor. Elements from returned array
