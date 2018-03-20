@@ -101,20 +101,18 @@ func (t *Tensor) Random(source rand.Source) *Tensor {
 
 // Re removes imaginary part value from each element of a tensor.
 func (t *Tensor) Re() *Tensor {
-	// TODO: tests
-	for i := range t.data {
-		t.data[i] = complex(real(t.data[i]), 0)
-	}
+	t.Each(func(val complex128) complex128 {
+		return complex(real(val), 0)
+	})
 
 	return t
 }
 
 // Im removes real part value from each element of a tensor.
 func (t *Tensor) Im() *Tensor {
-	// TODO: tests
-	for i := range t.data {
-		t.data[i] = complex(0, imag(t.data[i]))
-	}
+	t.Each(func(val complex128) complex128 {
+		return complex(0, imag(val))
+	})
 
 	return t
 }
