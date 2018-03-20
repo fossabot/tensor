@@ -102,8 +102,24 @@ func (t *Tensor) Im() *Tensor {
 
 // Apply iterates over all tensor elements and calls f. The returned value will
 // be set at given tensor index. The index order is preserved.
-func (t *Tensor) Apply(f func(t *Tensor, idx []int) complex128) *Tensor {
+func (t *Tensor) Apply(f func(*Tensor, []int) complex128) *Tensor {
 	// TODO: tests
+	mul, size := make([]int, len(t.shape)), 1
+
+	for i := len(t.shape) - 1; i >= 0; i-- {
+		size *= t.shape[i]
+		mul[i] = size
+	}
+	mul = append(mul, 1)
+
+	cur := make([]int, len(t.shape))
+	for i := 0; i < size; i++ {
+		for j := range cur {
+			cur[j] = (i / mul[j+1]) % t.shape[j]
+		}
+		f(t, cur)
+	}
+
 	return t
 }
 

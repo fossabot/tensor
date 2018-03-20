@@ -3,6 +3,10 @@ package tacvs
 // Data returns the internal root buffer of the tensor. The returned slice may
 // not point to the data when called on views.
 func (t *Tensor) Data() []complex128 {
+	if t.parent != nil {
+		return t.parent.Data()
+	}
+
 	return t.data
 }
 
