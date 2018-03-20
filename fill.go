@@ -23,9 +23,16 @@ func (t *Tensor) Full(val complex128) *Tensor {
 // Each walks trough each tensor element and applies a provided function on it.
 // The argument passed to f will be a current element's value.
 func (t *Tensor) Each(f func(complex128) complex128) *Tensor {
-	for i := range t.data {
-		t.data[i] = f(t.data[i])
+	if t.parent == nil {
+		for i := range t.data {
+			t.data[i] = f(t.data[i])
+		}
+		return t
 	}
+
+	t.Apply(func(t *Tensor, idx []int) {
+		t.Set(f(t.At(idx...)), idx...)
+	})
 
 	return t
 }
