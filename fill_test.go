@@ -2,6 +2,8 @@ package tacvs_test
 
 import (
 	"reflect"
+	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/ppknap/tacvs"
@@ -114,7 +116,69 @@ func TestTensorEye(t *testing.T) {
 		})
 	}
 }
+func TestTensorApply(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		CallN  int
+		Data   []complex128
+	}{
+		"matrix": {
+			Tensor: tacvs.NewTensor(3, 3),
+			CallN:  9,
+			Data:   []complex128{1, 1, 1, 1, 1, 1, 1, 1, 1},
+		},
+		"empty": {
+			Tensor: &tacvs.Tensor{},
+			CallN:  0,
+			Data:   nil,
+		},
+		"vector": {
+			Tensor: tacvs.NewTensor(4),
+			CallN:  4,
+			Data:   []complex128{1, 1, 1, 1},
+		},
+		"matrix horizontal slice": {
+			Tensor: tacvs.NewTensor(3, 3).Slice(0, 1, 2),
+			CallN:  3,
+			Data:   []complex128{0, 1, 0, 0, 1, 0, 0, 1, 0},
+		},
+		"matrix vertical slice": {
+			Tensor: tacvs.NewTensor(3, 3).Slice(1, 1, 2),
+			CallN:  3,
+			Data:   []complex128{0, 0, 0, 1, 1, 1, 0, 0, 0},
+		},
+	}
 
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			callN, callM := 0, map[string]int{}
+
+			tr := test.Tensor.Apply(func(tr *tacvs.Tensor, idx []int) {
+				idxStr := make([]string, len(idx))
+				for i := range idx {
+					idxStr[i] = strconv.Itoa(idx[i])
+				}
+
+				callN++
+				callM[strings.Join(idxStr, "|")]++
+
+				tr.Set(1, idx...)
+			})
+
+			if callN != test.CallN {
+				t.Fatalf("want calls number=%d; got %d", test.CallN, callN)
+			}
+
+			if callN != len(callM) {
+				t.Fatalf("multiple calls with the same index: %v", callM)
+			}
+
+			if data := tr.Data(); !reflect.DeepEqual(data, test.Data) {
+				t.Fatalf("want data=%v; got %v", test.Data, data)
+			}
+		})
+	}
+}
 func TestTensorFill(t *testing.T) {
 	// val2Pos stores expected value at given position.
 	type val2Pos map[complex128][]int

@@ -68,7 +68,18 @@ func (t *Tensor) At(idx ...int) complex128 {
 // Set inserts a value on a given position. It panics when called on empty
 // tensor or when the index is out of tensor shape range.
 func (t *Tensor) Set(val complex128, idx ...int) *Tensor {
-	t.data[t.position(t.getResizedIdx(idx))] = val
+	if t.parent == nil {
+		t.data[t.position(t.getResizedIdx(idx))] = val
+		return t
+	}
+
+	idx = t.getResizedIdx(idx)
+	for len(idx) <= t.dim {
+		idx = append(idx, 0)
+	}
+	idx[t.dim] += t.offset
+	t.parent.Set(val, idx...)
+
 	return t
 }
 

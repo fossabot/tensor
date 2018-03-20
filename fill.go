@@ -49,15 +49,16 @@ func (t *Tensor) Linspace(start, end complex128) *Tensor {
 // Eye sets one to tensor elements with equal indexes on each axe. The remaining
 // elements will be set to zero.
 func (t *Tensor) Eye() *Tensor {
-	return t.Apply(func(t *Tensor, idx []int) complex128 {
+	return t.Apply(func(t *Tensor, idx []int) {
 		var first = idx[0] // len(idx) is always > 0.
 		for i := 1; i < len(idx); i++ {
 			if first != idx[i] {
-				return 0
+				t.Set(0, idx...)
+				return
 			}
 		}
 
-		return 1
+		t.Set(1, idx...)
 	})
 }
 
@@ -100,10 +101,13 @@ func (t *Tensor) Im() *Tensor {
 	return t
 }
 
-// Apply iterates over all tensor elements and calls f. The returned value will
-// be set at given tensor index. The index order is preserved.
-func (t *Tensor) Apply(f func(*Tensor, []int) complex128) *Tensor {
-	// TODO: tests
+// Apply iterates over all tensor elements and calls f. The index order is
+// preserved.
+func (t *Tensor) Apply(f func(*Tensor, []int)) *Tensor {
+	if len(t.shape) == 0 {
+		return t
+	}
+
 	mul, size := make([]int, len(t.shape)), 1
 
 	for i := len(t.shape) - 1; i >= 0; i-- {
