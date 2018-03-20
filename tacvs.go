@@ -23,7 +23,9 @@ func NewTensor(shape ...int) *Tensor {
 
 func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
 	if len(shape) == 0 {
-		return &Tensor{}
+		return &Tensor{
+			data: make([]complex128, 0),
+		}
 	}
 
 	// Flat dimmensions.

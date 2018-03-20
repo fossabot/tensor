@@ -241,6 +241,10 @@ func TestTensorFillPanic(t *testing.T) {
 			Tensor: tensorEnum(2, 2),
 			Vs:     []complex128{1, 2, 3},
 		},
+		"fill on view": {
+			Tensor: tensorEnum(2, 2).Slice(0, 0),
+			Vs:     []complex128{1, 2, 3, 4},
+		},
 	}
 
 	for name, test := range tests {

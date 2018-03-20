@@ -139,8 +139,13 @@ func (t *Tensor) Apply(f func(*Tensor, []int)) *Tensor {
 }
 
 // Fill copies provided buffer to tensor in column-wise order. The size of
-// provided slice must be identical as the size of the tensor.
+// provided slice must be identical as the size of the tensor. It panics if
+// called on views.
 func (t *Tensor) Fill(vs []complex128) *Tensor {
+	if t.parent != nil {
+		panic("fill called on view")
+	}
+
 	if len(vs) != len(t.data) {
 		panic("fill with a buffer of invalid size")
 	}
