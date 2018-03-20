@@ -28,7 +28,7 @@ func TestTensorSum(t *testing.T) {
 			Sum:    0,
 		},
 		"slice": {
-			Tensor: tensorEnum(2, 2).Slice(1, 0),
+			Tensor: tensorEnum(2, 2).Slice(1, 1),
 			Sum:    5,
 		},
 	}

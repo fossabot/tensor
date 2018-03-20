@@ -116,6 +116,40 @@ func TestTensorEye(t *testing.T) {
 		})
 	}
 }
+
+func TestTensorIm(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Data   []complex128
+	}{
+		"empty": {
+			Tensor: &tacvs.Tensor{},
+			Data:   nil,
+		},
+		"matrix": {
+			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
+			Data:   []complex128{1i, 2i, 3i, 4i},
+		},
+		"vector": {
+			Tensor: tacvs.NewTensor(4).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
+			Data:   []complex128{1i, 2i, 3i, 4i},
+		},
+		"matrix slice": {
+			Tensor: tacvs.NewTensor(1, 2).Fill([]complex128{1 + 1i, 2 + 2i}).Slice(1, 1, 2),
+			Data:   []complex128{1 + 1i, 2i},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			tr := test.Tensor.Im()
+
+			if data := tr.Data(); !reflect.DeepEqual(data, test.Data) {
+				t.Fatalf("want data=%v; got %v", test.Data, data)
+			}
+		})
+	}
+}
 func TestTensorApply(t *testing.T) {
 	tests := map[string]struct {
 		Tensor *tacvs.Tensor
