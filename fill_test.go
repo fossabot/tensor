@@ -38,6 +38,10 @@ func TestTensorFull(t *testing.T) {
 			Tensor: tensorEnum(2, 2).Each(func(complex128) complex128 { return 2 }),
 			Val:    2,
 		},
+		"slice": {
+			Tensor: tensorEnum(3, 3).Slice(0, 0).Full(99),
+			Val:    99,
+		},
 	}
 
 	for name, test := range tests {
