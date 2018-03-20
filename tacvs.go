@@ -175,11 +175,6 @@ func (t *Tensor) slice(dim, from int, to ...int) *Tensor {
 	return newTensor(t, from, dim, shape...)
 }
 
-// IsZero reports whether t represents a zero length tensor.
-func (t *Tensor) IsZero() bool {
-	return len(t.data) == 0
-}
-
 // Clone creates an exact copy of called tensor. When called on views, they will
 // be converted to new Tensor instances.
 func (t *Tensor) Clone() *Tensor {

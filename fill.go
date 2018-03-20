@@ -148,7 +148,7 @@ func (t *Tensor) Apply(f func(*Tensor, []int)) *Tensor {
 // called on views.
 func (t *Tensor) Fill(vs []complex128) *Tensor {
 	if t.parent != nil {
-		panic("fill called on view")
+		panic("fill called on view tensor")
 	}
 
 	if len(vs) != len(t.data) {
