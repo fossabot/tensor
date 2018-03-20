@@ -17,7 +17,7 @@ func TestTensorInfo(t *testing.T) {
 		{
 			// 0 //
 			Tensor:   tacvs.NewTensor(1, 1),
-			Shape:    []int{1},
+			Shape:    []int{1, 1},
 			Size:     1,
 			DataSize: 1,
 		},
@@ -31,14 +31,14 @@ func TestTensorInfo(t *testing.T) {
 		{
 			// 2 //
 			Tensor:   tacvs.NewTensor(1, 1, 1, 1),
-			Shape:    []int{1},
+			Shape:    []int{1, 1},
 			Size:     1,
 			DataSize: 1,
 		},
 		{
 			// 3 //
 			Tensor:   tacvs.NewTensor(6, 1, 1, 1, 1),
-			Shape:    []int{6},
+			Shape:    []int{6, 1},
 			Size:     6,
 			DataSize: 6,
 		},
@@ -59,7 +59,7 @@ func TestTensorInfo(t *testing.T) {
 		{
 			// 6 //
 			Tensor:   tacvs.NewTensor(2),
-			Shape:    []int{2},
+			Shape:    []int{2, 1},
 			Size:     2,
 			DataSize: 2,
 		},
@@ -67,7 +67,7 @@ func TestTensorInfo(t *testing.T) {
 
 	for i, test := range tests {
 		if ndim, want := test.Tensor.NDim(), len(test.Shape); ndim != want {
-			t.Errorf("want ndim=%v; got %v (i:%d)", ndim, want, i)
+			t.Errorf("want ndim=%v; got %v (i:%d)", want, ndim, i)
 		}
 
 		if shape := test.Tensor.Shape(); !reflect.DeepEqual(shape, test.Shape) {
