@@ -519,6 +519,48 @@ func TestTensorSlicePanic(t *testing.T) {
 	}
 }
 
+func TestTensorClone(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+	}{
+		"zero": {
+			Tensor: &tacvs.Tensor{},
+		},
+		"empty": {
+			Tensor: tacvs.NewTensor(),
+		},
+		"matrix": {
+			Tensor: tensorEnum(3, 3),
+		},
+		"slice": {
+			Tensor: tensorEnum(3, 3).Slice(0, 0),
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			tr := test.Tensor.Clone()
+
+			if tr == test.Tensor {
+				t.Fatalf("want tensor address!=%p; got %p", test.Tensor, tr)
+			}
+
+			trd, ttd := tr.Data(), test.Tensor.Data()
+			if len(trd) != len(ttd) {
+				t.Fatalf("want data len=%d; got %d", len(ttd), len(trd))
+			}
+
+			if len(ttd) > 0 && (&ttd[0] == &trd[0]) {
+				t.Fatalf("want data address=%p; got %p", &ttd[0], &trd[0])
+			}
+
+			if !reflect.DeepEqual(trd, ttd) {
+				t.Errorf("want data=%v; got %v", ttd, trd)
+			}
+		})
+	}
+}
+
 // tensorEnum creates a new tensor and fills its internal buffer with numbers
 // that indicate element position in the memory.
 func tensorEnum(shape ...int) *tacvs.Tensor {

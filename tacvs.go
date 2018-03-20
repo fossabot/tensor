@@ -178,7 +178,7 @@ func (t *Tensor) slice(dim, from int, to ...int) *Tensor {
 // Clone creates an exact copy of called tensor. When called on views, they will
 // be converted to new Tensor instances.
 func (t *Tensor) Clone() *Tensor {
-	return nil
+	return t
 }
 
 // Resize changes shape and size of the tensor. Elements from returned array
