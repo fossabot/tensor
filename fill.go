@@ -50,6 +50,17 @@ func (t *Tensor) Linspace(start, end complex128) *Tensor {
 // elements will be set to zero.
 func (t *Tensor) Eye() *Tensor {
 	return t.Apply(func(t *Tensor, idx []int) {
+		// Special case for vectors.
+		if len(idx) == 1 {
+			if idx[0] == 0 {
+				t.Set(1, idx...)
+				return
+			}
+
+			t.Set(0, idx...)
+			return
+		}
+
 		var first = idx[0] // len(idx) is always > 0.
 		for i := 1; i < len(idx); i++ {
 			if first != idx[i] {

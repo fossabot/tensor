@@ -22,6 +22,10 @@ func NewTensor(shape ...int) *Tensor {
 }
 
 func newTensor(parent *Tensor, offset, dim int, shape ...int) *Tensor {
+	if len(shape) == 0 {
+		return &Tensor{}
+	}
+
 	// Flat dimmensions.
 	shape = mustGe(0, fitIndex(shape, 1, 1))
 
