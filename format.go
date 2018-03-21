@@ -18,6 +18,57 @@ func (t *Tensor) String() string {
 	return ""
 }
 
+func computeKeyIdx(maxElem int, size, idx []int) (key int, group, midx []int) {
+	if len(size) != len(idx) {
+		panic(fmt.Sprintf("invalid index length (%v!=%v)", size, idx))
+	}
+
+	for i := range size {
+		if idx[i] > maxElem-2 && (idx[i] != size[i]-1) {
+			return -1, nil, nil
+		}
+	}
+
+	if len(idx) > 1 {
+		group = idx[2:]
+	}
+
+	key = sliceToIdx(size, group)
+
+	switch len(idx) {
+	case 0:
+		midx = []int{0, 0}
+	case 1:
+		midx = []int{idx[0], 0}
+	case 2:
+		midx = []int{idx[0], idx[1]}
+	default:
+		midx = idx[:2]
+	}
+
+	for i := range midx {
+		if midx[i] >= maxElem {
+			midx[i] = maxElem - 1
+		}
+	}
+
+	return key, group, midx
+}
+
+func sliceToIdx(size, group []int) int {
+	if len(group) == 0 {
+		return 0
+	}
+
+	val, mul := 0, 1
+	for i := range group {
+		val += group[i] * mul
+		mul *= size[len(size)-len(group)+i]
+	}
+
+	return val
+}
+
 func tabData(vss [][]string) string {
 	if len(vss) == 0 {
 		return "[]"
