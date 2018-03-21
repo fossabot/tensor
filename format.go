@@ -1,8 +1,10 @@
 package tacvs
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
+	"text/tabwriter"
 )
 
 // DefaultMaxFmtElements defines the maximum number of tensor's printable
@@ -16,19 +18,56 @@ func (t *Tensor) String() string {
 	return ""
 }
 
+func tabData(vss [][]string) string {
+	if len(vss) == 0 {
+		return "[]"
+	}
+
+	lineFn := func(data []string, l, r string) string {
+		return l + "\t" + strings.Join(data, "\t") + "\t" + r
+	}
+
+	buf := &bytes.Buffer{}
+	w := tabwriter.NewWriter(buf, 0, 0, 1, ' ', tabwriter.AlignRight)
+	for i := range vss {
+		switch {
+		case len(vss) == 1:
+			fmt.Fprintln(w, lineFn(vss[i], "[", "]"))
+		case i == 0:
+			fmt.Fprintln(w, lineFn(vss[i], "⎡", "⎤"))
+		case i == len(vss)-1:
+			fmt.Fprintln(w, lineFn(vss[i], "⎣", "⎦"))
+		default:
+			fmt.Fprintln(w, lineFn(vss[i], "⎢", "⎥"))
+		}
+	}
+
+	w.Flush()
+	ret := buf.String()
+
+	return strings.Replace(ret[1:], "\n ", "\n", -1)
+}
+
 func addCont(vss [][]string) [][]string {
-	const ellipsis = "⋯"
+	const (
+		ellipsis   = "⋯"
+		elliSpaces = " ⋯ "
+	)
 
 	for i, vs := range vss {
 		if len(vss[i]) > 1 {
-			vss[i] = append(vs[:len(vs)-1], ellipsis, vs[len(vs)-1])
+			vss[i] = append(vs[:len(vs)-1], elliSpaces, vs[len(vs)-1])
 		}
 	}
 
 	if len(vss) > 1 {
 		ellVec := make([]string, len(vss[len(vss)-1]))
 		for i := range ellVec {
-			ellVec[i] = ellipsis
+			if i == len(ellVec)-2 {
+				ellVec[i] = elliSpaces
+			} else {
+				ellVec[i] = ellipsis
+			}
 		}
 
 		vss = append(vss[:len(vss)-1], ellVec, vss[len(vss)-1])
