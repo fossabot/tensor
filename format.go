@@ -16,6 +16,25 @@ func (t *Tensor) String() string {
 	return ""
 }
 
+func fmtMatrix(mat [][]complex128) (res [][]string, maxLen int) {
+	for _, row := range mat {
+		if len(row) == 0 {
+			continue
+		}
+
+		rows := make([]string, 0, len(row))
+		for _, val := range row {
+			str := fmtCplx(val)
+			maxLen = max(maxLen, len(str))
+			rows = append(rows, str)
+		}
+
+		res = append(res, rows)
+	}
+
+	return res, maxLen
+}
+
 func fmtCplx(val complex128) string {
 	switch {
 	case val == 0:
@@ -27,4 +46,12 @@ func fmtCplx(val complex128) string {
 	}
 
 	return strings.Trim(fmt.Sprintf("%v", val), "()")
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+
+	return b
 }
