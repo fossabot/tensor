@@ -23,6 +23,10 @@ func (t *Tensor) Full(val complex128) *Tensor {
 // Each walks trough each tensor element and applies a provided function on it.
 // The argument passed to f will be a current element's value.
 func (t *Tensor) Each(f func(complex128) complex128) *Tensor {
+	if f == nil {
+		panic("tensor: each with nil predicate")
+	}
+
 	if t.parent == nil {
 		for i := range t.data {
 			t.data[i] = f(t.data[i])
@@ -120,6 +124,10 @@ func (t *Tensor) Im() *Tensor {
 // Apply iterates over all tensor elements and calls f. The index order is
 // preserved.
 func (t *Tensor) Apply(f func(*Tensor, []int)) *Tensor {
+	if f == nil {
+		panic("tensor: apply with nil predicate")
+	}
+
 	if len(t.shape) == 0 {
 		return t
 	}

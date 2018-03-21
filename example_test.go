@@ -26,5 +26,5 @@ func ExampleSoftmax() {
 	vals := []complex128{3.0, 1.0, 0.2}
 
 	fmt.Println(softmax(tacvs.NewTensor(1, 3).Fill(vals)))
-	// Output: [0.8360188 0.11314284 0.05083836]
+	// Output: [ 0.8360188027814407 0.11314284146556011 0.05083835575299916]
 }

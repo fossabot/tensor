@@ -15,7 +15,96 @@ const DefaultMaxFmtElements = 8
 // greater than DefaultMaxFmtElements, excess elements will be represented as
 // ellipsis symbol.
 func (t *Tensor) String() string {
+	if t.Size() == 0 {
+		return "[]"
+	}
+
+	var maxElem = DefaultMaxFmtElements
+	if t.FmtMaxElems > 1 {
+		maxElem = t.FmtMaxElems
+	}
+
+	type info struct {
+		group  []int
+		isCont bool
+		data   [][]complex128
+	}
+
+	group2data := make(map[int]*info)
+	t.Apply(func(t *Tensor, idx []int) {
+		key, group, midx := computeKeyIdx(maxElem, t.shape, idx)
+		if key < 0 {
+			return
+		}
+
+		nfo := group2data[key]
+		if nfo == nil {
+			data, isCont := makeMatrixBuf(maxElem, t.shape)
+			nfo = &info{
+				group:  group,
+				isCont: isCont,
+				data:   data,
+			}
+
+			group2data[key] = nfo
+		}
+
+		nfo.data[midx[0]][midx[1]] = t.At(idx...)
+	})
+
+	var (
+		keys = make([]int, 0, len(group2data))
+		fmtd = make([]string, 0, len(group2data))
+	)
+
+	for key, nfo := range group2data {
+		keys = append(keys, key)
+
+		fmtm := fmtMatrix(nfo.data)
+		if nfo.isCont {
+			fmtm = addCont(fmtm)
+		}
+
+		fmtd = append(fmtd, tabData(fmtm))
+	}
+
+	if len(fmtd) == 1 {
+		return fmtd[0]
+	}
+
 	return ""
+}
+
+func makeMatrixBuf(maxElem int, shape []int) (ret [][]complex128, isCont bool) {
+	var dims [2]int
+
+	switch len(shape) {
+	case 0:
+		panic("tensor: matrix buffer from empty shape")
+	case 1:
+		dims[0] = min(shape[0], maxElem)
+		dims[1] = 1
+		isCont = shape[0] > dims[0]
+	default:
+		dims[0] = min(shape[0], maxElem)
+		dims[1] = min(shape[1], maxElem)
+		isCont = shape[0] > dims[0] || shape[1] > dims[1]
+	}
+
+	ret = make([][]complex128, dims[0])
+	for i := range ret {
+		ret[i] = make([]complex128, dims[1])
+	}
+
+	return ret, isCont
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+
+	return b
 }
 
 func computeKeyIdx(maxElem int, size, idx []int) (key int, group, midx []int) {
@@ -40,10 +129,8 @@ func computeKeyIdx(maxElem int, size, idx []int) (key int, group, midx []int) {
 		midx = []int{0, 0}
 	case 1:
 		midx = []int{idx[0], 0}
-	case 2:
-		midx = []int{idx[0], idx[1]}
 	default:
-		midx = idx[:2]
+		midx = []int{idx[0], idx[1]}
 	}
 
 	for i := range midx {
@@ -96,7 +183,7 @@ func tabData(vss [][]string) string {
 	w.Flush()
 	ret := buf.String()
 
-	return strings.Replace(ret[1:], "\n ", "\n", -1)
+	return strings.TrimSpace(strings.Replace(ret[1:], "\n ", "\n", -1))
 }
 
 func addCont(vss [][]string) [][]string {
