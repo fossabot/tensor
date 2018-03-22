@@ -264,6 +264,26 @@ func TestTensorRandom(t *testing.T) {
 	}
 }
 
+type testRandSource int64
+
+func (trs testRandSource) Int63() int64 { return int64(trs) }
+func (trs testRandSource) Seed(int64)   {}
+
+func TestTensorRandomSource(t *testing.T) {
+	tr := tensorEnum(20, 10, 5).Random(testRandSource(123456))
+
+	first := tr.At(0, 0, 0)
+	if imag(first) != 0 {
+		t.Fatalf("want values to be real; got %v", first)
+	}
+
+	for _, val := range tr.Data() {
+		if val != first {
+			t.Fatalf("want the same values; got %v!=%v", first, val)
+		}
+	}
+}
+
 func TestTensorRe(t *testing.T) {
 	tests := map[string]struct {
 		Tensor *tacvs.Tensor
