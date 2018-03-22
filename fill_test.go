@@ -60,6 +60,74 @@ func TestTensorFull(t *testing.T) {
 	}
 }
 
+func TestTensorArrange(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Start  complex128
+		Step   complex128
+		Data   []complex128
+	}{
+		"empty": {
+			Tensor: &tacvs.Tensor{},
+			Start:  3,
+			Step:   1,
+			Data:   nil,
+		},
+		"vector": {
+			Tensor: tacvs.NewTensor(5),
+			Start:  0,
+			Step:   1,
+			Data:   []complex128{0, 1, 2, 3, 4},
+		},
+		"matrix": {
+			Tensor: tacvs.NewTensor(2, 2),
+			Start:  1,
+			Step:   7,
+			Data:   []complex128{1, 8, 15, 22},
+		},
+		"matrix slice": {
+			Tensor: tacvs.NewTensor(3, 3).Slice(1, 1, 2),
+			Start:  1,
+			Step:   4,
+			Data:   []complex128{0, 0, 0, 1, 5, 9, 0, 0, 0},
+		},
+		"constant": {
+			Tensor: tacvs.NewTensor(2, 3),
+			Start:  3,
+			Step:   3,
+			Data:   []complex128{3, 6, 9, 12, 15, 18},
+		},
+		"zero step": {
+			Tensor: tacvs.NewTensor(2, 3),
+			Start:  3,
+			Step:   0,
+			Data:   []complex128{3, 3, 3, 3, 3, 3},
+		},
+		"negative": {
+			Tensor: tacvs.NewTensor(2, 3),
+			Start:  4,
+			Step:   -1,
+			Data:   []complex128{4, 3, 2, 1, 0, -1},
+		},
+		"complex": {
+			Tensor: tacvs.NewTensor(2, 3),
+			Start:  -2 + 10i,
+			Step:   1 - 1i,
+			Data:   []complex128{-2 + 10i, -1 - 9i, 0 - 8i, 1 - 7i, 2 - 6i, 3 - 5i},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			tr := test.Tensor.Arrange(test.Start, test.Step)
+
+			if data := tr.Data(); !reflect.DeepEqual(data, test.Data) {
+				t.Fatalf("want data=%v; got %v", test.Data, data)
+			}
+		})
+	}
+}
+
 func TestTensorLinspace(t *testing.T) {
 	tests := map[string]struct {
 		Tensor *tacvs.Tensor
