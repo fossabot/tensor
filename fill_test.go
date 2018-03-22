@@ -60,6 +60,67 @@ func TestTensorFull(t *testing.T) {
 	}
 }
 
+func TestTensorLinspace(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Start  complex128
+		End    complex128
+		Data   []complex128
+	}{
+		"empty": {
+			Tensor: &tacvs.Tensor{},
+			Start:  3,
+			End:    10,
+			Data:   nil,
+		},
+		"vector": {
+			Tensor: tacvs.NewTensor(5),
+			Start:  0,
+			End:    10,
+			Data:   []complex128{0, 2.5, 5, 7.5, 10},
+		},
+		"matrix": {
+			Tensor: tacvs.NewTensor(2, 2),
+			Start:  1,
+			End:    7,
+			Data:   []complex128{1, 3, 5, 7},
+		},
+		"matrix slice": {
+			Tensor: tacvs.NewTensor(3, 3).Slice(1, 1, 2),
+			Start:  1,
+			End:    9,
+			Data:   []complex128{0, 0, 0, 1, 5, 9, 0, 0, 0},
+		},
+		"constant": {
+			Tensor: tacvs.NewTensor(2, 3),
+			Start:  3,
+			End:    3,
+			Data:   []complex128{3, 3, 3, 3, 3, 3},
+		},
+		"negative": {
+			Tensor: tacvs.NewTensor(2, 3),
+			Start:  10,
+			End:    -15,
+			Data:   []complex128{10, 5, 0, -5, -10, -15},
+		},
+		"complex": {
+			Tensor: tacvs.NewTensor(2, 3),
+			Start:  -2 + 10i,
+			End:    3 - 15i,
+			Data:   []complex128{-2 + 10i, -1 + 5i, 0, 1 - 5i, 2 - 10i, 3 - 15i},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			tr := test.Tensor.Linspace(test.Start, test.End)
+
+			if data := tr.Data(); !reflect.DeepEqual(data, test.Data) {
+				t.Fatalf("want data=%v; got %v", test.Data, data)
+			}
+		})
+	}
+}
 func TestTensorEye(t *testing.T) {
 	// val2Pos stores expected value at given positions.
 	type val2Pos map[complex128][][]int

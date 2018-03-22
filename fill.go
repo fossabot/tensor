@@ -46,15 +46,14 @@ func (t *Tensor) Each(f func(complex128) complex128) *Tensor {
 // until last index is reached.
 func (t *Tensor) Arrange(start, step complex128) *Tensor {
 	// TODO: tests
-	return nil
+	return t
 }
 
 // Linspace creates evenly spaced values with respect to tensor index. The first
 // element of the tensor will have start value and the last element will be set
 // to end value.
 func (t *Tensor) Linspace(start, end complex128) *Tensor {
-	// TODO: tests
-	return nil
+	return t
 }
 
 // Eye sets one to tensor elements with equal indexes on each axe. The remaining
