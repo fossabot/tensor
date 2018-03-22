@@ -45,7 +45,6 @@ func (t *Tensor) Each(f func(complex128) complex128) *Tensor {
 // element will be set on zero index and the value will be increased by step
 // until last index is reached.
 func (t *Tensor) Arrange(start, step complex128) *Tensor {
-	// TODO: tests
 	return t
 }
 

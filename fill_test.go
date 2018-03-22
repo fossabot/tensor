@@ -250,6 +250,20 @@ func TestTensorEye(t *testing.T) {
 	}
 }
 
+func TestTensorRandom(t *testing.T) {
+	tr := tensorEnum(100, 100, 100).Random(nil)
+
+	for i, val := range tr.Data() {
+		if re := real(val); re < 0 || re >= 1 {
+			t.Fatalf("want real part in [0, 1); got %v (i:%d)", re, i)
+		}
+
+		if im := imag(val); im != 0 {
+			t.Fatalf("want imaginary part=0; got %v (i:%d)", im, i)
+		}
+	}
+}
+
 func TestTensorRe(t *testing.T) {
 	tests := map[string]struct {
 		Tensor *tacvs.Tensor
