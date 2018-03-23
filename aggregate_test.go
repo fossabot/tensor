@@ -1,6 +1,7 @@
 package tacvs_test
 
 import (
+	"math/cmplx"
 	"testing"
 
 	"github.com/ppknap/tacvs"
@@ -197,6 +198,46 @@ func TestTensorMedian(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			if median := test.Tensor.Median(); median != test.Median {
 				t.Fatalf("want median=%v; got %v", test.Median, median)
+			}
+		})
+	}
+}
+
+func TestTensorStd(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Std    complex128
+	}{
+		"empty": {
+			Tensor: tacvs.NewTensor(),
+			Std:    cmplx.NaN(),
+		},
+		"vector": {
+			Tensor: tacvs.NewTensor(5).Fill([]complex128{-2, 4, 30, -10, 34}),
+			Std:    17.6,
+		},
+		"zero std": {
+			Tensor: tacvs.NewTensor(2, 3, 4),
+			Std:    0,
+		},
+		"matrix": {
+			Tensor: tensorEnum(2, 2).Fill([]complex128{18, 7, 18, 15}),
+			Std:    4.5,
+		},
+		"complex": {
+			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{8 + 2i, 2 - 2i, 6 + 4i, 4i}),
+			Std:    4,
+		},
+		"slice": {
+			Tensor: tensorEnum(2, 2).Slice(1, 1),
+			Std:    0.5,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			if std := test.Tensor.Std(); std != test.Std {
+				t.Fatalf("want std=%v; got %v", test.Std, std)
 			}
 		})
 	}
