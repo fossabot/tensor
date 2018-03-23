@@ -26,30 +26,36 @@ func (t *Tensor) Min() (min complex128) {
 // Max returns maximum value of all tensor elements. It returns 0 when the
 // tensor is empty.
 func (t *Tensor) Max() (max complex128) {
+	// TODO: tests.
 	return
 }
 
 // CumSum returns a cumulative sum of all tensor elements.
 func (t *Tensor) CumSum() (sum complex128) {
+	// TODO: tests.
 	return
 }
 
 // Mean returns a mean of all tensor elements.
 func (t *Tensor) Mean() (mean complex128) {
+	// TODO: tests.
 	return
 }
 
 // Median returns 50th percentile of all tensor elements.
 func (t *Tensor) Median() (median complex128) {
+	// TODO: tests.
 	return
 }
 
 // CorrCoef returns correletion coefficient of all tensor elements.
-func (t *Tensor) CorrCoef() (cc complex128) {
+func (t *Tensor) CorrCoef() (cc complex128) {]
+	// TODO: tests.
 	return
 }
 
 // Std returns standard deviation of all tensor elements.
 func (t *Tensor) Std() (std complex128) {
+	// TODO: tests.
 	return
 }
