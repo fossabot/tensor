@@ -161,3 +161,43 @@ func TestTensorMean(t *testing.T) {
 		})
 	}
 }
+
+func TestTensorMedian(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Median complex128
+	}{
+		"empty": {
+			Tensor: tacvs.NewTensor(),
+			Median: 0,
+		},
+		"vector": {
+			Tensor: tacvs.NewTensor(5).Fill([]complex128{-2, 4, 31, -1, 20}),
+			Median: 4,
+		},
+		"zero max": {
+			Tensor: tacvs.NewTensor(2, 3, 4),
+			Median: 0,
+		},
+		"matrix": {
+			Tensor: tensorEnum(2, 2).Fill([]complex128{8, 2, 5, 4}),
+			Median: 4.5,
+		},
+		"complex": {
+			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{2 + 1i, 1 - 4i, 4 + 3i, 9 + 2i}),
+			Median: 3 + 2i,
+		},
+		"slice": {
+			Tensor: tensorEnum(3, 2).Slice(1, 1),
+			Median: 4,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			if median := test.Tensor.Median(); median != test.Median {
+				t.Fatalf("want median=%v; got %v", test.Median, median)
+			}
+		})
+	}
+}
