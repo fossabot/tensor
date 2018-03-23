@@ -167,3 +167,8 @@ func (t *Tensor) Fill(vs []complex128) *Tensor {
 
 	return t
 }
+
+// CumSum computes cumulative sum of all tensor elements.
+func (t *Tensor) CumSum() *Tensor {
+	return t
+}

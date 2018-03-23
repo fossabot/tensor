@@ -493,3 +493,45 @@ func TestTensorFillPanic(t *testing.T) {
 		})
 	}
 }
+
+func TestTensorCumSum(t *testing.T) {
+	tests := map[string]struct {
+		Tensor *tacvs.Tensor
+		Data   []complex128
+	}{
+		"empty": {
+			Tensor: tacvs.NewTensor(),
+			Data:   nil,
+		},
+		"vector": {
+			Tensor: tacvs.NewTensor(3).Fill([]complex128{-2, 4, 30}),
+			Data:   []complex128{-2, 2, 32},
+		},
+		"zero max": {
+			Tensor: tacvs.NewTensor(2, 3),
+			Data:   []complex128{0, 0, 0, 0, 0, 0},
+		},
+		"matrix": {
+			Tensor: tensorEnum(2, 2).Fill([]complex128{8, 2, 3, 4}),
+			Data:   []complex128{8, 10, 13, 17},
+		},
+		"complex": {
+			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1i, 4i, 3i, 2i}),
+			Data:   []complex128{1i, 5i, 8i, 10i},
+		},
+		"slice": {
+			Tensor: tensorEnum(2, 2).Slice(1, 1),
+			Data:   []complex128{0, 0, 2, 5},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			tr := test.Tensor.CumSum()
+
+			if data := tr.Data(); !reflect.DeepEqual(data, test.Data) {
+				t.Fatalf("want data=%v; got %v", test.Data, data)
+			}
+		})
+	}
+}
