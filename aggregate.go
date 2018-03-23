@@ -36,13 +36,6 @@ func (t *Tensor) Mean() (mean complex128) {
 
 // Median returns 50th percentile of all tensor elements.
 func (t *Tensor) Median() (median complex128) {
-	// TODO: tests.
-	return
-}
-
-// CorrCoef returns correletion coefficient of all tensor elements.
-func (t *Tensor) CorrCoef() (cc complex128) {
-	// TODO: tests.
 	return
 }
 

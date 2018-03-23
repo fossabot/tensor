@@ -135,7 +135,7 @@ func TestTensorMean(t *testing.T) {
 			Tensor: tacvs.NewTensor(3).Fill([]complex128{-2, 4, 31}),
 			Mean:   11,
 		},
-		"zero max": {
+		"zero mean": {
 			Tensor: tacvs.NewTensor(2, 3, 4),
 			Mean:   0,
 		},
@@ -175,7 +175,7 @@ func TestTensorMedian(t *testing.T) {
 			Tensor: tacvs.NewTensor(5).Fill([]complex128{-2, 4, 31, -1, 20}),
 			Median: 4,
 		},
-		"zero max": {
+		"zero median": {
 			Tensor: tacvs.NewTensor(2, 3, 4),
 			Median: 0,
 		},
