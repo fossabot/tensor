@@ -1,33 +1,84 @@
 General:
-[ ] - `Tensor` - immutable shape.
-[ ] - `Tensor` - all values of the same type (`complex128`).
-[ ] - (n, m, o) shape: n - rows, m - columns, o - depth.
-[ ] - (n) vector is represented as column: (n, 1) shape.
-[ ] - () shape: scalar, rank = 0.
-[ ] - () == (1) == (1, 1, ..., 1): shape.
-
+[  ] - `Tensor` - immutable shape.
+[  ] - `Tensor` - all values of the same type (`complex128`).
+[  ] - (n, m, o) shape: n - rows, m - columns, o - depth.
+[  ] - (n) vector is represented as column: (n, 1) shape.
+[  ] - () shape: scalar, rank = 0.
+[  ] - () == (1) == (1, 1, ..., 1): shape.
+[  ] - Tensor axis 1 is vertical, 2 - horizontal.
+[  ] - Tensor zero value behaves like a scalar set to 0.
 
 Forms:
-[ ] - `owner` - tensor that owns data buffer.
-[ ] - `view` - "pointer" to data owner Tensor or another view.
-[ ] - `delegate` property  - defines op destination buffer.
+[  ] - `owner` - tensor that owns data buffer.
+[  ] - `view` - "pointer" to data owner Tensor or another view.
+[  ] - `delegate` property  - defines op destination buffer.
 
 API:
-  (A) - package level functions. They **ALWAYS** create a new Tensor. Operations
+  (A) - package level constants.
+
+  (B) - package level values.
+    [  ] - PrintElementsThreshold = 8 // Number of printed Tensor elements.
+           Negative value means unlimited.
+
+  (C) - package level functions. They **ALWAYS** create a new Tensor. Operations
         at this level **MAY** change Tensor shape.
-    [ ] - tensor.New(shape ...int) // tensor constructor.
+    [  ] - tensor.New(shape ...int) *Tensor // tensor constructor.
+    [  ] - tensor.NewScalar(val complex128) *Tensor // 0-rank tensor ctor.
+    [  ] - tensor.Comp(a, b *Tensor, comp func(av, bv complex128) bool) *Tensor
+           // compare two tensors and return the result as a new one. (+)($)
+    [  ] - tensor.Add(a, b *Tensor) *Tensor // return a new Tensor that stores
+           a+b. (+)($)
+    [  ] - tensor.Sub(a, b *Tensor) *Tensor // return a new Tensor that stores
+           a-b. (+)($)
+    [  ] - tensor.Mul(a, b *Tensor) *Tensor // return a new Tensor that stores
+           element-wise a*b. (+)($)
+    [  ] - tensor.Div(a, b *Tensor) *Tensor // return a new Tensor that stores
+           element-wise a/b. (+)($)
+    [  ] - tensor.Dot(a, b *Tensor) *Tensor // return a new Tensor that stores
+           dot product of a and b. Tensor shapes must follow dot product dim
+           rules.
 
-  (B) - object level methods. If operation changes the Tensor, it **MUST**
-        modify Tensor data buffer in place. Operations at this level
-        **MUST NOT** change Tensor shape.
-    [ ] - t.NDim() int // rank, num dimensions, num axes.
-    [ ] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
-    [ ] - t.Size() int // total number of elements.
-    [ ] - t.Data() []complex128 // data buffer. Owner buffer for views.
+  (D) - object level methods. If operation changes the Tensor, it **MUST**
+        modify Tensor data buffer in place.
+    [  ] - t.NDim() int // rank, num dimensions, num axes.
+    [  ] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
+    [  ] - t.Size() int // total number of elements.
+    [  ] - t.Data() []complex128 // data buffer. Owner buffer for views.
+    [  ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
+    [  ] - t.Set(data []complex128) *Tensor // set data buffer. Panics if not
+          `owner` or if (*).
+    [  ] - t.Zeros() *Tensor // fill with 0 values.
+    [  ] - t.Ones() *Tensor // fill with 1 values.
+    [  ] - t.Arange(start, step complex128) *Tensor // fill from start to end
+           increasing by step.
+    [  ] - t.Linspace(start, end complex128) *Tensor // fill from start to end
+           increasing by constant step.
+    [  ] - t.Pow(v complex128) *Tensor // store element-wise t^v in t and return t.
+    [  ] - t.Sin() *Tensor // store element-wise sin(t) in t and return t.
+    [  ] - t.String() string // display formatted tensor. First dimension is
+           horizontal. Non ASCII characters are not used.
+    [  ] - t.Copy() *Tensor // create a copy of t. Return value is the `owner`.
+    [  ] - t.Comp(u *Tensor, comp func(tv, uv complex128) bool) *Tensor //
+           compare with u tensor and store the result in t. (+)($)
+    [  ] - t.Add(u *Tensor) *Tensor // element-wise t+u -> t and return t. (+)($)
+    [  ] - t.Sub(u *Tensor) *Tensor // element-wise t-u -> t and return t. (+)($)
+    [  ] - t.Mul(u *Tensor) *Tensor // element-wise t*u -> t and return t. (+)($)
+    [  ] - t.Div(u *Tensor) *Tensor // element-wise t/u -> t and return t. (+)($)
+    [  ] - t.Dot(u *Tensor) *Tensor // dot product of t (o) u -> t return t. (^)
+    [  ] - t.Sum() complex128 // sum of all tensor elements.
+    [  ] - t.Max() complex128 // minimum of all tensor elements.
+    [  ] - t.Min() complex128 // maximum of all tensor elements.
+    [  ] - t.CumSum() *Tensor // cumulative sum of all tensor elements.
 
-  (C) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
+  (E) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
         they **MUST** return Tensor view or a slice of Tensor views. Views
-        **MUST** be supported by function from (A), (B), (C).
+        **MUST** be supported by function from (C), (D), (E).
+
+  (*) - operation **MUST NOT** change Tensor size.
+  (+) - operation **MUST** support scalars.
+  ($) - operation **MUST** panic when tensors have different shape.
+  (^) - tensor shapes and dimensions **MUST** be equal.
 
 Future features:
-[ ] - dtype package: custom type instead of complex128.
+[  ] - dtype package: custom type instead of complex128.
+[  ] - txtfmt package: custom display options for I/O formatting.
