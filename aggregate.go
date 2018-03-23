@@ -29,15 +29,8 @@ func (t *Tensor) Max() (max complex128) {
 	return
 }
 
-// CumSum returns a cumulative sum of all tensor elements.
-func (t *Tensor) CumSum() (sum complex128) {
-	// TODO: tests.
-	return
-}
-
 // Mean returns a mean of all tensor elements.
 func (t *Tensor) Mean() (mean complex128) {
-	// TODO: tests.
 	return
 }
 
@@ -48,7 +41,7 @@ func (t *Tensor) Median() (median complex128) {
 }
 
 // CorrCoef returns correletion coefficient of all tensor elements.
-func (t *Tensor) CorrCoef() (cc complex128) {]
+func (t *Tensor) CorrCoef() (cc complex128) {
 	// TODO: tests.
 	return
 }

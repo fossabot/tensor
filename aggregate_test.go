@@ -122,41 +122,41 @@ func TestTensorMax(t *testing.T) {
 	}
 }
 
-func TestTensorCumSum(t *testing.T) {
+func TestTensorMean(t *testing.T) {
 	tests := map[string]struct {
 		Tensor *tacvs.Tensor
-		Data   []complex128
+		Mean   complex128
 	}{
 		"empty": {
 			Tensor: tacvs.NewTensor(),
-			Max:    nil,
+			Mean:   0,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(3).Fill([]complex128{-2, 4, 30}),
-			Max:    30,
+			Tensor: tacvs.NewTensor(3).Fill([]complex128{-2, 4, 31}),
+			Mean:   11,
 		},
 		"zero max": {
 			Tensor: tacvs.NewTensor(2, 3, 4),
-			Max:    0,
+			Mean:   0,
 		},
 		"matrix": {
-			Tensor: tensorEnum(2, 2).Fill([]complex128{8, 2, 3, 4}),
-			Max:    8,
+			Tensor: tensorEnum(2, 2).Fill([]complex128{8, 2, 6, 4}),
+			Mean:   5,
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1i, 4i, 3i, 2i}),
-			Max:    4i,
+			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{2 + 1i, 1 - 4i, 4 + 3i, 9 + 2i}),
+			Mean:   4 + 0.5i,
 		},
 		"slice": {
 			Tensor: tensorEnum(2, 2).Slice(1, 1),
-			Max:    3,
+			Mean:   2.5,
 		},
 	}
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			if max := test.Tensor.Max(); max != test.Max {
-				t.Fatalf("want max=%v; got %v", test.Max, max)
+			if mean := test.Tensor.Mean(); mean != test.Mean {
+				t.Fatalf("want mean=%v; got %v", test.Mean, mean)
 			}
 		})
 	}
