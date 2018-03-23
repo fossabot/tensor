@@ -26,7 +26,6 @@ func (t *Tensor) Min() (min complex128) {
 // Max returns maximum value of all tensor elements. It returns 0 when the
 // tensor is empty.
 func (t *Tensor) Max() (max complex128) {
-	// TODO: tests.
 	return
 }
 
