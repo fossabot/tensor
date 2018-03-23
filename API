@@ -1,0 +1,33 @@
+General:
+[ ] - `Tensor` - immutable shape.
+[ ] - `Tensor` - all values of the same type (`complex128`).
+[ ] - (n, m, o) shape: n - rows, m - columns, o - depth.
+[ ] - (n) vector is represented as column: (n, 1) shape.
+[ ] - () shape: scalar, rank = 0.
+[ ] - () == (1) == (1, 1, ..., 1): shape.
+
+
+Forms:
+[ ] - `owner` - tensor that owns data buffer.
+[ ] - `view` - "pointer" to data owner Tensor or another view.
+[ ] - `delegate` property  - defines op destination buffer.
+
+API:
+  (A) - package level functions. They **ALWAYS** create a new Tensor. Operations
+        at this level **MAY** change Tensor shape.
+    [ ] - tensor.New(shape ...int) // tensor constructor.
+
+  (B) - object level methods. If operation changes the Tensor, it **MUST**
+        modify Tensor data buffer in place. Operations at this level
+        **MUST NOT** change Tensor shape.
+    [ ] - t.NDim() int // rank, num dimensions, num axes.
+    [ ] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
+    [ ] - t.Size() int // total number of elements.
+    [ ] - t.Data() []complex128 // data buffer. Owner buffer for views.
+
+  (C) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
+        they **MUST** return Tensor view or a slice of Tensor views. Views
+        **MUST** be supported by function from (A), (B), (C).
+
+Future features:
+[ ] - dtype package: custom type instead of complex128.
