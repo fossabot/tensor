@@ -16,6 +16,7 @@ Forms:
 API:
   (A) - package level types.
     [  ] - type Tensor struct {...}
+    [  ] - type TensorSlice []*Tensor
 
   (B) - package level constants.
 
@@ -49,6 +50,8 @@ API:
     [  ] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
     [  ] - t.Size() int // total number of elements.
     [  ] - t.Data() []byte // data buffer. Owner buffer for views.
+    [  ] - t.Owner() bool // true for `owners`.
+    [  ] - t.Base() *Tensor // non-nil for views.
     [  ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
     [  ] - t.FillBuf(data []byte) *Tensor // set data buffer. Panics if not
           `owner`.
@@ -79,6 +82,9 @@ API:
     [  ] - t.CumSum() *Tensor // cumulative sum of all tensor elements. (+)
     [  ] - t.T() *Tensor // transpose t. (+)
     [  ] - t.Ravel() *Tensor // flatten tensor to 1 dim with t.Size() size.
+    [  ] - t.Random(source rand.Source) *Tensor // fill t with random values.
+    [  ] - t.Re() *Tensor // remove imaginary part from tensor.
+    [  ] - t.Im() *Tensor // remove real part from tensor.
 
   (F) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
         they **MUST** return Tensor view or a slice of Tensor views. Views
@@ -86,8 +92,13 @@ API:
     [  ] - t.View() *Tensor // crate a view of entire t.
     [  ] - t.Slice(dim, from int, to ...int) *Tensor // create a view over a
            subset of t.
-    [  ] - t.Destruct() []*Tensor // create a view on each element.
-    [  ] - t.Split(dim int) []*Tensor // split along given axis.
+    [  ] - t.Destruct() TensorSlice // create a view on each element.
+    [  ] - t.Split(dim int) TensorSlice // split along given axis.
+
+  (G) - tensor slice methods. They **MUST** return a new tensor or fill
+        delegated one.
+    [  ] - ts.VStack() *Tensor // stack tensors along their first axis.
+    [  ] - ts.HStack() *Tensor // stack tensors along their second axis.
 
   (*) - operation **MUST NOT** change Tensor size.
   (+) - operation **MUST** support scalars.
@@ -128,3 +139,4 @@ Future features:
 
 [  ] - txtfmt package: custom display options for I/O formatting.
 
+// TODO: Stacking together different arrays.
