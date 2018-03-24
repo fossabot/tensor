@@ -14,17 +14,20 @@ Forms:
 [  ] - `delegate` property  - defines op destination buffer.
 
 API:
-  (A) - package level constants.
+  (A) - package level types.
+    [  ] - type Tensor struct {...}
 
-  (B) - package level values.
+  (B) - package level constants.
+
+  (C) - package level values.
     [  ] - PrintElementsThreshold = 8 // Number of printed Tensor elements.
            Negative value means unlimited.
 
-  (C) - package level functions. They **ALWAYS** create a new Tensor. Operations
+  (D) - package level functions. They **ALWAYS** create a new Tensor. Operations
         at this level **MAY** change Tensor shape.
     [  ] - tensor.New(shape ...int) *Tensor // tensor constructor.
     [  ] - tensor.NewScalar(val complex128) *Tensor // 0-rank tensor ctor.
-    [  ] - tensor.Comp(a, b *Tensor, comp func(av, bv complex128) bool) *Tensor
+    [  ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
            // compare two tensors and return the result as a new one. (+)($)
     [  ] - tensor.Add(a, b *Tensor) *Tensor // return a new Tensor that stores
            a+b. (+)($)
@@ -37,16 +40,19 @@ API:
     [  ] - tensor.Dot(a, b *Tensor) *Tensor // return a new Tensor that stores
            dot product of a and b. Tensor shapes must follow dot product dim
            rules.
+    [  ] - tensor.Resize(t *Tensor, shape ...int) // return a new Tensor that
+           stores copies of t - either repeated or truncated to match new shape.
 
-  (D) - object level methods. If operation changes the Tensor, it **MUST**
-        modify Tensor data buffer in place.
+  (E) - object level methods. If operation changes the Tensor, it **MUST**
+        modify Tensor data buffer in place. (*)
     [  ] - t.NDim() int // rank, num dimensions, num axes.
     [  ] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
     [  ] - t.Size() int // total number of elements.
-    [  ] - t.Data() []complex128 // data buffer. Owner buffer for views.
+    [  ] - t.Data() []byte // data buffer. Owner buffer for views.
     [  ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
-    [  ] - t.Set(data []complex128) *Tensor // set data buffer. Panics if not
-          `owner` or if (*).
+    [  ] - t.FillBuf(data []byte) *Tensor // set data buffer. Panics if not
+          `owner`.
+    [  ] - t.Each(f func(t *Tensor)) *Tensor // iterates over each element.
     [  ] - t.Zeros() *Tensor // fill with 0 values.
     [  ] - t.Ones() *Tensor // fill with 1 values.
     [  ] - t.Arange(start, step complex128) *Tensor // fill from start to end
@@ -54,25 +60,34 @@ API:
     [  ] - t.Linspace(start, end complex128) *Tensor // fill from start to end
            increasing by constant step.
     [  ] - t.Pow(v complex128) *Tensor // store element-wise t^v in t and return t.
+    [  ] - t.Sqrt() *Tensor // store element-wise t^0.5 in t and return t.
     [  ] - t.Sin() *Tensor // store element-wise sin(t) in t and return t.
+    [  ] - t.Exp() *Tensor // store element-wise e^t in t and return t.
     [  ] - t.String() string // display formatted tensor. First dimension is
            horizontal. Non ASCII characters are not used.
     [  ] - t.Copy() *Tensor // create a copy of t. Return value is the `owner`.
-    [  ] - t.Comp(u *Tensor, comp func(tv, uv complex128) bool) *Tensor //
+    [  ] - t.Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor //
            compare with u tensor and store the result in t. (+)($)
     [  ] - t.Add(u *Tensor) *Tensor // element-wise t+u -> t and return t. (+)($)
     [  ] - t.Sub(u *Tensor) *Tensor // element-wise t-u -> t and return t. (+)($)
     [  ] - t.Mul(u *Tensor) *Tensor // element-wise t*u -> t and return t. (+)($)
     [  ] - t.Div(u *Tensor) *Tensor // element-wise t/u -> t and return t. (+)($)
     [  ] - t.Dot(u *Tensor) *Tensor // dot product of t (o) u -> t return t. (^)
-    [  ] - t.Sum() complex128 // sum of all tensor elements.
-    [  ] - t.Max() complex128 // minimum of all tensor elements.
-    [  ] - t.Min() complex128 // maximum of all tensor elements.
-    [  ] - t.CumSum() *Tensor // cumulative sum of all tensor elements.
+    [  ] - t.Sum() *Tensor // sum of all tensor elements. (+)
+    [  ] - t.Max() *Tensor // minimum of all tensor elements. (+)
+    [  ] - t.Min() *Tensor // maximum of all tensor elements. (+)
+    [  ] - t.CumSum() *Tensor // cumulative sum of all tensor elements. (+)
+    [  ] - t.T() *Tensor // transpose t. (+)
+    [  ] - t.Ravel() *Tensor // flatten tensor to 1 dim with t.Size() size.
 
-  (E) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
+  (F) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
         they **MUST** return Tensor view or a slice of Tensor views. Views
-        **MUST** be supported by function from (C), (D), (E).
+        **MUST** be supported by function from (D), (E), (F).
+    [  ] - t.View() *Tensor // crate a view of entire t.
+    [  ] - t.Slice(dim, from int, to ...int) *Tensor // create a view over a
+           subset of t.
+    [  ] - t.Destruct() []*Tensor // create a view on each element.
+    [  ] - t.Split(dim int) []*Tensor // split along given axis.
 
   (*) - operation **MUST NOT** change Tensor size.
   (+) - operation **MUST** support scalars.
@@ -80,5 +95,36 @@ API:
   (^) - tensor shapes and dimensions **MUST** be equal.
 
 Future features:
-[  ] - dtype package: custom type instead of complex128.
+[  ] - dtype(?+) package: custom type instead of complex128.
+  (A) - package level types.
+    [  ] - type DType uint
+    [  ] - type Value interface{}
+
+  (B) - package level constants.
+    [  ] - Invalid DType = 0
+    [  ] - Bool DType = 1
+    [  ] - Byte DType = 2
+    [  ] - Int64 DType = 3
+    [  ] - Float32 DType = 4
+    [  ] - Cmplx DType = 5
+    [  ] - String DType = 6
+    [  ] - Object DType = 7
+
+  (E) - object level methods.
+    [  ] - d.Encode(v interface{}) ([]byte, error) // convert values to their
+           internal form.
+    [  ] - d.Decode(buf []byte, v interface{}) error // decode buf to v.
+
+    [  ] - t.AsType(k DType) // convert Tensor internal data type.
+    [  ] - t.Bool() bool // get t as boolean value. (@)
+    [  ] - t.Byte() byte // get t to byte value. (@)
+    [  ] - t.Int64() int64 // get t to signed 64-bit integer. (@)
+    [  ] - t.Float32() float32 // get t to std 32-bit floating point. (@)
+    [  ] - t.Cmplx() complex128 // get t to 128-bit complex value. (@)
+    [  ] - t.String() string // get t to string value.
+    [  ] - t.Object() interface{} // get t as Go empty interface. (@)
+
+  (@) - tensor **MUST** be 0 rank (scalar).
+
 [  ] - txtfmt package: custom display options for I/O formatting.
+
