@@ -80,11 +80,14 @@ API:
     [  ] - t.Max() *Tensor // minimum of all tensor elements. (+)
     [  ] - t.Min() *Tensor // maximum of all tensor elements. (+)
     [  ] - t.CumSum() *Tensor // cumulative sum of all tensor elements. (+)
-    [  ] - t.T() *Tensor // transpose t. (+)
     [  ] - t.Ravel() *Tensor // flatten tensor to 1 dim with t.Size() size.
     [  ] - t.Random(source rand.Source) *Tensor // fill t with random values.
     [  ] - t.Re() *Tensor // remove imaginary part from tensor.
     [  ] - t.Im() *Tensor // remove real part from tensor.
+    [  ] - t.T() *Tensor // transpose t. (+)
+    [  ] - t.Inv() *Tensor // inverse t^(-1) of t. (#)(+)
+    [  ] - t.Eye() *Tensor // 1s on diagonal, 0s elsewhere. (+)
+    [  ] - t.Trace() *Tensor // sum diag elements. (+)
 
   (F) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
         they **MUST** return Tensor view or a slice of Tensor views. Views
@@ -104,6 +107,7 @@ API:
   (+) - operation **MUST** support scalars.
   ($) - operation **MUST** panic when tensors have different shape.
   (^) - tensor shapes and dimensions **MUST** be equal.
+  (#) - tensor must be squared.
 
 Future features:
 [  ] - dtype(?+) package: custom type instead of complex128.
@@ -112,14 +116,18 @@ Future features:
     [  ] - type Value interface{}
 
   (B) - package level constants.
-    [  ] - Invalid DType = 0
-    [  ] - Bool DType = 1
-    [  ] - Byte DType = 2
-    [  ] - Int64 DType = 3
-    [  ] - Float32 DType = 4
-    [  ] - Cmplx DType = 5
-    [  ] - String DType = 6
-    [  ] - Object DType = 7
+    [  ] - Invalid DType = 0  // 0 bytes.
+    [  ] - Bool DType    = 1  // 1 byte signed.
+    [  ] - Byte DType    = 2  // 1 byte unsigned.
+    [  ] - Int32 DType   = 3  // 4 byte signed.
+    [  ] - Int64 DType   = 4  // 8 byte signed.
+    [  ] - UInt32 DType  = 5  // 4 byte unsigned.
+    [  ] - UInt64 DType  = 6  // 8 byte unsigned.
+    [  ] - Float32 DType = 7  // 4 bytes.
+    [  ] - Float64 DType = 8  // 8 bytes.
+    [  ] - Cmplx DType   = 9  // 16 bytes.
+    [  ] - String DType  = 10 // ? bytes.
+    [  ] - Object DType  = 11 // ? bytes.
 
   (E) - object level methods.
     [  ] - d.Encode(v interface{}) ([]byte, error) // convert values to their
@@ -129,8 +137,8 @@ Future features:
     [  ] - t.AsType(k DType) // convert Tensor internal data type.
     [  ] - t.Bool() bool // get t as boolean value. (@)
     [  ] - t.Byte() byte // get t to byte value. (@)
-    [  ] - t.Int64() int64 // get t to signed 64-bit integer. (@)
-    [  ] - t.Float32() float32 // get t to std 32-bit floating point. (@)
+    [  ] - t.Int() int64 // get t to signed 64-bit integer. (@)
+    [  ] - t.Float() float64 // get t to std 32-bit floating point. (@)
     [  ] - t.Cmplx() complex128 // get t to 128-bit complex value. (@)
     [  ] - t.String() string // get t to string value.
     [  ] - t.Object() interface{} // get t as Go empty interface. (@)

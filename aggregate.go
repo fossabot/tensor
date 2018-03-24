@@ -41,6 +41,5 @@ func (t *Tensor) Median() (median complex128) {
 
 // Std returns standard deviation of all tensor elements.
 func (t *Tensor) Std() (std complex128) {
-	// TODO: tests.
 	return
 }
