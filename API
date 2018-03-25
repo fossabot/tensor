@@ -130,10 +130,6 @@ Future features:
     [  ] - Object DType  = 11 // ? bytes.
 
   (E) - object level methods.
-    [  ] - d.Encode(v interface{}) ([]byte, error) // convert values to their
-           internal form.
-    [  ] - d.Decode(buf []byte, v interface{}) error // decode buf to v.
-
     [  ] - t.AsType(k DType) // convert Tensor internal data type.
     [  ] - t.Bool() bool // get t as boolean value. (@)
     [  ] - t.Byte() byte // get t to byte value. (@)
