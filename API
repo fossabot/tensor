@@ -137,7 +137,7 @@ Future features:
     [  ] - t.AsType(k DType) // convert Tensor internal data type.
     [  ] - t.Bool() bool // get t as boolean value. (@)
     [  ] - t.Byte() byte // get t to byte value. (@)
-    [  ] - t.Int() int64 // get t to signed 64-bit integer. (@)
+    [  ] - t.Int() int // get t to signed 64-bit integer. (@)
     [  ] - t.Float() float64 // get t to std 32-bit floating point. (@)
     [  ] - t.Cmplx() complex128 // get t to 128-bit complex value. (@)
     [  ] - t.String() string // get t to string value.
