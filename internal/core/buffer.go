@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"strings"
 	"unsafe"
 )
@@ -102,21 +101,10 @@ func (b *Buffer) CAt(i int, f func(p unsafe.Pointer)) error {
 func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {}
 
 func (b *Buffer) String() string {
-	type StrConvFunc func(p unsafe.Pointer) string
+	vs, scf := []string(nil), b.typ.AsStringFunc()
 
-	var scv StrConvFunc
-	switch b.typ {
-	case Bool:
-		scv = func(p unsafe.Pointer) string { return fmt.Sprint(*(*bool)(p)) }
-	case Int64:
-		scv = func(p unsafe.Pointer) string { return fmt.Sprint(*(*int64)(p)) }
-	default:
-		panic("core: unsupported type: " + b.typ.String())
-	}
-
-	var vs []string
 	b.Iterate(func(_ int, p unsafe.Pointer) {
-		vs = append(vs, scv(p))
+		vs = append(vs, scf(p))
 	})
 
 	return "[" + strings.Join(vs, " ") + "]"
