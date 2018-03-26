@@ -5,48 +5,58 @@ import (
 	"unsafe"
 )
 
-func asBool(dst *bool, typ DType, p unsafe.Pointer) {
-	switch typ {
+// AsBool converts value under provided pointer to bool type and saves the
+// result to dst. Conversion depends on called data type.
+func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
+	switch dt {
 	case Bool:
 		*dst = *(*bool)(p)
 	case Int64:
 		*dst = *(*int64)(p) != 0
 	}
 
-	panic("core: unsupported type: " + typ.String())
+	panic("core: unsupported type: " + dt.String())
 }
 
-func asInt64(dst *int, typ DType, p unsafe.Pointer) {
-	switch typ {
+// AsBoolPtr converts value under provided pointer to bool type and returns
+// a pointer to its data.
+func (dt DType) AsBoolPtr(p unsafe.Pointer) unsafe.Pointer {
+	if dt == Bool {
+		return p
+	}
+
+	var v bool
+	dt.AsBool(&v, p)
+
+	return unsafe.Pointer(&v)
+}
+
+// AsInt64 converts value under provided pointer to int64 type and saves
+// the result to dst. Conversion depends on called data type.
+func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
+	switch dt {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = 1
 		}
 		*dst = 0
 	case Int64:
-		*dst = int(*(*int64)(p))
+		*dst = *(*int64)(p)
 	}
 
-	panic("core: unsupported type: " + typ.String())
+	panic("core: unsupported type: " + dt.String())
 }
 
-func asDTypeBool(st DType, sv unsafe.Pointer) unsafe.Pointer {
-	if st == Bool {
-		return sv
+// AsInt64Ptr converts value under provided pointer to int64 type and returns
+// a pointer to its data.
+func (dt DType) AsInt64Ptr(p unsafe.Pointer) unsafe.Pointer {
+	if dt == Int64 {
+		return p
 	}
 
-	var v bool
-	asBool(&v, st, sv)
-	return unsafe.Pointer(&v)
-}
+	var v int64
+	dt.AsInt64(&v, p)
 
-func asDTypeInt64(st DType, sv unsafe.Pointer) unsafe.Pointer {
-	if st == Int64 {
-		return sv
-	}
-
-	var v int
-	asInt64(&v, st, sv)
 	return unsafe.Pointer(&v)
 }
 
@@ -56,9 +66,9 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*bool)(p)) }
 	case Int64:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int64)(p)) }
-	default:
-		panic("core: unsupported type: " + dt.String())
 	}
+
+	panic("core: unsupported type: " + dt.String())
 }
 
 func convert(dt, st DType, sv unsafe.Pointer) unsafe.Pointer {
@@ -70,17 +80,4 @@ func convert(dt, st DType, sv unsafe.Pointer) unsafe.Pointer {
 	}
 
 	panic("core: unsupported convert destination type: " + dt.String())
-}
-
-// destruct finds data type of provided value. The returned pointer should be
-// used only for read operations.
-func destruct(v interface{}) (DType, unsafe.Pointer) {
-	switch v := v.(type) {
-	case bool:
-		return Bool, unsafe.Pointer(&v)
-	case int64:
-		return Int64, unsafe.Pointer(&v)
-	}
-
-	panic(fmt.Sprintf("core: unsupported type: %T", v))
 }
