@@ -5,7 +5,9 @@ import (
 	"unsafe"
 )
 
-const DefaultBufferDType DType = Int64
+// DefaultBufferDType is a default type a Buffer object will get if its type is
+// not set explicitly or it is not already inherited from the first inserted value.
+const DefaultBufferDType = Int64
 
 type Buffer struct {
 	n    int
@@ -13,18 +15,26 @@ type Buffer struct {
 	typ  DType
 }
 
+// NewBuffer creates a new Buffer instance with provided number of elements.
 func NewBuffer(n int) *Buffer {
 	return &Buffer{
 		n: n,
 	}
 }
 
+// Len returns the number of items the buffer can store.
 func (b *Buffer) Len() int {
 	return b.n
 }
 
+// Size returns the number of bytes used to store buffer's data.
 func (b *Buffer) Size() int {
 	return b.Len() * int(b.typ.Size())
+}
+
+// DType returns the underlying buffer's data type.
+func (b *Buffer) DType() DType {
+	return b.typ
 }
 
 // AsType transforms buffer's underlying type to provided one. This function
@@ -82,24 +92,24 @@ func (b *Buffer) transfer(typ DType, dst []byte) (pos uintptr) {
 	return pos
 }
 
-func (b *Buffer) DSet(i int, v interface{}) {
+func (b *Buffer) Setval(i int, v interface{}) {
 
 }
 
-func (b *Buffer) DAt(i int, f func(p unsafe.Pointer)) {
+func (b *Buffer) Setraw(i int, typ DType, p unsafe.Pointer) {
 
 }
 
-func (b *Buffer) CSet(i int, v interface{}) error {
-
-}
-
-func (b *Buffer) CAt(i int, f func(p unsafe.Pointer)) error {
+func (b *Buffer) At(i int) unsafe.Pointer {
 	return nil
 }
 
-func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {}
+func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {
 
+}
+
+// String satisfies fmt.Stringer interface. It produces the same results as the
+// specific type slices would produce with default formatting.
 func (b *Buffer) String() string {
 	vs, scf := []string(nil), b.typ.AsStringFunc()
 

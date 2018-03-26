@@ -109,11 +109,11 @@ API:
   (^) - tensor shapes and dimensions **MUST** be equal.
   (#) - tensor must be squared.
 
-Future features:
-[  ] - dtype(?+) package: custom type instead of complex128.
+Multitype feature:
+[  ] - dtype package: custom type instead of complex128.
   (A) - package level types.
     [  ] - type DType uint
-    [  ] - type Value interface{}
+    [  ] - type Value interface{} (?)
 
   (B) - package level constants.
     [  ] - Invalid DType = 0  // 0 bytes.
@@ -141,6 +141,7 @@ Future features:
 
   (@) - tensor **MUST** be 0 rank (scalar).
 
+Future features:
 [  ] - txtfmt package: custom display options for I/O formatting.
 
 // TODO: Stacking together different arrays.
