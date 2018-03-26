@@ -17,17 +17,6 @@ var dTypeNames = map[DType]string{
 	Int64: "int64",
 }
 
-func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
-	switch dt {
-	case Bool:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*bool)(p)) }
-	case Int64:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int64)(p)) }
-	default:
-		panic("core: unsupported type: " + dt.String())
-	}
-}
-
 func (dt DType) Size() uintptr {
 	return uintptr(dt >> 32)
 }

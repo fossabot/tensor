@@ -71,7 +71,7 @@ func (b *Buffer) AsType(typ DType) *Buffer {
 func (b *Buffer) transfer(typ DType, dst []byte) (pos uintptr) {
 	var size = uintptr(b.Size())
 	for oldpos := uintptr(0); oldpos < size; oldpos += b.typ.Size() {
-		setraw(typ,
+		typ.Setraw(
 			unsafe.Pointer(uintptr(unsafe.Pointer(&dst[0]))+pos),
 			convert(typ, b.typ, unsafe.Pointer(uintptr(unsafe.Pointer(&b.data[0]))+oldpos)),
 		)
