@@ -3,6 +3,8 @@ package core_test
 import (
 	"reflect"
 	"testing"
+
+	"github.com/ppknap/tacvs/internal/core"
 )
 
 func BenchmarkFillSliceInt1(b *testing.B) {
@@ -50,5 +52,13 @@ func benchmarkFillSliceReflect(b *testing.B, d interface{}, v interface{}) {
 		default:
 			panic("invalid benchmark data type")
 		}
+	}
+}
+
+func benchmarkFillSliceDType(b *testing.B, buf *core.Buffer, v interface{}) {
+	typ, p := core.Destruct(v)
+
+	for n := 0; n < b.N; n++ {
+		// TODO
 	}
 }

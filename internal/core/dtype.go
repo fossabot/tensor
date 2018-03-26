@@ -12,11 +12,6 @@ const (
 	Int64 DType = DType(unsafe.Sizeof(int64(0)))<<32 | 2
 )
 
-var dTypeNames = map[DType]string{
-	Bool:  "bool",
-	Int64: "int64",
-}
-
 func (dt DType) Size() uintptr {
 	return uintptr(dt >> 32)
 }
@@ -27,4 +22,9 @@ func (dt DType) String() string {
 	}
 
 	return fmt.Sprintf("unknown(%x)", uint64(dt))
+}
+
+var dTypeNames = map[DType]string{
+	Bool:  "bool",
+	Int64: "int64",
 }

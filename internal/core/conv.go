@@ -60,6 +60,8 @@ func (dt DType) AsInt64Ptr(p unsafe.Pointer) unsafe.Pointer {
 	return unsafe.Pointer(&v)
 }
 
+// AsStringFunc produces a converting function that returns string
+// representation of a given value.
 func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 	switch dt {
 	case Bool:
@@ -71,12 +73,15 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 	panic("core: unsupported type: " + dt.String())
 }
 
-func convert(dt, st DType, sv unsafe.Pointer) unsafe.Pointer {
+// Convert takes provided pointer and its data type and converts pointer's value
+// to data representation given by called object. There are not any write
+// operations on passed values.
+func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 	switch dt {
 	case Bool:
-		return asDTypeBool(st, sv)
+		return st.AsBoolPtr(p)
 	case Int64:
-		return asDTypeInt64(st, sv)
+		return st.AsInt64Ptr(p)
 	}
 
 	panic("core: unsupported convert destination type: " + dt.String())

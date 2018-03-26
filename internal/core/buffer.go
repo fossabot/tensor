@@ -83,7 +83,7 @@ func (b *Buffer) transfer(typ DType, dst []byte) (pos uintptr) {
 	for oldpos := uintptr(0); oldpos < size; oldpos += b.typ.Size() {
 		typ.Setraw(
 			unsafe.Pointer(uintptr(unsafe.Pointer(&dst[0]))+pos),
-			convert(typ, b.typ, unsafe.Pointer(uintptr(unsafe.Pointer(&b.data[0]))+oldpos)),
+			typ.Convert(b.typ, unsafe.Pointer(uintptr(unsafe.Pointer(&b.data[0]))+oldpos)),
 		)
 
 		pos += typ.Size()
