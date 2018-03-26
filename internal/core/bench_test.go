@@ -47,21 +47,26 @@ func benchmarkFillSliceInt(b *testing.B, d []int, v int) {
 }
 
 func benchmarkFillSliceReflect(b *testing.B, d interface{}, v interface{}) {
-	for n := 0; n < b.N; n++ {
-		switch reflect.TypeOf(d).Kind() {
-		case reflect.Slice:
-			s := reflect.ValueOf(d)
-			switch v := v.(type) {
-			case int:
-				for i := 0; i < s.Len(); i++ {
-					s.Index(i).Set(reflect.ValueOf((v + 1) % v / 2))
-				}
-			default:
-				panic("invalid benchmark input value")
+	if kind := reflect.TypeOf(d).Kind(); kind != reflect.Slice {
+		panic("invalid benchmark data type")
+	}
+
+	var setter func()
+
+	s := reflect.ValueOf(d)
+	switch v := v.(type) {
+	case int:
+		setter = func() {
+			for i := 0; i < s.Len(); i++ {
+				s.Index(i).Set(reflect.ValueOf((v + i) % v / 2))
 			}
-		default:
-			panic("invalid benchmark data type")
 		}
+	default:
+		panic("invalid benchmark input value")
+	}
+
+	for n := 0; n < b.N; n++ {
+		setter()
 	}
 }
 
@@ -71,9 +76,19 @@ func benchmarkFillSliceDType(b *testing.B, buf *core.Buffer, v interface{}) {
 		panic("invalid benchmark argument types")
 	}
 
+	var setter func(i int64, src, dst unsafe.Pointer)
+	switch typ {
+	case core.Int64:
+		setter = func(i int64, dst, src unsafe.Pointer) {
+			*(*int64)(dst) = (*(*int64)(src) + i) % *(*int64)(src) / 2
+		}
+	default:
+		panic("unsupported type")
+	}
+
 	for n := 0; n < b.N; n++ {
-		buf.Iterate(func(_ int, dst unsafe.Pointer) {
-			typ.Setraw(dst, src)
+		buf.Iterate(func(i int, dst unsafe.Pointer) {
+			setter(int64(i), dst, src)
 		})
 	}
 }

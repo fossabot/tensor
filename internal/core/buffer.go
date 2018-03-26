@@ -54,8 +54,8 @@ func (b *Buffer) AsType(typ DType) *Buffer {
 
 	// Unallocated or empty buffer or type with no size.
 	if len(b.data) == 0 || typ.Size() == 0 {
-		b.data = make([]byte, b.Size())
 		b.typ = typ
+		b.data = make([]byte, b.Size())
 		return b
 	}
 
@@ -105,7 +105,15 @@ func (b *Buffer) At(i int) unsafe.Pointer {
 }
 
 func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {
+	var (
+		size = uintptr(b.Size())
+		p    = unsafe.Pointer(&b.data[0])
+	)
 
+	for pos, i := uintptr(0), 0; pos < size; pos += b.typ.Size() {
+		f(i, unsafe.Pointer(uintptr(p)+pos))
+		i++
+	}
 }
 
 // func Tst() {
