@@ -5,10 +5,6 @@ import (
 	"unsafe"
 )
 
-// DefaultBufferDType is a default type a Buffer object will get if its type is
-// not set explicitly or it is not already inherited from the first inserted value.
-const DefaultBufferDType = Int64
-
 type Buffer struct {
 	n    int
 	data []byte
@@ -92,18 +88,32 @@ func (b *Buffer) transfer(typ DType, dst []byte) (pos uintptr) {
 	return pos
 }
 
+// Setval sets interface value to a given position in the buffer. Conversion
+// between types may occur when v and buffer types differ.
 func (b *Buffer) Setval(i int, v interface{}) {
-
+	typ, p := Destruct(v)
+	b.Setptr(i, typ, p)
 }
 
-func (b *Buffer) Setraw(i int, typ DType, p unsafe.Pointer) {
-
+// Setraw directly sets value under p to a given element in the buffer. The
+// type of value p points to must be identical as the array type. Method
+// behavior is undefined otherwise.
+func (b *Buffer) Setraw(i int, p unsafe.Pointer) {
+	b.typ.Setraw(b.At(i), p)
 }
 
+// Setptr sets value under p to a given position in a buffer. Conversion might
+// happen when types differ.
+func (b *Buffer) Setptr(i int, typ DType, p unsafe.Pointer) {
+	b.typ.Setraw(b.At(i), b.typ.Convert(typ, p))
+}
+
+// At gets element at a given position.
 func (b *Buffer) At(i int) unsafe.Pointer {
-	return nil
+	return unsafe.Pointer(uintptr(unsafe.Pointer(&b.data[0])) + uintptr(i)*b.typ.Size())
 }
 
+// Iterate calls f on each element stored in the buffer.
 func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {
 	var (
 		size = uintptr(b.Size())
