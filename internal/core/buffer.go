@@ -116,21 +116,6 @@ func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {
 	}
 }
 
-// func Tst() {
-// 	a := NewBuffer(1).AsType(Int64)
-
-// 	conv := a.DType().AsStringFunc()
-
-// 	b := NewBuffer(4).AsType(Int64)
-// 	b.Iterate(func(i int, lhv unsafe.Pointer) {
-// 		b.Converted(a.DType(), a.At(0), func(rhv unsafe.Pointer) {
-// 			if b.DType() == Int64 {
-// 				*(*int64)(lhv) += *(int64)(rhv)
-// 			}
-// 		})
-// 	})
-// }
-
 // String satisfies fmt.Stringer interface. It produces the same results as the
 // specific type slices would produce with default formatting.
 func (b *Buffer) String() string {

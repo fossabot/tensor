@@ -11,31 +11,40 @@ import (
 func BenchmarkFillSliceInt_1(b *testing.B) {
 	benchmarkFillSliceInt(b, make([]int, 1), 700)
 }
+func BenchmarkFillSliceDTypeInt_1(b *testing.B) {
+	benchmarkFillSliceDType(b, core.NewBuffer(1).AsType(core.Int64), int64(700))
+}
 func BenchmarkFillSliceReflect_1(b *testing.B) {
 	benchmarkFillSliceReflect(b, make([]int, 1), int(700))
 }
-func BenchmarkFillSliceDTypeInt_1(b *testing.B) {
-	benchmarkFillSliceDType(b, core.NewBuffer(1).AsType(core.Int64), int64(700))
+func BenchmarkFillInterfaceSliceReflect_1(b *testing.B) {
+	benchmarkFillSliceReflect(b, make([]interface{}, 1), int(700))
 }
 
 func BenchmarkFillSliceInt_1000(b *testing.B) {
 	benchmarkFillSliceInt(b, make([]int, 100), 700)
 }
+func BenchmarkFillSliceDTypeInt_1000(b *testing.B) {
+	benchmarkFillSliceDType(b, core.NewBuffer(100).AsType(core.Int64), int64(700))
+}
 func BenchmarkFillSliceReflect_1000(b *testing.B) {
 	benchmarkFillSliceReflect(b, make([]int, 100), int(700))
 }
-func BenchmarkFillSliceDTypeInt_1000(b *testing.B) {
-	benchmarkFillSliceDType(b, core.NewBuffer(100).AsType(core.Int64), int64(700))
+func BenchmarkFillInterfaceSliceReflect_1000(b *testing.B) {
+	benchmarkFillSliceReflect(b, make([]interface{}, 100), int(700))
 }
 
 func BenchmarkFillSliceInt_1000000(b *testing.B) {
 	benchmarkFillSliceInt(b, make([]int, 1000000), 700)
 }
+func BenchmarkFillSliceDTypeInt_1000000(b *testing.B) {
+	benchmarkFillSliceDType(b, core.NewBuffer(1000000).AsType(core.Int64), int64(700))
+}
 func BenchmarkFillSliceReflect_1000000(b *testing.B) {
 	benchmarkFillSliceReflect(b, make([]int, 1000000), int(700))
 }
-func BenchmarkFillSliceDTypeInt_1000000(b *testing.B) {
-	benchmarkFillSliceDType(b, core.NewBuffer(1000000).AsType(core.Int64), int64(700))
+func BenchmarkFillInterfaceSliceReflect_1000000(b *testing.B) {
+	benchmarkFillSliceReflect(b, make([]interface{}, 1000000), int(700))
 }
 
 func benchmarkFillSliceInt(b *testing.B, d []int, v int) {
