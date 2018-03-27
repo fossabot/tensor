@@ -8,9 +8,10 @@ import (
 type DType uint64
 
 const (
-	Bool  DType = DType(unsafe.Sizeof(bool(false)))<<32 | 1
-	Int   DType = DType(unsafe.Sizeof(int(0)))<<32 | 2
-	Int64 DType = DType(unsafe.Sizeof(int64(0)))<<32 | 3
+	Bool   DType = DType(unsafe.Sizeof(bool(false)))<<32 | 1
+	Int    DType = DType(unsafe.Sizeof(int(0)))<<32 | 2
+	Int64  DType = DType(unsafe.Sizeof(int64(0)))<<32 | 3
+	String DType = DType(unsafe.Sizeof(string("")))<<32 | 4
 )
 
 // Size returns the size in bytes of provided type.
@@ -28,7 +29,8 @@ func (dt DType) String() string {
 }
 
 var dTypeNames = map[DType]string{
-	Bool:  "bool",
-	Int:   "int",
-	Int64: "int64",
+	Bool:   "bool",
+	Int:    "int",
+	Int64:  "int64",
+	String: "string",
 }

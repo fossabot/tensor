@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"strconv"
 	"unsafe"
 )
 
@@ -15,9 +16,11 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 		*dst = *(*int)(p) != 0
 	case Int64:
 		*dst = *(*int64)(p) != int64(0)
+	case String:
+		*dst = *(*string)(p) != "" && *(*string)(p) != "false"
+	default:
+		panic("core: unsupported type: " + dt.String())
 	}
-
-	panic("core: unsupported type: " + dt.String())
 }
 
 // AsBoolPtr converts value under provided pointer to bool type and returns
@@ -46,9 +49,14 @@ func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 		*dst = *(*int)(p)
 	case Int64:
 		*dst = (int)(*(*int64)(p))
+	case String:
+		if v, err := strconv.ParseFloat(*(*string)(p), 64); err == nil {
+			*dst = (int)(v)
+		}
+		*dst = int(0)
+	default:
+		panic("core: unsupported type: " + dt.String())
 	}
-
-	panic("core: unsupported type: " + dt.String())
 }
 
 // AsIntPtr converts value under provided pointer to int type and returns
@@ -77,6 +85,11 @@ func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 		*dst = (int64)(*(*int)(p))
 	case Int64:
 		*dst = *(*int64)(p)
+	case String:
+		if v, err := strconv.ParseFloat(*(*string)(p), 64); err == nil {
+			*dst = (int64)(v)
+		}
+		*dst = int64(0)
 	}
 
 	panic("core: unsupported type: " + dt.String())
@@ -95,6 +108,36 @@ func (dt DType) AsInt64Ptr(p unsafe.Pointer) unsafe.Pointer {
 	return unsafe.Pointer(&v)
 }
 
+// AsString converts value under provided pointer to string type and saves the
+// result to dst. Conversion depends on called data type.
+func (dt DType) AsString(dst *string, p unsafe.Pointer) {
+	switch dt {
+	case Bool:
+		*dst = fmt.Sprint(*(*bool)(p))
+	case Int:
+		*dst = fmt.Sprint(*(*int)(p))
+	case Int64:
+		*dst = fmt.Sprint(*(*int64)(p))
+	case String:
+		*dst = *(*string)(p)
+	}
+
+	panic("core: unsupported type: " + dt.String())
+}
+
+// AsStringPtr converts value under provided pointer to string type and returns
+// a pointer to its data.
+func (dt DType) AsStringPtr(p unsafe.Pointer) unsafe.Pointer {
+	if dt == String {
+		return p
+	}
+
+	var v string
+	dt.AsString(&v, p)
+
+	return unsafe.Pointer(&v)
+}
+
 // AsStringFunc produces a converting function that returns string
 // representation of a given value.
 func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
@@ -105,6 +148,8 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int)(p)) }
 	case Int64:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int64)(p)) }
+	case String:
+		return func(p unsafe.Pointer) string { return *(*string)(p) }
 	}
 
 	panic("core: unsupported type: " + dt.String())
@@ -121,6 +166,8 @@ func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 		return st.AsIntPtr(p)
 	case Int64:
 		return st.AsInt64Ptr(p)
+	case String:
+		return st.AsStringPtr(p)
 	}
 
 	panic("core: unsupported convert destination type: " + dt.String())

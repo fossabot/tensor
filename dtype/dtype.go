@@ -7,7 +7,8 @@ import (
 type DType = core.DType
 
 const (
-	Bool  = core.Bool
-	Int   = core.Int
-	Int64 = core.Int64
+	Bool   = core.Bool
+	Int    = core.Int
+	Int64  = core.Int64
+	String = core.String
 )
