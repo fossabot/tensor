@@ -11,8 +11,10 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 	switch dt {
 	case Bool:
 		*dst = *(*bool)(p)
+	case Int:
+		*dst = *(*int)(p) != 0
 	case Int64:
-		*dst = *(*int64)(p) != 0
+		*dst = *(*int64)(p) != int64(0)
 	}
 
 	panic("core: unsupported type: " + dt.String())
@@ -31,15 +33,48 @@ func (dt DType) AsBoolPtr(p unsafe.Pointer) unsafe.Pointer {
 	return unsafe.Pointer(&v)
 }
 
+// AsInt converts value under provided pointer to int type and saves the result
+// to dst. Conversion depends on called data type.
+func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
+	switch dt {
+	case Bool:
+		if *(*bool)(p) {
+			*dst = int(1)
+		}
+		*dst = int(0)
+	case Int:
+		*dst = *(*int)(p)
+	case Int64:
+		*dst = (int)(*(*int64)(p))
+	}
+
+	panic("core: unsupported type: " + dt.String())
+}
+
+// AsIntPtr converts value under provided pointer to int type and returns
+// a pointer to its data.
+func (dt DType) AsIntPtr(p unsafe.Pointer) unsafe.Pointer {
+	if dt == Int {
+		return p
+	}
+
+	var v int
+	dt.AsInt(&v, p)
+
+	return unsafe.Pointer(&v)
+}
+
 // AsInt64 converts value under provided pointer to int64 type and saves
 // the result to dst. Conversion depends on called data type.
 func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 	switch dt {
 	case Bool:
 		if *(*bool)(p) {
-			*dst = 1
+			*dst = int64(1)
 		}
-		*dst = 0
+		*dst = int64(0)
+	case Int:
+		*dst = (int64)(*(*int)(p))
 	case Int64:
 		*dst = *(*int64)(p)
 	}
@@ -66,6 +101,8 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 	switch dt {
 	case Bool:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*bool)(p)) }
+	case Int:
+		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int)(p)) }
 	case Int64:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int64)(p)) }
 	}
@@ -80,6 +117,8 @@ func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 	switch dt {
 	case Bool:
 		return st.AsBoolPtr(p)
+	case Int:
+		return st.AsIntPtr(p)
 	case Int64:
 		return st.AsInt64Ptr(p)
 	}
