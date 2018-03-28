@@ -18,14 +18,14 @@ func NewBuffer(n int) *Buffer {
 	}
 }
 
-// Len returns the number of items the buffer can store.
-func (b *Buffer) Len() int {
+// Size returns the number of items the buffer can store.
+func (b *Buffer) Size() int {
 	return b.n
 }
 
-// Size returns the number of bytes used to store buffer's data.
-func (b *Buffer) Size() int {
-	return b.Len() * int(b.typ.Size())
+// NBytes returns the number of bytes used to store buffer's data.
+func (b *Buffer) NBytes() int {
+	return b.Size() * int(b.typ.Size())
 }
 
 // DType returns the underlying buffer's data type.
@@ -43,7 +43,7 @@ func (b *Buffer) AsType(typ DType) *Buffer {
 	}
 
 	// No need to work with buffer when it's meant to be empty.
-	if b.Len() == 0 {
+	if b.Size() == 0 {
 		b.typ = typ
 		return b
 	}
@@ -62,7 +62,7 @@ func (b *Buffer) AsType(typ DType) *Buffer {
 	} else {
 		// Allocate a new buffer since the old one will not be able to store
 		// existing data after conversion.
-		data := make([]byte, uintptr(b.Len())*typ.Size())
+		data := make([]byte, uintptr(b.Size())*typ.Size())
 		b.transfer(typ, data)
 		b.data = data
 	}

@@ -1,8 +1,8 @@
 General:
-[  ] - `Tensor` - immutable shape.
-[  ] - `Tensor` - all values of the same type (`complex128`).
+[  ] - `Tensor` - immutable size.
+[  ] - `Tensor` - all values of the same type.
 [  ] - (n, m, o) shape: n - rows, m - columns, o - depth.
-[  ] - (n) vector is represented as column: (n, 1) shape.
+[  ] - (n) vector is represented as column: (n) shape.
 [  ] - () shape: scalar, rank = 0.
 [  ] - () == (1) == (1, 1, ..., 1): shape.
 [  ] - Tensor axis 1 is vertical, 2 - horizontal.
@@ -28,6 +28,8 @@ API:
         at this level **MAY** change Tensor shape.
     [  ] - tensor.New(shape ...int) *Tensor // tensor constructor.
     [  ] - tensor.NewScalar(val complex128) *Tensor // 0-rank tensor ctor.
+    [  ] - tensor.Delegate(res, src *Tensor) *Tensor // delegate src result to
+           // res.
     [  ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
            // compare two tensors and return the result as a new one. (+)($)
     [  ] - tensor.Add(a, b *Tensor) *Tensor // return a new Tensor that stores
@@ -51,6 +53,7 @@ API:
     [  ] - t.Size() int // total number of elements.
     [  ] - t.Data() []byte // data buffer. Owner buffer for views.
     [  ] - t.Owner() bool // true for `owners`.
+    [  ] - t.Delegate() *Tensor // create delegate to self.
     [  ] - t.Base() *Tensor // non-nil for views.
     [  ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
     [  ] - t.FillBuf(data []byte) *Tensor // set data buffer. Panics if not
@@ -88,6 +91,7 @@ API:
     [  ] - t.Inv() *Tensor // inverse t^(-1) of t. (#)(+)
     [  ] - t.Eye() *Tensor // 1s on diagonal, 0s elsewhere. (+)
     [  ] - t.Trace() *Tensor // sum diag elements. (+)
+    [  ] - t.At(idx ...int) *Tensor // get scalar from tensor index. (+)
 
   (F) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
         they **MUST** return Tensor view or a slice of Tensor views. Views
@@ -113,7 +117,7 @@ Multitype feature:
 [  ] - dtype package: custom type instead of complex128.
   (A) - package level types.
     [  ] - type DType uint
-    [  ] - type Value interface{} (?)
+    [  ] - type Value interface{}
 
   (B) - package level constants.
     [  ] - Invalid DType = 0  // 0 bytes.
