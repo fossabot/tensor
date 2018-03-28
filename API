@@ -7,6 +7,7 @@ General:
 [  ] - () == (1) == (1, 1, ..., 1): shape.
 [  ] - Tensor axis 1 is vertical, 2 - horizontal.
 [  ] - Tensor zero value behaves like a scalar set to 0.
+[  ] - Does not support broadcasting.
 
 Forms:
 [  ] - `owner` - tensor that owns data buffer.
@@ -147,5 +148,4 @@ Multitype feature:
 
 Future features:
 [  ] - txtfmt package: custom display options for I/O formatting.
-
-// TODO: Stacking together different arrays.
+[  ] - broadcasting for package level functions.
