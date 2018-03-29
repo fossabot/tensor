@@ -49,9 +49,9 @@ API:
 
   (E) - object level methods. If operation changes the Tensor, it **MUST**
         modify Tensor data buffer in place. (*)
-    [  ] - t.NDim() int // rank, num dimensions, num axes.
-    [  ] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
-    [  ] - t.Size() int // total number of elements.
+    [ x] - t.NDim() int // rank, num dimensions, num axes.
+    [ x] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
+    [ x] - t.Size() int // total number of elements.
     [  ] - t.Data() []byte // data buffer. Owner buffer for views.
     [  ] - t.Owner() bool // true for `owners`.
     [  ] - t.Delegate() *Tensor // create delegate to self.
@@ -149,3 +149,4 @@ Multitype feature:
 Future features:
 [  ] - txtfmt package: custom display options for I/O formatting.
 [  ] - broadcasting for package level functions.
+[  ] - masks.
