@@ -26,23 +26,48 @@ func TestIndexDimensions(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			idx := test.Index
-
-			if nDim := idx.NDim(); nDim != test.NDim {
+			if nDim := test.Index.NDim(); nDim != test.NDim {
 				t.Errorf("want nDim=%d; got %d", test.NDim, nDim)
 			}
 
-			if size := idx.Size(); size != test.Size {
+			if size := test.Index.Size(); size != test.Size {
 				t.Errorf("want size=%d; got %d", test.Size, size)
 			}
 
-			if strides := idx.Strides(); !reflect.DeepEqual(strides, test.Strides) {
+			if strides := test.Index.Strides(); !reflect.DeepEqual(strides, test.Strides) {
 				t.Errorf("want strides=%v; got %v", test.Strides, strides)
 			}
 
-			if shape := idx.Shape(); !reflect.DeepEqual(shape, test.Shape) {
+			if shape := test.Index.Shape(); !reflect.DeepEqual(shape, test.Shape) {
 				t.Errorf("want shape=%v; got %v", test.Shape, shape)
 			}
 		})
+	}
+}
+
+func TestIndexOffset(t *testing.T) {
+	tests := []struct {
+		Index  *index.Index
+		Pos    []int
+		Valid  bool
+		Offset int
+	}{
+		{
+			// 0 //
+			Index:  nil,
+			Pos:    nil,
+			Valid:  false,
+			Offset: 0,
+		},
+	}
+
+	for i, test := range tests {
+		if valid := test.Index.Validate(test.Pos); valid != test.Valid {
+			t.Errorf("want valid=%t; got %t (i:%d)", test.Valid, valid, i)
+		}
+
+		if offset := test.Index.At(test.Pos); offset != test.Offset {
+			t.Errorf("want offset=%d; got %d (i:%d)", test.Offset, offset, i)
+		}
 	}
 }
