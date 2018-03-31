@@ -54,10 +54,66 @@ func TestIndexOffset(t *testing.T) {
 	}{
 		{
 			// 0 //
-			Index:  nil,
-			Pos:    nil,
-			Valid:  false,
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{0, 0},
+			Valid:  true,
 			Offset: 0,
+		},
+		{
+			// 1 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{3, 1},
+			Valid:  true,
+			Offset: 7,
+		},
+		{
+			// 2 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{3, 2},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 3 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{4, 1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 4 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{1, 1, 1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 5 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 6 //
+			Index:  index.NewIndex([]int{4}, index.IdxSchemeColMajor),
+			Pos:    []int{2},
+			Valid:  true,
+			Offset: 2,
+		},
+		{
+			// 7 //
+			Index:  index.NewIndex([]int{}, index.IdxSchemeColMajor),
+			Pos:    []int{0},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 8 //
+			Index:  index.NewIndex([]int{2, 3, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{1, 1, 1},
+			Valid:  true,
+			Offset: 9,
 		},
 	}
 
