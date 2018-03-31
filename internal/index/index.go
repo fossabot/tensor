@@ -38,7 +38,7 @@ func (idx *Index) Shape() []int { return nil } // copy
 
 // Slice gets a subset of the index indices and creates a new Index instance
 // which will compute a valid array index using new shape coordinates.
-func (idx *Index) Slice(dim, offset int) *Index { return nil } // shalllow copy
+func (idx *Index) Slice(dim, offset int, to ...int) *Index { return nil } // shalllow copy
 
 // String satisfies fmt.Stringer interface. It returns some basic info about
 // index object.

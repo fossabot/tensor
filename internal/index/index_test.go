@@ -15,12 +15,75 @@ func TestIndexDimensions(t *testing.T) {
 		Strides []int
 		Shape   []int
 	}{
-		"aaa": {
-			Index:   nil,
+		"scalar": {
+			Index:   index.NewIndex(nil, index.IdxSchemeColMajor),
 			NDim:    0,
-			Size:    0,
+			Size:    1,
 			Strides: nil,
 			Shape:   nil,
+		},
+		"vector": {
+			Index:   index.NewIndex([]int{5}, index.IdxSchemeColMajor),
+			NDim:    1,
+			Size:    5,
+			Strides: []int{1},
+			Shape:   []int{5},
+		},
+		"vector zero": {
+			Index:   index.NewIndex([]int{0}, index.IdxSchemeColMajor),
+			NDim:    1,
+			Size:    0,
+			Strides: []int{1},
+			Shape:   []int{0},
+		},
+		"vector slice": {
+			Index:   index.NewIndex([]int{6}, index.IdxSchemeColMajor).Slice(0, 4),
+			NDim:    1,
+			Size:    2,
+			Strides: []int{1},
+			Shape:   []int{2},
+		},
+		"matrix": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor),
+			NDim:    2,
+			Size:    9,
+			Strides: []int{1, 3},
+			Shape:   []int{3, 3},
+		},
+		"matrix zero": {
+			Index:   index.NewIndex([]int{0, 0}, index.IdxSchemeColMajor),
+			NDim:    2,
+			Size:    0,
+			Strides: []int{1, 1},
+			Shape:   []int{0, 0},
+		},
+		"matrix slice": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Slice(0, 1, 2),
+			NDim:    2,
+			Size:    3,
+			Strides: []int{1, 3},
+			Shape:   []int{1, 3},
+		},
+		"matrix slice of slice": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Slice(1, 2).Slice(0, 1),
+			NDim:    2,
+			Size:    2,
+			Strides: []int{1, 3},
+			Shape:   []int{2, 1},
+		},
+		"tensor": {
+			Index:   index.NewIndex([]int{2, 2, 2}, index.IdxSchemeColMajor),
+			NDim:    3,
+			Size:    8,
+			Strides: []int{1, 2, 4},
+			Shape:   []int{2, 2, 2},
+		},
+		"tensor slice": {
+			Index:   index.NewIndex([]int{2, 2, 2}, index.IdxSchemeColMajor).Slice(2, 1),
+			NDim:    3,
+			Size:    4,
+			Strides: []int{1, 2, 4},
+			Shape:   []int{2, 2, 1},
 		},
 	}
 
