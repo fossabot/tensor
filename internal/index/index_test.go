@@ -181,8 +181,13 @@ func TestIndexOffset(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		if valid := test.Index.Validate(test.Pos); valid != test.Valid {
+		valid := test.Index.Validate(test.Pos)
+		if valid != test.Valid {
 			t.Errorf("want valid=%t; got %t (i:%d)", test.Valid, valid, i)
+		}
+
+		if !valid {
+			continue
 		}
 
 		if offset := test.Index.At(test.Pos); offset != test.Offset {

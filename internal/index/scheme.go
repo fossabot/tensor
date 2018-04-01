@@ -24,7 +24,20 @@ var schemeFuncs = map[IdxScheme]func([]int) []int{
 }
 
 func colMajor(shape []int) []int {
-	return nil
+	if len(shape) == 0 {
+		return nil
+	}
+
+	strides := make([]int, len(shape))
+	for i := range shape {
+		if j := i - 1; j >= 0 && shape[j] != 0 {
+			strides[i] = strides[j] * shape[j]
+		} else {
+			strides[i] = 1
+		}
+	}
+
+	return strides
 }
 
 // String returns the name of index ordering scheme.
