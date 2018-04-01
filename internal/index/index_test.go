@@ -178,6 +178,13 @@ func TestIndexOffset(t *testing.T) {
 			Valid:  true,
 			Offset: 9,
 		},
+		{
+			// 9 //
+			Index:  index.NewIndex([]int{5, 3}, index.IdxSchemeColMajor).Slice(0, 2, 4).Slice(1, 1),
+			Pos:    []int{0, 0},
+			Valid:  true,
+			Offset: 7,
+		},
 	}
 
 	for i, test := range tests {
