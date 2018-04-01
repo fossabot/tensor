@@ -53,7 +53,7 @@ func (idx *Index) At(pos []int) (offset int) {
 		offset += pos[i] * idx.stride[i]
 	}
 
-	return offset
+	return idx.offset + offset
 }
 
 // Validate checks if provided position is in index shape boundaries.
@@ -96,7 +96,7 @@ func (idx *Index) Slice(dim, from int, to ...int) *Index {
 		scheme: idx.scheme,
 		shape:  shape,
 		stride: idx.stride,
-		offset: from * idx.stride[dim],
+		offset: idx.offset + from*idx.stride[dim],
 	}
 }
 

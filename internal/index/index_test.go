@@ -180,6 +180,13 @@ func TestIndexOffset(t *testing.T) {
 		},
 		{
 			// 9 //
+			Index:  index.NewIndex([]int{5, 3}, index.IdxSchemeColMajor).Slice(0, 2, 4),
+			Pos:    []int{0, 2},
+			Valid:  true,
+			Offset: 12,
+		},
+		{
+			// 10 //
 			Index:  index.NewIndex([]int{5, 3}, index.IdxSchemeColMajor).Slice(0, 2, 4).Slice(1, 1),
 			Pos:    []int{0, 0},
 			Valid:  true,
