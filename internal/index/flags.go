@@ -8,9 +8,9 @@ func (f Flags) IdxScheme() IdxScheme {
 	return IdxScheme(f & maskIdxScheme)
 }
 
-// View indicates whether the index represents a view over its data.
-func (f Flags) View() bool {
-	return f&flagIdxView == 1
+// IsView indicates whether the index represents a view over the data.
+func (f Flags) IsView() bool {
+	return f&flagIdxView != 0
 }
 
 // WithView sets or removes the view flag.

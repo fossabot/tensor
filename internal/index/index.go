@@ -81,6 +81,11 @@ func (idx *Index) Shape() []int {
 	return cloneInts(idx.shape)
 }
 
+// IsView indicates whether the index represents a view over the data.
+func (idx *Index) IsView() bool {
+	return idx.flags.IsView()
+}
+
 // Slice gets a subset of the index indices and creates a new Index instance
 // which will compute a valid array index using new shape coordinates.
 func (idx *Index) Slice(dim, from int, to ...int) *Index {
@@ -93,7 +98,7 @@ func (idx *Index) Slice(dim, from int, to ...int) *Index {
 	shape[dim] = limit - from
 
 	return &Index{
-		flags:  idx.flags,
+		flags:  idx.flags.WithView(true),
 		shape:  shape,
 		stride: idx.stride,
 		offset: idx.offset + from*idx.stride[dim],
@@ -103,7 +108,7 @@ func (idx *Index) Slice(dim, from int, to ...int) *Index {
 // Scalar creates a 0-dimensional index representing a scalar object.
 func (idx *Index) Scalar(pos []int) *Index {
 	return &Index{
-		flags:  idx.flags,
+		flags:  idx.flags.WithView(true),
 		shape:  nil,
 		stride: nil,
 		offset: idx.At(pos),

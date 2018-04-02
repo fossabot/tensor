@@ -14,6 +14,7 @@ func TestIndexDimensions(t *testing.T) {
 		Size    int
 		Strides []int
 		Shape   []int
+		IsView  bool
 	}{
 		"scalar": {
 			Index:   index.NewIndex(nil, index.IdxSchemeColMajor),
@@ -21,6 +22,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    1,
 			Strides: nil,
 			Shape:   nil,
+			IsView:  false,
 		},
 		"vector": {
 			Index:   index.NewIndex([]int{5}, index.IdxSchemeColMajor),
@@ -28,6 +30,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    5,
 			Strides: []int{1},
 			Shape:   []int{5},
+			IsView:  false,
 		},
 		"vector zero": {
 			Index:   index.NewIndex([]int{0}, index.IdxSchemeColMajor),
@@ -35,6 +38,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    0,
 			Strides: []int{1},
 			Shape:   []int{0},
+			IsView:  false,
 		},
 		"vector slice": {
 			Index:   index.NewIndex([]int{6}, index.IdxSchemeColMajor).Slice(0, 4),
@@ -42,6 +46,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    2,
 			Strides: []int{1},
 			Shape:   []int{2},
+			IsView:  true,
 		},
 		"matrix": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor),
@@ -49,6 +54,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    9,
 			Strides: []int{1, 3},
 			Shape:   []int{3, 3},
+			IsView:  false,
 		},
 		"matrix zero": {
 			Index:   index.NewIndex([]int{0, 0}, index.IdxSchemeColMajor),
@@ -56,6 +62,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    0,
 			Strides: []int{1, 1},
 			Shape:   []int{0, 0},
+			IsView:  false,
 		},
 		"matrix slice": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Slice(0, 1, 2),
@@ -63,6 +70,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    3,
 			Strides: []int{1, 3},
 			Shape:   []int{1, 3},
+			IsView:  true,
 		},
 		"matrix slice of slice": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Slice(1, 2).Slice(0, 1),
@@ -70,6 +78,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    2,
 			Strides: []int{1, 3},
 			Shape:   []int{2, 1},
+			IsView:  true,
 		},
 		"tensor": {
 			Index:   index.NewIndex([]int{2, 2, 2}, index.IdxSchemeColMajor),
@@ -77,6 +86,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    8,
 			Strides: []int{1, 2, 4},
 			Shape:   []int{2, 2, 2},
+			IsView:  false,
 		},
 		"tensor slice": {
 			Index:   index.NewIndex([]int{2, 2, 2}, index.IdxSchemeColMajor).Slice(2, 1),
@@ -84,6 +94,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    4,
 			Strides: []int{1, 2, 4},
 			Shape:   []int{2, 2, 1},
+			IsView:  true,
 		},
 		"scalar from matrix": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Scalar([]int{1, 1}),
@@ -91,6 +102,7 @@ func TestIndexDimensions(t *testing.T) {
 			Size:    1,
 			Strides: nil,
 			Shape:   nil,
+			IsView:  true,
 		},
 	}
 
@@ -110,6 +122,10 @@ func TestIndexDimensions(t *testing.T) {
 
 			if shape := test.Index.Shape(); !reflect.DeepEqual(shape, test.Shape) {
 				t.Errorf("want shape=%v; got %v", test.Shape, shape)
+			}
+
+			if isView := test.Index.IsView(); isView != test.IsView {
+				t.Errorf("want isView=%t; got %t", test.IsView, isView)
 			}
 		})
 	}
