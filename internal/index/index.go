@@ -100,6 +100,16 @@ func (idx *Index) Slice(dim, from int, to ...int) *Index {
 	}
 }
 
+// Scalar creates a 0-dimensional index representing a scalar object.
+func (idx *Index) Scalar(pos []int) *Index {
+	return &Index{
+		scheme: idx.scheme,
+		shape:  nil,
+		stride: nil,
+		offset: idx.At(pos),
+	}
+}
+
 // String satisfies fmt.Stringer interface. It returns some basic info about
 // index object.
 func (idx *Index) String() string {

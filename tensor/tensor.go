@@ -1,9 +1,20 @@
 package tensor
 
-type Tensor struct{} // TODO
+import (
+	"github.com/ppknap/tacvs/internal/core"
+	"github.com/ppknap/tacvs/internal/index"
+)
+
+type Tensor struct {
+	idx *index.Index
+	buf *core.Buffer
+} // TODO
 
 func (t *Tensor) At(idx ...int) *Tensor {
-	return nil // TODO
+	return &Tensor{
+		//	idx:
+		buf: t.buf,
+	}
 }
 
 func (t *Tensor) View() *Tensor {

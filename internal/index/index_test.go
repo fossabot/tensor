@@ -85,6 +85,13 @@ func TestIndexDimensions(t *testing.T) {
 			Strides: []int{1, 2, 4},
 			Shape:   []int{2, 2, 1},
 		},
+		"scalar from matrix": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Scalar([]int{1, 1}),
+			NDim:    0,
+			Size:    1,
+			Strides: nil,
+			Shape:   nil,
+		},
 	}
 
 	for name, test := range tests {
@@ -191,6 +198,27 @@ func TestIndexOffset(t *testing.T) {
 			Pos:    []int{0, 0},
 			Valid:  true,
 			Offset: 7,
+		},
+		{
+			// 11 //
+			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Scalar([]int{1, 1}),
+			Pos:    nil,
+			Valid:  true,
+			Offset: 4,
+		},
+		{
+			// 12 //
+			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Scalar([]int{1, 2}),
+			Pos:    []int{},
+			Valid:  true,
+			Offset: 7,
+		},
+		{
+			// 13 //
+			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor),
+			Pos:    []int{0},
+			Valid:  false,
+			Offset: -1,
 		},
 	}
 
