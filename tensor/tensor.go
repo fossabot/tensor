@@ -24,7 +24,11 @@ func (t *Tensor) At(pos ...int) *Tensor {
 }
 
 func (t *Tensor) View() *Tensor {
-	return nil // TODO
+	if t.idx != nil && t.idx.IsView() {
+		return t
+	}
+
+	return &Tensor{}
 }
 
 func Delegate(res, src *Tensor) *Tensor {

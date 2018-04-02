@@ -105,6 +105,20 @@ func (idx *Index) Slice(dim, from int, to ...int) *Index {
 	}
 }
 
+// View returns index which does not represent object which owns its data.
+func (idx *Index) View() *Index {
+	if idx == nil {
+		return nil
+	}
+
+	return &Index{
+		flags:  idx.flags.WithView(true),
+		shape:  idx.shape,
+		stride: idx.stride,
+		offset: idx.offset,
+	}
+}
+
 // Scalar creates a 0-dimensional index representing a scalar object.
 func (idx *Index) Scalar(pos []int) *Index {
 	return &Index{

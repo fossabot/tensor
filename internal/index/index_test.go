@@ -104,6 +104,14 @@ func TestIndexDimensions(t *testing.T) {
 			Shape:   nil,
 			IsView:  true,
 		},
+		"matrix view": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).View(),
+			NDim:    2,
+			Size:    9,
+			Strides: []int{1, 3},
+			Shape:   []int{3, 3},
+			IsView:  true,
+		},
 	}
 
 	for name, test := range tests {
