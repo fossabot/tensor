@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/ppknap/tacvs/tensor"
 )
 
 func main() {
-	fmt.Println("Hello world")
+	t := tensor.Tensor{}
+	fmt.Println(t.At(3))
 }

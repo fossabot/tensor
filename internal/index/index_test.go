@@ -220,6 +220,13 @@ func TestIndexOffset(t *testing.T) {
 			Valid:  false,
 			Offset: -1,
 		},
+		{
+			// 14 //
+			Index:  nil,
+			Pos:    []int{0},
+			Valid:  false,
+			Offset: -1,
+		},
 	}
 
 	for i, test := range tests {

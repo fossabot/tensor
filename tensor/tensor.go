@@ -1,6 +1,8 @@
 package tensor
 
 import (
+	"fmt"
+
 	"github.com/ppknap/tacvs/internal/core"
 	"github.com/ppknap/tacvs/internal/index"
 )
@@ -8,11 +10,15 @@ import (
 type Tensor struct {
 	idx *index.Index
 	buf *core.Buffer
-} // TODO
+}
 
-func (t *Tensor) At(idx ...int) *Tensor {
+func (t *Tensor) At(pos ...int) *Tensor {
+	if !t.idx.Validate(pos) {
+		panic(fmt.Sprintf("tensor: invalid position %v for %v", pos, t.idx))
+	}
+
 	return &Tensor{
-		//	idx:
+		idx: t.idx.Scalar(pos),
 		buf: t.buf,
 	}
 }

@@ -58,7 +58,7 @@ func (idx *Index) At(pos []int) (offset int) {
 
 // Validate checks if provided position is in index shape boundaries.
 func (idx *Index) Validate(pos []int) bool {
-	if len(pos) != len(idx.shape) {
+	if idx == nil || len(pos) != len(idx.shape) {
 		return false
 	}
 
@@ -113,7 +113,7 @@ func (idx *Index) Scalar(pos []int) *Index {
 // String satisfies fmt.Stringer interface. It returns some basic info about
 // index object.
 func (idx *Index) String() string {
-	return fmt.Sprintf("index:%v,scheme:%s", idx.shape, idx.scheme)
+	return fmt.Sprintf("index %v, scheme %q", idx.shape, idx.scheme)
 }
 
 func cloneInts(slice []int) []int {
