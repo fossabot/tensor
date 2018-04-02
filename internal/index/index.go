@@ -7,7 +7,7 @@ import (
 // Index represents an N-dimensional view on one dimensional array. It does not
 // have any limit checks.
 type Index struct {
-	scheme IdxScheme
+	flags  Flags
 	shape  []int
 	stride []int
 	offset int
@@ -21,7 +21,7 @@ func NewIndex(shape []int, scheme IdxScheme) *Index {
 	}
 
 	return &Index{
-		scheme: scheme,
+		flags:  Flags(scheme),
 		shape:  shape,
 		stride: scheme.Strides(shape),
 		offset: 0,
@@ -93,7 +93,7 @@ func (idx *Index) Slice(dim, from int, to ...int) *Index {
 	shape[dim] = limit - from
 
 	return &Index{
-		scheme: idx.scheme,
+		flags:  idx.flags,
 		shape:  shape,
 		stride: idx.stride,
 		offset: idx.offset + from*idx.stride[dim],
@@ -103,7 +103,7 @@ func (idx *Index) Slice(dim, from int, to ...int) *Index {
 // Scalar creates a 0-dimensional index representing a scalar object.
 func (idx *Index) Scalar(pos []int) *Index {
 	return &Index{
-		scheme: idx.scheme,
+		flags:  idx.flags,
 		shape:  nil,
 		stride: nil,
 		offset: idx.At(pos),
@@ -113,7 +113,7 @@ func (idx *Index) Scalar(pos []int) *Index {
 // String satisfies fmt.Stringer interface. It returns some basic info about
 // index object.
 func (idx *Index) String() string {
-	return fmt.Sprintf("index %v, scheme %q", idx.shape, idx.scheme)
+	return fmt.Sprintf("index %v, scheme %q", idx.shape, idx.flags.IdxScheme())
 }
 
 func cloneInts(slice []int) []int {

@@ -1,13 +1,13 @@
 package index
 
 // IdxScheme defines the order of dimmensions in continuos memory.
-type IdxScheme uint
+type IdxScheme Flags
 
 const (
 	// IdxSchemeColMajor represents column-major order where the vertical values
 	// of a matrix lie side by side in continuos 1D array. This is also known as
 	// Fortran order and is used in MatLab data indexing.
-	IdxSchemeColMajor IdxScheme = iota
+	IdxSchemeColMajor IdxScheme = 0
 )
 
 // Strides returns an array which contains data offsets on each dimension.
