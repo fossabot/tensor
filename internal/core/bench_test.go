@@ -80,19 +80,19 @@ func benchmarkFillSliceReflect(b *testing.B, d interface{}, v interface{}) {
 }
 
 func benchmarkFillSliceDType(b *testing.B, buf *core.Buffer, v interface{}) {
-	typ, src := core.Destruct(v)
-	if typ != buf.DType() {
+	dt, src := core.Destruct(v)
+	if dt != buf.DType() {
 		panic("invalid benchmark argument types")
 	}
 
 	var setter func(i int, src, dst unsafe.Pointer)
-	switch typ {
+	switch dt {
 	case core.Int:
 		setter = func(i int, dst, src unsafe.Pointer) {
 			*(*int)(dst) = (*(*int)(src) + i) % *(*int)(src) / 2
 		}
 	default:
-		panic("unsupported type")
+		panic("core: unsupported type: " + dt.String())
 	}
 
 	for n := 0; n < b.N; n++ {
