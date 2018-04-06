@@ -13,12 +13,13 @@ type BinaryFunc func(d, l, r unsafe.Pointer)
 // the exact same type.
 func Binary(ddt, ldt, rdt DType, op func(DType) BinaryFunc) BinaryFunc {
 	var fn = op(ddt)
+	if (ddt == ldt) && (ddt == rdt) {
+		return fn
+	}
 
 	switch ddt {
 	case Bool:
 		switch {
-		case ldt == Bool && rdt == Bool:
-			return fn
 		case ldt == Bool && rdt != Bool:
 			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsBoolPtr(r)) }
 		case ldt != Bool && rdt == Bool:
@@ -30,8 +31,6 @@ func Binary(ddt, ldt, rdt DType, op func(DType) BinaryFunc) BinaryFunc {
 		}
 	case Int:
 		switch {
-		case ldt == Int && rdt == Int:
-			return fn
 		case ldt == Int && rdt != Int:
 			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsIntPtr(r)) }
 		case ldt != Int && rdt == Int:
@@ -43,8 +42,6 @@ func Binary(ddt, ldt, rdt DType, op func(DType) BinaryFunc) BinaryFunc {
 		}
 	case Int64:
 		switch {
-		case ldt == Int64 && rdt == Int64:
-			return fn
 		case ldt == Int64 && rdt != Int64:
 			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsInt64Ptr(r)) }
 		case ldt != Int64 && rdt == Int64:
