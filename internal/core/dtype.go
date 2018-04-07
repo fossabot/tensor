@@ -5,12 +5,21 @@ import (
 	"unsafe"
 )
 
+// DType represents supported data types. Its value is stored as a bitmask with
+// information about data size and memory properties. One should not store nor
+// depend on any values of this type since their format is unstable.
 type DType uint64
 
 const (
 	Bool  DType = DType(unsafe.Sizeof(bool(false)))<<32 | 1
 	Int   DType = DType(unsafe.Sizeof(int(0)))<<32 | 2
 	Int64 DType = DType(unsafe.Sizeof(int64(0)))<<32 | 3
+)
+
+const (
+	// flagDynamic indicates that the type is not an owner of the data it
+	// represents.
+	flagDynamic DType = 1<<8 + iota
 )
 
 // Size returns the size in bytes of provided type.
