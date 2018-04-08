@@ -44,24 +44,52 @@ func (b *Buffer) AsType(typ DType) *Buffer {
 		return b
 	}
 
-	// No need to work with buffer when it's meant to be empty.
-	if b.Size() == 0 {
+	switch size := uintptr(b.Size()); {
+	case b.Size() == 0:
+		// No need to work with buffer when it's meant to be empty.
 		b.typ = typ
-		return b
-	}
+	case (b.data == nil && b.pts == nil) || typ.Size() == 0:
+		if typ.IsDynamic() {
+			b.pts = make([]unsafe.Pointer, size)
+			// Zero value TODO
+		} else {
+			b.data = make([]byte, size*typ.Size())
+		}
 
-	// Unallocated or empty buffer or type with no size.
-	if len(b.data) == 0 || typ.Size() == 0 {
 		b.typ = typ
-		b.data = make([]byte, b.Size())
-		return b
-	}
+	case b.typ.IsDynamic() && typ.IsDynamic():
+		// Reuse existing pointer buffer.
+		b.Iterate(func(i int, p unsafe.Pointer) {
+			b.pts[i] = typ.Convert(b.typ, p)
+		})
 
-	if b.typ.Size() >= typ.Size() {
+		b.typ = typ
+	case b.typ.IsDynamic() && !typ.IsDynamic():
+		// Switch from dynamic data to static.
+		b.data = make([]byte, size*typ.Size())
+		b.Iterate(func(i int, p unsafe.Pointer) {
+			typ.Setraw(
+				unsafe.Pointer(uintptr(unsafe.Pointer(&b.data[0]))+uintptr(i)*typ.Size()),
+				typ.Convert(b.typ, *(*unsafe.Pointer)(p)),
+			)
+		})
+
+		b.pts = nil
+		b.typ = typ
+	case !b.typ.IsDynamic() && typ.IsDynamic():
+		// Switch from static data to dynamic.
+		b.pts = make([]unsafe.Pointer, b.Size())
+		b.Iterate(func(i int, p unsafe.Pointer) {
+			b.pts[i] = typ.Convert(b.typ, p)
+		})
+
+		b.data = nil
+		b.typ = typ
+	case b.typ.Size() >= typ.Size():
 		// Reuse existing buffer when replacing type size is smaller or equal
 		// than the size of type which is being replaced.
 		b.data = b.data[:b.transfer(typ, b.data)]
-	} else {
+	default:
 		// Allocate a new buffer since the old one will not be able to store
 		// existing data after conversion.
 		data := make([]byte, uintptr(b.Size())*typ.Size())
@@ -71,21 +99,13 @@ func (b *Buffer) AsType(typ DType) *Buffer {
 
 	b.typ = typ
 
-	// ---
-	switch {
-	case typ.IsDynamic() && b.typ.IsDynamic():
-		// Reuse existing pointer buffer.
-	}
-
-	// --
-
 	return b
 }
 
 // transfer copies data from buffer to provided destination. It makes all
 // necessary conversions between object type and provided one.
 func (b *Buffer) transfer(typ DType, dst []byte) (pos uintptr) {
-	var size = uintptr(b.Size())
+	var size = uintptr(b.NBytes())
 	for oldpos := uintptr(0); oldpos < size; oldpos += b.typ.Size() {
 		typ.Setraw(
 			unsafe.Pointer(uintptr(unsafe.Pointer(&dst[0]))+pos),
@@ -129,6 +149,10 @@ func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {
 		size = uintptr(b.Size())
 		p    = unsafe.Pointer(&b.data[0])
 	)
+
+	if b.typ.IsDynamic() {
+		p = unsafe.Pointer(&b.pts[0])
+	}
 
 	for pos, i := uintptr(0), 0; pos < size; pos += b.typ.Size() {
 		f(i, unsafe.Pointer(uintptr(p)+pos))
