@@ -51,6 +51,17 @@ func Binary(ddt, ldt, rdt DType, op func(DType) BinaryFunc) BinaryFunc {
 				fn(d, ldt.AsInt64Ptr(l), rdt.AsInt64Ptr(r))
 			}
 		}
+	case String:
+		switch {
+		case ldt == String && rdt != String:
+			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsStringPtr(r)) }
+		case ldt != String && rdt == String:
+			return func(d, l, r unsafe.Pointer) { fn(d, ldt.AsStringPtr(l), r) }
+		case ldt != String && rdt != String:
+			return func(d, l, r unsafe.Pointer) {
+				fn(d, ldt.AsStringPtr(l), rdt.AsStringPtr(r))
+			}
+		}
 	}
 
 	panic("core: unsupported destination type: " + ddt.String())
@@ -65,6 +76,14 @@ func add(dt DType) BinaryFunc {
 	case Int:
 		return func(d, l, r unsafe.Pointer) {
 			*(*int)(d) = *(*int)(l) + *(*int)(r)
+		}
+	case Int64:
+		return func(d, l, r unsafe.Pointer) {
+			*(*int64)(d) = *(*int64)(l) + *(*int64)(r)
+		}
+	case String:
+		return func(d, l, r unsafe.Pointer) {
+			*(*string)(d) = *(*string)(l) + *(*string)(r)
 		}
 	default:
 		panic("core: unsupported type: " + dt.String())

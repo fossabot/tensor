@@ -151,3 +151,4 @@ Future features:
 [  ] - txtfmt package: custom display options for I/O formatting.
 [  ] - broadcasting for package level functions.
 [  ] - masks.
+[  ] - custom fields.

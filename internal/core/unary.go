@@ -24,6 +24,8 @@ func Unary(ddt, mdt DType, op func(DType) UnaryFunc) UnaryFunc {
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsIntPtr(m)) }
 	case Int64:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsInt64Ptr(m)) }
+	case String:
+		return func(d, m unsafe.Pointer) { fn(d, mdt.AsStringPtr(m)) }
 	}
 
 	panic("core: unsupported destination type: " + ddt.String())

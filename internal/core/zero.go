@@ -16,6 +16,9 @@ func (dt DType) Zero() unsafe.Pointer {
 	case Int64:
 		v := int64(0)
 		return unsafe.Pointer(&v)
+	case String:
+		v := ""
+		return unsafe.Pointer(&v)
 	}
 
 	panic("core: unsupported type: " + dt.String())
