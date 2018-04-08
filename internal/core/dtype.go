@@ -10,6 +10,10 @@ import (
 // depend on any values of this type since their format is unstable.
 type DType uint64
 
+// undefined describes objects with no type. Conversions to this type are not
+// allowed.
+const undefined DType = 0
+
 const (
 	Bool  DType = DType(unsafe.Sizeof(bool(false)))<<32 | 1
 	Int   DType = DType(unsafe.Sizeof(int(0)))<<32 | 2
@@ -27,6 +31,11 @@ func (dt DType) Size() uintptr {
 	return uintptr(dt >> 32)
 }
 
+// IsDynamic returns true when data type does not own all its data.
+func (dt DType) IsDynamic() bool {
+	return dt&flagDynamic != 0
+}
+
 // String returns the type name.
 func (dt DType) String() string {
 	if name, ok := dTypeNames[dt]; ok {
@@ -37,7 +46,8 @@ func (dt DType) String() string {
 }
 
 var dTypeNames = map[DType]string{
-	Bool:  "bool",
-	Int:   "int",
-	Int64: "int64",
+	undefined: "undefined",
+	Bool:      "bool",
+	Int:       "int",
+	Int64:     "int64",
 }
