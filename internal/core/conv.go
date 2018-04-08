@@ -15,9 +15,9 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 		*dst = *(*int)(p) != 0
 	case Int64:
 		*dst = *(*int64)(p) != int64(0)
-	default:
-		panic("core: unsupported type: " + dt.String())
 	}
+
+	panic("core: unsupported type: " + dt.String())
 }
 
 // AsBoolPtr converts value under provided pointer to bool type and returns
@@ -39,16 +39,16 @@ func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 	switch dt {
 	case Bool:
 		if *(*bool)(p) {
-			*dst = int(1)
+			*dst = 1
 		}
-		*dst = int(0)
+		*dst = 0
 	case Int:
 		*dst = *(*int)(p)
 	case Int64:
 		*dst = (int)(*(*int64)(p))
-	default:
-		panic("core: unsupported type: " + dt.String())
 	}
+
+	panic("core: unsupported type: " + dt.String())
 }
 
 // AsIntPtr converts value under provided pointer to int type and returns

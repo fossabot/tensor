@@ -5,9 +5,10 @@ General:
 [  ] - (n) vector is represented as column: (n) shape.
 [  ] - () shape: scalar, rank = 0.
 [  ] - () == (1) == (1, 1, ..., 1): shape.
-[  ] - Tensor axis 1 is vertical, 2 - horizontal.
+[  ] - Tensor axis 0 is vertical, 1 - horizontal.
 [  ] - Tensor zero value behaves like a scalar set to 0.
 [  ] - Does not support broadcasting.
+[  ] - 0 shapes in any dimensions are allowed.
 
 Forms:
 [  ] - `owner` - tensor that owns data buffer.
@@ -75,7 +76,7 @@ API:
     [  ] - t.Copy() *Tensor // create a copy of t. Return value is the `owner`.
     [  ] - t.Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor //
            compare with u tensor and store the result in t. (+)($)
-    [  ] - t.Add(u *Tensor) *Tensor // element-wise t+u -> t and return t. (+)($)
+    [ x] - t.Add(u *Tensor) *Tensor // element-wise t+u -> t and return t. (+)($)
     [  ] - t.Sub(u *Tensor) *Tensor // element-wise t-u -> t and return t. (+)($)
     [  ] - t.Mul(u *Tensor) *Tensor // element-wise t*u -> t and return t. (+)($)
     [  ] - t.Div(u *Tensor) *Tensor // element-wise t/u -> t and return t. (+)($)

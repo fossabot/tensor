@@ -23,9 +23,10 @@ const (
 )
 
 // Size returns the size in bytes of provided type.
-func (dt DType) Size() uintptr {
-	return uintptr(dt >> 32)
-}
+func (dt DType) Size() uintptr { return uintptr(dt >> 32) }
+
+// IsDynamic returns true when data type does not own all its data.
+func (dt DType) IsDynamic() bool { return dt&flagDynamic != 0 }
 
 // String returns the type name.
 func (dt DType) String() string {
