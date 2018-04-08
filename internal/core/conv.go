@@ -9,8 +9,6 @@ import (
 // result to dst. Conversion depends on called data type.
 func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 	switch dt {
-	case undefined:
-		*dst = false
 	case Bool:
 		*dst = *(*bool)(p)
 	case Int:
@@ -39,13 +37,11 @@ func (dt DType) AsBoolPtr(p unsafe.Pointer) unsafe.Pointer {
 // to dst. Conversion depends on called data type.
 func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 	switch dt {
-	case undefined:
-		*dst = 0
 	case Bool:
 		if *(*bool)(p) {
-			*dst = 1
+			*dst = int(1)
 		}
-		*dst = 0
+		*dst = int(0)
 	case Int:
 		*dst = *(*int)(p)
 	case Int64:
@@ -72,8 +68,6 @@ func (dt DType) AsIntPtr(p unsafe.Pointer) unsafe.Pointer {
 // the result to dst. Conversion depends on called data type.
 func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 	switch dt {
-	case undefined:
-		*dst = int64(0)
 	case Bool:
 		if *(*bool)(p) {
 			*dst = int64(1)

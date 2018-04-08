@@ -8,7 +8,6 @@ import (
 type Buffer struct {
 	n    int
 	data []byte
-	pts  []unsafe.Pointer
 	typ  DType
 }
 
@@ -24,8 +23,7 @@ func (b *Buffer) Size() int {
 	return b.n
 }
 
-// NBytes returns the number of bytes used to store buffer's data. For dynamic
-// types only the object pointer size is counted.
+// NBytes returns the number of bytes used to store buffer's data.
 func (b *Buffer) NBytes() int {
 	return b.Size() * int(b.typ.Size())
 }
