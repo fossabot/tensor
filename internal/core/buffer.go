@@ -61,8 +61,19 @@ func (b *Buffer) Setptr() func(int, DType, unsafe.Pointer) {
 	}
 }
 
-// At gets element at a given position.
+// At gets element at a given position. If buffer size is one, any index
+// provided to created function will result in a first buffer's element
+// returned. This logic simplifies access operation to scalars.
 func (b *Buffer) At() func(int) unsafe.Pointer {
+	if b.Size() == 1 {
+		if b.typ.IsDynamic() {
+			return func(int) unsafe.Pointer { return b.pts[0] }
+		}
+
+		first := unsafe.Pointer(&b.data[0])
+		return func(int) unsafe.Pointer { return first }
+	}
+
 	if !b.typ.IsDynamic() {
 		first := unsafe.Pointer(&b.data[0])
 		return func(i int) unsafe.Pointer {
