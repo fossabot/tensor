@@ -268,3 +268,60 @@ func TestIndexOffset(t *testing.T) {
 		}
 	}
 }
+
+func TestIndexIterate(t *testing.T) {
+	tests := map[string]struct {
+		Index   *index.Index
+		Indices [][]int
+	}{
+		"scalar": {
+			Index:   index.NewIndex([]int{}, index.IdxSchemeColMajor),
+			Indices: nil,
+		},
+		"vector": {
+			Index: index.NewIndex([]int{5}, index.IdxSchemeColMajor),
+			Indices: [][]int{
+				{0}, {1}, {2}, {3}, {4},
+			},
+		},
+		"vector one element": {
+			Index: index.NewIndex([]int{1}, index.IdxSchemeColMajor),
+			Indices: [][]int{
+				{0},
+			},
+		},
+		"square matrix": {
+			Index: index.NewIndex([]int{2, 2}, index.IdxSchemeColMajor),
+			Indices: [][]int{
+				{0, 0}, {0, 1}, {1, 0}, {1, 1},
+			},
+		},
+		"view zero size": {
+			Index:   index.NewIndex([]int{2, 2}, index.IdxSchemeColMajor).Slice(0, 2),
+			Indices: nil,
+		},
+		"tensor": {
+			Index: index.NewIndex([]int{3, 2, 1}, index.IdxSchemeColMajor),
+			Indices: [][]int{
+				{0, 0, 0}, {0, 1, 0}, {1, 0, 0}, {1, 1, 0}, {2, 0, 0}, {2, 1, 0},
+			},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			var indices [][]int
+
+			test.Index.Iterate(func(idx []int) {
+				cp := make([]int, len(idx))
+				copy(cp, idx)
+
+				indices = append(indices, cp)
+			})
+
+			if !reflect.DeepEqual(indices, test.Indices) {
+				t.Errorf("want indices=%v; got %v", test.Indices, indices)
+			}
+		})
+	}
+}
