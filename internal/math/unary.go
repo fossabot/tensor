@@ -1,7 +1,9 @@
-package core
+package math
 
 import (
 	"unsafe"
+
+	"github.com/ppknap/tacvs/internal/core"
 )
 
 // UnaryFunc represents a mathematical operation with only one operand. The
@@ -11,20 +13,20 @@ type UnaryFunc func(d, m unsafe.Pointer)
 
 // Unary ensures that unary operation function will have all its arguments in
 // the exact same type.
-func Unary(ddt, mdt DType, op func(DType) UnaryFunc) UnaryFunc {
+func Unary(ddt, mdt core.DType, op func(core.DType) UnaryFunc) UnaryFunc {
 	var fn = op(ddt)
 	if ddt == mdt {
 		return fn
 	}
 
 	switch ddt {
-	case Bool:
+	case core.Bool:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsBoolPtr(m)) }
-	case Int:
+	case core.Int:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsIntPtr(m)) }
-	case Int64:
+	case core.Int64:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsInt64Ptr(m)) }
-	case String:
+	case core.String:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsStringPtr(m)) }
 	}
 

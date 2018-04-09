@@ -1,7 +1,9 @@
-package core
+package math
 
 import (
 	"unsafe"
+
+	"github.com/ppknap/tacvs/internal/core"
 )
 
 // BinaryFunc represents a mathematical operation that combines two operands and
@@ -12,8 +14,8 @@ type BinaryFunc func(d, l, r unsafe.Pointer)
 // BinaryEach is the simplest binary iterator. It walks over all elements in
 // destination buffer and calls binary function giving corresponding elements
 // from left and right buffers.
-func BinaryEach(db, lb, rb *Buffer, op func(DType) BinaryFunc) {
-	var fn = binary(db.typ, lb.typ, rb.typ, op)
+func BinaryEach(db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
+	var fn = binary(db.DType(), lb.DType(), rb.DType(), op)
 
 	leftAt, rightAt := lb.At(), rb.At()
 	db.Iterate(func(i int, dst unsafe.Pointer) {
@@ -23,53 +25,53 @@ func BinaryEach(db, lb, rb *Buffer, op func(DType) BinaryFunc) {
 
 // binary ensures that binary operation function will have all its arguments in
 // the exact same type.
-func binary(ddt, ldt, rdt DType, op func(DType) BinaryFunc) BinaryFunc {
+func binary(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) BinaryFunc {
 	var fn = op(ddt)
 	if (ddt == ldt) && (ddt == rdt) {
 		return fn
 	}
 
 	switch ddt {
-	case Bool:
+	case core.Bool:
 		switch {
-		case ldt == Bool && rdt != Bool:
+		case ldt == core.Bool && rdt != core.Bool:
 			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsBoolPtr(r)) }
-		case ldt != Bool && rdt == Bool:
+		case ldt != core.Bool && rdt == core.Bool:
 			return func(d, l, r unsafe.Pointer) { fn(d, ldt.AsBoolPtr(l), r) }
-		case ldt != Bool && rdt != Bool:
+		case ldt != core.Bool && rdt != core.Bool:
 			return func(d, l, r unsafe.Pointer) {
 				fn(d, ldt.AsBoolPtr(l), rdt.AsBoolPtr(r))
 			}
 		}
-	case Int:
+	case core.Int:
 		switch {
-		case ldt == Int && rdt != Int:
+		case ldt == core.Int && rdt != core.Int:
 			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsIntPtr(r)) }
-		case ldt != Int && rdt == Int:
+		case ldt != core.Int && rdt == core.Int:
 			return func(d, l, r unsafe.Pointer) { fn(d, ldt.AsIntPtr(l), r) }
-		case ldt != Int && rdt != Int:
+		case ldt != core.Int && rdt != core.Int:
 			return func(d, l, r unsafe.Pointer) {
 				fn(d, ldt.AsIntPtr(l), rdt.AsIntPtr(r))
 			}
 		}
-	case Int64:
+	case core.Int64:
 		switch {
-		case ldt == Int64 && rdt != Int64:
+		case ldt == core.Int64 && rdt != core.Int64:
 			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsInt64Ptr(r)) }
-		case ldt != Int64 && rdt == Int64:
+		case ldt != core.Int64 && rdt == core.Int64:
 			return func(d, l, r unsafe.Pointer) { fn(d, ldt.AsInt64Ptr(l), r) }
-		case ldt != Int64 && rdt != Int64:
+		case ldt != core.Int64 && rdt != core.Int64:
 			return func(d, l, r unsafe.Pointer) {
 				fn(d, ldt.AsInt64Ptr(l), rdt.AsInt64Ptr(r))
 			}
 		}
-	case String:
+	case core.String:
 		switch {
-		case ldt == String && rdt != String:
+		case ldt == core.String && rdt != core.String:
 			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsStringPtr(r)) }
-		case ldt != String && rdt == String:
+		case ldt != core.String && rdt == core.String:
 			return func(d, l, r unsafe.Pointer) { fn(d, ldt.AsStringPtr(l), r) }
-		case ldt != String && rdt != String:
+		case ldt != core.String && rdt != core.String:
 			return func(d, l, r unsafe.Pointer) {
 				fn(d, ldt.AsStringPtr(l), rdt.AsStringPtr(r))
 			}
@@ -77,27 +79,4 @@ func binary(ddt, ldt, rdt DType, op func(DType) BinaryFunc) BinaryFunc {
 	}
 
 	panic("core: unsupported destination type: " + ddt.String())
-}
-
-func add(dt DType) BinaryFunc {
-	switch dt {
-	case Bool:
-		return func(d, l, r unsafe.Pointer) {
-			*(*bool)(d) = *(*bool)(l) || *(*bool)(r)
-		}
-	case Int:
-		return func(d, l, r unsafe.Pointer) {
-			*(*int)(d) = *(*int)(l) + *(*int)(r)
-		}
-	case Int64:
-		return func(d, l, r unsafe.Pointer) {
-			*(*int64)(d) = *(*int64)(l) + *(*int64)(r)
-		}
-	case String:
-		return func(d, l, r unsafe.Pointer) {
-			*(*string)(d) = *(*string)(l) + *(*string)(r)
-		}
-	default:
-		panic("core: unsupported type: " + dt.String())
-	}
 }
