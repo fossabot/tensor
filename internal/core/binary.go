@@ -9,9 +9,21 @@ import (
 // and right operands should not be modified.
 type BinaryFunc func(d, l, r unsafe.Pointer)
 
-// Binary ensures that binary operation function will have all its arguments in
+// BinaryEach is the simplest binary iterator. It walks over all elements in
+// destination buffer and calls binary function giving corresponding elements
+// from left and right buffers.
+func BinaryEach(db, lb, rb *Buffer, op func(DType) BinaryFunc) {
+	var fn = binary(db.typ, lb.typ, rb.typ, op)
+
+	leftAt, rightAt := lb.At(), rb.At()
+	db.Iterate(func(i int, dst unsafe.Pointer) {
+		fn(dst, leftAt(i), rightAt(i))
+	})
+}
+
+// binary ensures that binary operation function will have all its arguments in
 // the exact same type.
-func Binary(ddt, ldt, rdt DType, op func(DType) BinaryFunc) BinaryFunc {
+func binary(ddt, ldt, rdt DType, op func(DType) BinaryFunc) BinaryFunc {
 	var fn = op(ddt)
 	if (ddt == ldt) && (ddt == rdt) {
 		return fn
