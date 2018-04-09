@@ -86,6 +86,34 @@ func (idx *Index) IsView() bool {
 	return idx.flags.IsView()
 }
 
+// Iterate walks over N-dimensional index calling f with every possible indices.
+// Slice given as function argument is reused by iterator logic and must not be
+// modified. The last dimmension is iterated over first.
+//
+// TODO: https://play.golang.org/p/cbQoG4zlNGG
+func (idx *Index) Iterate(f func(pos []int)) {
+	// Scalars and zero slices are not supported by indexing iterator.
+	if len(idx.shape) == 0 || idx.Size() == 0 {
+		return
+	}
+
+	pos := make([]int, len(idx.shape))
+	for i := 0; i >= 0; {
+		switch {
+		case pos[i] == idx.shape[i]:
+			pos[i] = 0
+			if i--; i >= 0 {
+				pos[i]++
+			}
+		case i < len(pos)-1:
+			i++
+		case pos[i] < idx.shape[i]:
+			f(pos)
+			pos[i]++
+		}
+	}
+}
+
 // Slice gets a subset of the index indices and creates a new Index instance
 // which will compute a valid array index using new shape coordinates.
 func (idx *Index) Slice(dim, from int, to ...int) *Index {
