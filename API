@@ -13,10 +13,10 @@ General:
 Forms:
 [  ] - `owner` - tensor that owns data buffer.
 [  ] - `view` - "pointer" to data owner Tensor or another view.
-[  ] - `delegate` property  - defines op destination buffer.
 
 API:
   (A) - package level types.
+    [  ] - type Delegate struct { ... }
     [  ] - type Tensor struct {...}
     [  ] - type TensorSlice []*Tensor
 
@@ -30,8 +30,8 @@ API:
         at this level **MAY** change Tensor shape.
     [  ] - tensor.New(shape ...int) *Tensor // tensor constructor.
     [  ] - tensor.NewScalar(val complex128) *Tensor // 0-rank tensor ctor.
-    [  ] - tensor.Delegate(res, src *Tensor) *Tensor // delegate src result to
-           // res.
+    [  ] - tensor.NewDelegate(dst *Tensor) *Delegate // delegate operation
+           // result to dst.
     [  ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
            // compare two tensors and return the result as a new one. (+)($)
     [  ] - tensor.Add(a, b *Tensor) *Tensor // return a new Tensor that stores
@@ -55,7 +55,7 @@ API:
     [ x] - t.Size() int // total number of elements.
     [  ] - t.Data() []byte // data buffer. Owner buffer for views.
     [  ] - t.Owner() bool // true for `owners`.
-    [  ] - t.Delegate() *Tensor // create delegate to self.
+    [  ] - t.Delegate() *Delegate // create delegate to self.
     [  ] - t.Base() *Tensor // non-nil for views.
     [  ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
     [  ] - t.FillBuf(data []byte) *Tensor // set data buffer. Panics if not
@@ -108,6 +108,18 @@ API:
         delegated one.
     [  ] - ts.VStack() *Tensor // stack tensors along their first axis.
     [  ] - ts.HStack() *Tensor // stack tensors along their second axis.
+
+  (H) - delegate methods.
+    [  ] - d.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
+           // compare two tensors and save the result to delegated one. (+)($)
+    [  ] - d.Add(a, b *Tensor) *Tensor // store in delegated tensor a+b. (+)($)
+    [  ] - d.Sub(a, b *Tensor) *Tensor // store in delegated tensor a-b. (+)($)
+    [  ] - d.Mul(a, b *Tensor) *Tensor // store in delegated tensor a*b. (+)($)
+    [  ] - d.Div(a, b *Tensor) *Tensor // store in delegated tensor a/b. (+)($)
+    [  ] - d.Dot(a, b *Tensor) *Tensor // store in delegated tensor a dot
+           product of a and b. Tensor shapes must follow dot product dim rules.
+    [  ] - d.Resize(t *Tensor, shape ...int) *Tensor // save in delegated tensor
+           a copy of t - either repeated or truncated to match new shape.
 
   (*) - operation **MUST NOT** change Tensor size.
   (+) - operation **MUST** support scalars.
