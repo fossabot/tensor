@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tacvs/internal/core"
+	"github.com/ppknap/tacvs/internal/index"
 )
 
 // BinaryFunc represents a mathematical operation that combines two operands and
@@ -11,11 +12,11 @@ import (
 // and right operands should not be modified.
 type BinaryFunc func(d, l, r unsafe.Pointer)
 
-// BinaryEach is the simplest binary iterator. It walks over all elements in
+// BinaryRawEach is the simplest binary iterator. It walks over all elements in
 // destination buffer and calls binary function giving corresponding elements
 // from left and right buffers.
-func BinaryEach(db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
-	var fn = binary(db.DType(), lb.DType(), rb.DType(), op)
+func BinaryRawEach(db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
+	var fn = binaryConvert(db.DType(), lb.DType(), rb.DType(), op)
 
 	leftAt, rightAt := lb.At(), rb.At()
 	db.Iterate(func(i int, dst unsafe.Pointer) {
@@ -23,9 +24,22 @@ func BinaryEach(db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
 	})
 }
 
-// binary ensures that binary operation function will have all its arguments in
-// the exact same type.
-func binary(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) BinaryFunc {
+// BinaryIdxEach walks over elements in destination buffer pointed by all of its
+// index's indices. It calls produced binary function with elements from left
+// and right buffers. Each element is found by their indexes using destination
+// index indices.
+func BinaryIdxEach(di, li, ri *index.Index, db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
+	var fn = binaryConvert(db.DType(), lb.DType(), rb.DType(), op)
+
+	dstAt, leftAt, rightAt := db.At(), lb.At(), rb.At()
+	di.Iterate(func(pos []int) {
+		fn(dstAt(di.At(pos)), leftAt(li.At(pos)), rightAt(ri.At(pos)))
+	})
+}
+
+// binaryConvert ensures that binary operation function will have all its
+// arguments in the exact same type.
+func binaryConvert(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) BinaryFunc {
 	var fn = op(ddt)
 	if (ddt == ldt) && (ddt == rdt) {
 		return fn
