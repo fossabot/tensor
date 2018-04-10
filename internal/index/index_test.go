@@ -132,7 +132,7 @@ func TestIndexDimensions(t *testing.T) {
 				t.Errorf("want shape=%v; got %v", test.Shape, shape)
 			}
 
-			if isView := test.Index.IsView(); isView != test.IsView {
+			if isView := test.Index.Flags().IsView(); isView != test.IsView {
 				t.Errorf("want isView=%t; got %t", test.IsView, isView)
 			}
 		})

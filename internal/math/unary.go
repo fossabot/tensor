@@ -11,9 +11,9 @@ import (
 // modified.
 type UnaryFunc func(d, m unsafe.Pointer)
 
-// Unary ensures that unary operation function will have all its arguments in
-// the exact same type.
-func Unary(ddt, mdt core.DType, op func(core.DType) UnaryFunc) UnaryFunc {
+// unaryConvert ensures that unary operation function will have all its
+// arguments in the exact same type.
+func unaryConvert(ddt, mdt core.DType, op func(core.DType) UnaryFunc) UnaryFunc {
 	var fn = op(ddt)
 	if ddt == mdt {
 		return fn

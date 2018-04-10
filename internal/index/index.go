@@ -81,9 +81,9 @@ func (idx *Index) Shape() []int {
 	return cloneInts(idx.shape)
 }
 
-// IsView indicates whether the index represents a view over the data.
-func (idx *Index) IsView() bool {
-	return idx.flags.IsView()
+// Flags returns index properties.
+func (idx *Index) Flags() Flags {
+	return idx.flags
 }
 
 // Iterate walks over N-dimensional index calling f with every possible indices.

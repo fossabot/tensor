@@ -12,25 +12,41 @@ import (
 // and right operands should not be modified.
 type BinaryFunc func(d, l, r unsafe.Pointer)
 
-// BinaryRawEach is the simplest binary iterator. It walks over all elements in
-// destination buffer and calls binary function giving corresponding elements
-// from left and right buffers.
-func BinaryRawEach(db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
+// Binary choses and executes the best strategy to call binary operator on
+// provided buffers with respect to their indexes.
+func Binary(di, li, ri *index.Index, db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
 	var fn = binaryConvert(db.DType(), lb.DType(), rb.DType(), op)
 
+	var (
+		dScheme, dIsView = di.Flags().IdxScheme(), di.Flags().IsView()
+		lScheme, lIsView = li.Flags().IdxScheme(), li.Flags().IsView()
+		rScheme, rIsView = ri.Flags().IdxScheme(), ri.Flags().IsView()
+	)
+
+	if (dScheme == lScheme) && (lScheme == rScheme) && !dIsView && !lIsView && !rIsView {
+		// Iterate directly on buffers since they have the same memory layout.
+		binaryRawEach(db, lb, rb, fn)
+		return
+	}
+
+	binaryIdxEach(di, li, ri, db, lb, rb, fn)
+}
+
+// binaryRawEach is the simplest binary iterator. It walks over all elements in
+// destination buffer and calls binary function giving corresponding elements
+// from left and right buffers.
+func binaryRawEach(db, lb, rb *core.Buffer, fn BinaryFunc) {
 	leftAt, rightAt := lb.At(), rb.At()
 	db.Iterate(func(i int, dst unsafe.Pointer) {
 		fn(dst, leftAt(i), rightAt(i))
 	})
 }
 
-// BinaryIdxEach walks over elements in destination buffer pointed by all of its
+// binaryIdxEach walks over elements in destination buffer pointed by all of its
 // index's indices. It calls produced binary function with elements from left
 // and right buffers. Each element is found by their indexes using destination
 // index indices.
-func BinaryIdxEach(di, li, ri *index.Index, db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
-	var fn = binaryConvert(db.DType(), lb.DType(), rb.DType(), op)
-
+func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *core.Buffer, fn BinaryFunc) {
 	dstAt, leftAt, rightAt := db.At(), lb.At(), rb.At()
 	di.Iterate(func(pos []int) {
 		fn(dstAt(di.At(pos)), leftAt(li.At(pos)), rightAt(ri.At(pos)))
