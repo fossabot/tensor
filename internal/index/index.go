@@ -47,13 +47,19 @@ func (idx *Index) Size() int {
 	return size
 }
 
-// At returns array index for a given coordinates.
-func (idx *Index) At(pos []int) (offset int) {
-	for i := range pos {
-		offset += pos[i] * idx.stride[i]
+// At returns a function that computes array index for a given coordinates.
+func (idx *Index) At() func([]int) int {
+	if idx.Size() == 1 {
+		return func([]int) int { return idx.offset }
 	}
 
-	return idx.offset + offset
+	return func(pos []int) (offset int) {
+		for i := range pos {
+			offset += pos[i] * idx.stride[i]
+		}
+
+		return idx.offset + offset
+	}
 }
 
 // Validate checks if provided position is in index shape boundaries.
@@ -153,7 +159,7 @@ func (idx *Index) Scalar(pos []int) *Index {
 		flags:  idx.flags.WithView(true),
 		shape:  nil,
 		stride: nil,
-		offset: idx.At(pos),
+		offset: idx.At()(pos),
 	}
 }
 

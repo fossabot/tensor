@@ -40,9 +40,11 @@ func bckIterateRaw(b *testing.B, shape []int) {
 
 func bckIterateAt(b *testing.B, shape []int) {
 	idx, sum := index.NewIndex(shape, index.IdxSchemeColMajor), 0
+
+	at := idx.At()
 	for n := 0; n < b.N; n++ {
 		idx.Iterate(func(pos []int) {
-			sum = idx.At(pos)
+			sum = at(pos)
 		})
 
 	}

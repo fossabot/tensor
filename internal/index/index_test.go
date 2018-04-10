@@ -263,7 +263,7 @@ func TestIndexOffset(t *testing.T) {
 			continue
 		}
 
-		if offset := test.Index.At(test.Pos); offset != test.Offset {
+		if offset := test.Index.At()(test.Pos); offset != test.Offset {
 			t.Errorf("want offset=%d; got %d (i:%d)", test.Offset, offset, i)
 		}
 	}
