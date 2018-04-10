@@ -34,10 +34,28 @@ func (t *Tensor) View() *Tensor {
 	}
 }
 
-func Delegate(res, src *Tensor) *Tensor {
+func (t *Tensor) Delegate() *Delegate {
+	return NewDelegate(t)
+}
+
+type Delegate struct {
+	dst *Tensor
+}
+
+func NewDelegate(dst *Tensor) *Delegate {
+	return &Delegate{dst: dst}
+}
+
+func (d *Delegate) Add(a, b *Tensor) *Tensor {
+	if a == nil || b == nil {
+		panic("tensor: nil argument provided")
+	}
+
+	//	var dst = a
+	//	math.Binary()
 	return nil
 }
 
-func Add(a, b *Tensor) *Tensor {
-	return nil
-}
+// View
+// Scheme
+// Size(l) && Size(r) || Size(l) && Size(r) == 1

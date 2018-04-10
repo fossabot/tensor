@@ -1,23 +1,21 @@
 General:
-[  ] - `Tensor` - immutable size.
-[  ] - `Tensor` - all values of the same type.
-[  ] - (n, m, o) shape: n - rows, m - columns, o - depth.
-[  ] - (n) vector is represented as column: (n) shape.
-[  ] - () shape: scalar, rank = 0.
-[  ] - () == (1) == (1, 1, ..., 1): shape.
-[  ] - Tensor axis 0 is vertical, 1 - horizontal.
-[  ] - Tensor zero value behaves like a scalar set to 0.
-[  ] - Does not support broadcasting.
-[  ] - 0 shapes in any dimensions are allowed.
+[x] - `Tensor` - immutable size.
+[x] - `Tensor` - all values of the same type.
+[x] - (n, m, o) shape: n - rows, m - columns, o - depth.
+[x] - (n) vector is represented as a column: (n) shape.
+[x] - () shape: scalar, rank = 0.
+[x] - Tensor axis 0 is vertical, 1 - horizontal.
+[x] - Tensor zero value behaves like a scalar set to 0.
+[x] - Does not support broadcasting.
 
 Forms:
-[  ] - `owner` - tensor that owns data buffer.
-[  ] - `view` - "pointer" to data owner Tensor or another view.
+[x] - `owner` - tensor that owns data buffer.
+[x] - `view` - "pointer" to data owner Tensor or another view.
 
 API:
   (A) - package level types.
-    [  ] - type Delegate struct { ... }
-    [  ] - type Tensor struct {...}
+    [ +] - type Delegate struct { ... }
+    [ +] - type Tensor struct {...}
     [  ] - type TensorSlice []*Tensor
 
   (B) - package level constants.
@@ -28,13 +26,13 @@ API:
 
   (D) - package level functions. They **ALWAYS** create a new Tensor. Operations
         at this level **MAY** change Tensor shape.
-    [  ] - tensor.New(shape ...int) *Tensor // tensor constructor.
+    [ o] - tensor.New(shape ...int) *Tensor // tensor constructor.
     [  ] - tensor.NewScalar(val complex128) *Tensor // 0-rank tensor ctor.
-    [  ] - tensor.NewDelegate(dst *Tensor) *Delegate // delegate operation
+    [ +] - tensor.NewDelegate(dst *Tensor) *Delegate // delegate operation
            // result to dst.
     [  ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
            // compare two tensors and return the result as a new one. (+)($)
-    [  ] - tensor.Add(a, b *Tensor) *Tensor // return a new Tensor that stores
+    [ +] - tensor.Add(a, b *Tensor) *Tensor // return a new Tensor that stores
            a+b. (+)($)
     [  ] - tensor.Sub(a, b *Tensor) *Tensor // return a new Tensor that stores
            a-b. (+)($)
@@ -42,7 +40,7 @@ API:
            element-wise a*b. (+)($)
     [  ] - tensor.Div(a, b *Tensor) *Tensor // return a new Tensor that stores
            element-wise a/b. (+)($)
-    [  ] - tensor.Dot(a, b *Tensor) *Tensor // return a new Tensor that stores
+    [ o] - tensor.Dot(a, b *Tensor) *Tensor // return a new Tensor that stores
            dot product of a and b. Tensor shapes must follow dot product dim
            rules.
     [  ] - tensor.Resize(t *Tensor, shape ...int) // return a new Tensor that
@@ -50,12 +48,12 @@ API:
 
   (E) - object level methods. If operation changes the Tensor, it **MUST**
         modify Tensor data buffer in place. (*)
-    [ x] - t.NDim() int // rank, num dimensions, num axes.
-    [ x] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
-    [ x] - t.Size() int // total number of elements.
+    [  ] - t.NDim() int // rank, num dimensions, num axes.
+    [  ] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
+    [  ] - t.Size() int // total number of elements.
     [  ] - t.Data() []byte // data buffer. Owner buffer for views.
     [  ] - t.Owner() bool // true for `owners`.
-    [  ] - t.Delegate() *Delegate // create delegate to self.
+    [ +] - t.Delegate() *Delegate // create delegate to self.
     [  ] - t.Base() *Tensor // non-nil for views.
     [  ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
     [  ] - t.FillBuf(data []byte) *Tensor // set data buffer. Panics if not
@@ -73,10 +71,10 @@ API:
     [  ] - t.Exp() *Tensor // store element-wise e^t in t and return t.
     [  ] - t.String() string // display formatted tensor. First dimension is
            horizontal. Non ASCII characters are not used.
-    [  ] - t.Copy() *Tensor // create a copy of t. Return value is the `owner`.
+    [ o] - t.Copy() *Tensor // create a copy of t. Return value is the `owner`.
     [  ] - t.Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor //
            compare with u tensor and store the result in t. (+)($)
-    [ x] - t.Add(u *Tensor) *Tensor // element-wise t+u -> t and return t. (+)($)
+    [ o] - t.Add(u *Tensor) *Tensor // element-wise t+u -> t and return t. (+)($)
     [  ] - t.Sub(u *Tensor) *Tensor // element-wise t-u -> t and return t. (+)($)
     [  ] - t.Mul(u *Tensor) *Tensor // element-wise t*u -> t and return t. (+)($)
     [  ] - t.Div(u *Tensor) *Tensor // element-wise t/u -> t and return t. (+)($)
@@ -91,14 +89,14 @@ API:
     [  ] - t.Im() *Tensor // remove real part from tensor.
     [  ] - t.T() *Tensor // transpose t. (+)
     [  ] - t.Inv() *Tensor // inverse t^(-1) of t. (#)(+)
-    [  ] - t.Eye() *Tensor // 1s on diagonal, 0s elsewhere. (+)
+    [ o] - t.Eye() *Tensor // 1s on diagonal, 0s elsewhere. (+)
     [  ] - t.Trace() *Tensor // sum diag elements. (+)
-    [  ] - t.At(idx ...int) *Tensor // get scalar from tensor index. (+)
+    [ +] - t.At(idx ...int) *Tensor // get scalar from tensor index. (+)
 
   (F) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
         they **MUST** return Tensor view or a slice of Tensor views. Views
         **MUST** be supported by function from (D), (E), (F).
-    [  ] - t.View() *Tensor // crate a view of entire t.
+    [ +] - t.View() *Tensor // crate a view of entire t.
     [  ] - t.Slice(dim, from int, to ...int) *Tensor // create a view over a
            subset of t.
     [  ] - t.Destruct() TensorSlice // create a view on each element.
@@ -112,11 +110,11 @@ API:
   (H) - delegate methods.
     [  ] - d.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
            // compare two tensors and save the result to delegated one. (+)($)
-    [  ] - d.Add(a, b *Tensor) *Tensor // store in delegated tensor a+b. (+)($)
+    [ +] - d.Add(a, b *Tensor) *Tensor // store in delegated tensor a+b. (+)($)
     [  ] - d.Sub(a, b *Tensor) *Tensor // store in delegated tensor a-b. (+)($)
     [  ] - d.Mul(a, b *Tensor) *Tensor // store in delegated tensor a*b. (+)($)
     [  ] - d.Div(a, b *Tensor) *Tensor // store in delegated tensor a/b. (+)($)
-    [  ] - d.Dot(a, b *Tensor) *Tensor // store in delegated tensor a dot
+    [ o] - d.Dot(a, b *Tensor) *Tensor // store in delegated tensor a dot
            product of a and b. Tensor shapes must follow dot product dim rules.
     [  ] - d.Resize(t *Tensor, shape ...int) *Tensor // save in delegated tensor
            a copy of t - either repeated or truncated to match new shape.
