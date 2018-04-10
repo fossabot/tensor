@@ -95,8 +95,6 @@ func (idx *Index) Flags() Flags {
 // Iterate walks over N-dimensional index calling f with every possible indices.
 // Slice given as function argument is reused by iterator logic and must not be
 // modified. The last dimmension is iterated over first.
-//
-// TODO: https://play.golang.org/p/cbQoG4zlNGG
 func (idx *Index) Iterate(f func(pos []int)) {
 	// Scalars and zero slices are not supported by indexing iterator.
 	if len(idx.shape) == 0 || idx.Size() == 0 {
