@@ -30,5 +30,5 @@ func unaryConvert(ddt, mdt core.DType, op func(core.DType) UnaryFunc) UnaryFunc 
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsStringPtr(m)) }
 	}
 
-	panic("core: unsupported destination type: " + ddt.String())
+	panic(core.NewError("unsupported destination type: %q", ddt))
 }

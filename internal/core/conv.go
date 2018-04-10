@@ -19,7 +19,7 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 		*dst = strAsBool(*(*string)(p))
 	}
 
-	panic("core: unsupported type: " + dt.String())
+	panic(NewError("unsupported type: %q", dt))
 }
 
 // AsBoolPtr converts value under provided pointer to bool type and returns
@@ -52,7 +52,7 @@ func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 		*dst = int(strAsInt(*(*string)(p)))
 	}
 
-	panic("core: unsupported type: " + dt.String())
+	panic(NewError("unsupported type: %q", dt))
 }
 
 // AsIntPtr converts value under provided pointer to int type and returns
@@ -85,7 +85,7 @@ func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 		*dst = strAsInt(*(*string)(p))
 	}
 
-	panic("core: unsupported type: " + dt.String())
+	panic(NewError("unsupported type: %q", dt))
 }
 
 // AsInt64Ptr converts value under provided pointer to int64 type and returns
@@ -115,7 +115,7 @@ func (dt DType) AsString(dst *string, p unsafe.Pointer) {
 		*dst = *(*string)(p)
 	}
 
-	panic("core: unsupported type: " + dt.String())
+	panic(NewError("unsupported type: %q", dt))
 }
 
 // AsStringPtr converts value under provided pointer to string type and returns
@@ -145,7 +145,7 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 		return func(p unsafe.Pointer) string { return *(*string)(p) }
 	}
 
-	panic("core: unsupported type: " + dt.String())
+	panic(NewError("unsupported type: %q", dt))
 }
 
 // Convert takes provided pointer and its data type and converts pointer's value
@@ -163,5 +163,5 @@ func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 		return st.AsStringPtr(p)
 	}
 
-	panic("core: unsupported convert destination type: " + dt.String())
+	panic(NewError("unsupported convert destination type: %q", dt))
 }

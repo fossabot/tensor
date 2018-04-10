@@ -27,5 +27,5 @@ func Add(dt core.DType) BinaryFunc {
 		}
 	}
 
-	panic("core: unsupported type: " + dt.String())
+	panic(core.NewError("unsupported type: %q", dt))
 }

@@ -21,5 +21,5 @@ func (dt DType) Zero() unsafe.Pointer {
 		return unsafe.Pointer(&v)
 	}
 
-	panic("core: unsupported type: " + dt.String())
+	panic(NewError("unsupported type: %q", dt))
 }

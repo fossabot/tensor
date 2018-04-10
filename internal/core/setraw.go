@@ -1,6 +1,8 @@
 package core
 
-import "unsafe"
+import (
+	"unsafe"
+)
 
 // Setraw sets underlying pointer value from src to dst based on provided data
 // type. The values pointed by both pointers must be of identical type and the
@@ -20,7 +22,7 @@ func (dt DType) Setraw(dst, src unsafe.Pointer) {
 	case 16:
 		*(*uint64)(dst) = *(*uint64)(src)
 		*(*uint64)(unsafe.Pointer(uintptr(dst) + 8)) = *(*uint64)(unsafe.Pointer(uintptr(src) + 8))
-	default:
-		panic("core: unsupported data size: " + dt.String())
 	}
+
+	panic(NewError("core: unsupported data size: %q", dt))
 }

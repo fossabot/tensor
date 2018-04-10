@@ -13,7 +13,7 @@ func Merge(at, bt DType) DType {
 		return merge(at, bt, Bool, Int, Int64)
 	}
 
-	panic("core: unsupported type: " + at.String())
+	panic(NewError("core: unsupported type: %q", at))
 }
 
 func merge(at, bt DType, ts ...DType) DType {
@@ -24,7 +24,7 @@ func merge(at, bt DType, ts ...DType) DType {
 	}
 
 	if _, ok := dTypeSet[bt]; !ok {
-		panic("core: unsupported type: " + bt.String())
+		panic(NewError("core: unsupported type: %q", bt))
 	}
 
 	return bt

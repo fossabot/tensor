@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -22,7 +21,7 @@ func strAsInt(s string) int64 {
 		return 0
 	}
 
-	panic(fmt.Sprintf("core: cannot convert %q to an integer value", s))
+	panic(NewError("cannot convert %q to an integer value", s))
 }
 
 // strAsFloat converts provided string to floating point number type.
@@ -38,7 +37,7 @@ func strAsFloat(s string) float64 {
 		return 0.0
 	}
 
-	panic(fmt.Sprintf("core: cannot convert %q to a float value", s))
+	panic(NewError("cannot convert %q to a float value", s))
 }
 
 // strAsBool converts provided string to boolean type.
@@ -51,5 +50,5 @@ func strAsBool(s string) bool {
 		return f != 0.0
 	}
 
-	panic(fmt.Sprintf("core: cannot convert %q to a boolean value", s))
+	panic(NewError("cannot convert %q to a boolean value", s))
 }

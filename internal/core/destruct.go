@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"unsafe"
 )
 
@@ -19,5 +18,5 @@ func Destruct(v interface{}) (DType, unsafe.Pointer) {
 		return String, unsafe.Pointer(&v)
 	}
 
-	panic(fmt.Sprintf("core: unsupported type: %T", v))
+	panic(NewError("core: unsupported type: %T", v))
 }

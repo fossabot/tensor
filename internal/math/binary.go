@@ -47,9 +47,13 @@ func binaryRawEach(db, lb, rb *core.Buffer, fn BinaryFunc) {
 // and right buffers. Each element is found by their indexes using destination
 // index indices.
 func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *core.Buffer, fn BinaryFunc) {
-	dstAt, leftAt, rightAt := db.At(), lb.At(), rb.At()
+	var (
+		diAt, liAt, riAt = di.At(), li.At(), ri.At()
+		dbAt, lbAt, rbAt = db.At(), lb.At(), rb.At()
+	)
+
 	di.Iterate(func(pos []int) {
-		fn(dstAt(di.At(pos)), leftAt(li.At(pos)), rightAt(ri.At(pos)))
+		fn(dbAt(diAt(pos)), lbAt(liAt(pos)), rbAt(riAt(pos)))
 	})
 }
 
@@ -108,5 +112,5 @@ func binaryConvert(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) Bin
 		}
 	}
 
-	panic("core: unsupported destination type: " + ddt.String())
+	panic(core.NewError("unsupported destination type: %q", ddt))
 }

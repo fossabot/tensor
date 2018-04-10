@@ -1,5 +1,7 @@
 package index
 
+import "github.com/ppknap/tacvs/internal/core"
+
 // IdxScheme defines the order of dimmensions in continuos memory.
 type IdxScheme Flags
 
@@ -16,7 +18,7 @@ func (s IdxScheme) Strides(shape []int) []int {
 		return f(shape)
 	}
 
-	panic("index: invalid strided indexing scheme")
+	panic(core.NewError("invalid strided indexing scheme"))
 }
 
 var schemeFuncs = map[IdxScheme]func([]int) []int{
