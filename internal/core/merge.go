@@ -1,22 +1,22 @@
 package core
 
-// Merge selects the best type that could represent both arguments.
-func Merge(at, bt DType) DType {
+// Promote selects the best type that could represent both arguments.
+func Promote(at, bt DType) DType {
 	switch at {
 	case Bool:
-		return merge(at, bt)
+		return promote(at, bt)
 	case Int:
-		return merge(at, bt, Bool)
+		return promote(at, bt, Bool)
 	case Int64:
-		return merge(at, bt, Bool, Int)
+		return promote(at, bt, Bool, Int)
 	case String:
-		return merge(at, bt, Bool, Int, Int64)
+		return promote(at, bt, Bool, Int, Int64)
 	}
 
 	panic(NewError("core: unsupported type: %q", at))
 }
 
-func merge(at, bt DType, ts ...DType) DType {
+func promote(at, bt DType, ts ...DType) DType {
 	for _, t := range ts {
 		if t == bt {
 			return at

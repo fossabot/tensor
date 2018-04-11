@@ -70,7 +70,7 @@ func (d *Delegate) Add(a, b *Tensor) (dst *Tensor) {
 	var shape = math.EWArgShape(a.idx, b.idx)
 
 	if dst = d.dst; dst == nil {
-		dst = New(shape...).AsType(core.Merge(a.DType(), b.DType()))
+		dst = New(shape...).AsType(core.Promote(a.DType(), b.DType()))
 	} else if ds := dst.Shape(); !index.EqShape(ds, shape) {
 		panic(core.NewError("invalid dst shape %v for %v", ds, shape))
 	}
