@@ -2,6 +2,8 @@ package index
 
 import (
 	"fmt"
+
+	"github.com/ppknap/tacvs/internal/core"
 )
 
 // Index represents an N-dimensional view on one dimensional array. It does not
@@ -18,6 +20,12 @@ type Index struct {
 func NewIndex(shape []int, scheme IdxScheme) *Index {
 	if scheme == 0 {
 		scheme = IdxSchemeColMajor
+	}
+
+	for i := range shape {
+		if shape[i] < 0 {
+			panic(core.NewError("invalid shape %v", shape))
+		}
 	}
 
 	return &Index{
