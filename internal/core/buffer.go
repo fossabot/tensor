@@ -5,12 +5,18 @@ import (
 	"unsafe"
 )
 
+// DefaultBufferDType is a default type used by buffer type when its data type
+// was not set explicitly.
+const DefaultBufferDType = Int64
+
 // Buffer stores a set of data elements. Its size is predefined thus, it is like
 // constant size array that can store objects of different type. The ones that
 // do not include pointers are stored in contiguous memory segment. This
 // property, and the fact that only one type is allowed at a time, makes Buffer
 // different from a slice of empty interfaces. Dynamic types are kept indirectly
 // by storing their unsafe pointers in a dedicated slice.
+//
+// If buffer type is not  set explicitly, it defaults to DefaultBufferDType.
 type Buffer struct {
 	n    int
 	data []byte
@@ -30,10 +36,22 @@ func (b *Buffer) Size() int { return b.n }
 
 // NBytes returns the number of bytes used to store buffer's data. For dynamic
 // types only the object pointer size is counted.
-func (b *Buffer) NBytes() int { return b.Size() * int(b.typ.Size()) }
+func (b *Buffer) NBytes() int {
+	if b.typ == 0 {
+		return b.Size() * int(DefaultBufferDType.Size())
+	}
+
+	return b.Size() * int(b.typ.Size())
+}
 
 // DType returns the underlying buffer's data type.
-func (b *Buffer) DType() DType { return b.typ }
+func (b *Buffer) DType() DType {
+	if b.typ == 0 {
+		return DefaultBufferDType
+	}
+
+	return b.typ
+}
 
 // Setval sets interface value to a given position in the buffer. Conversion
 // between types may occur when v and buffer types differ.
@@ -49,6 +67,8 @@ func (b *Buffer) Setval() func(int, interface{}) {
 // Setptr sets value under p to a given position in a buffer. Conversion might
 // happen when types differ.
 func (b *Buffer) Setptr() func(int, DType, unsafe.Pointer) {
+	b.init()
+
 	if !b.typ.IsDynamic() {
 		atFunc := b.At()
 		return func(i int, typ DType, p unsafe.Pointer) {
@@ -65,6 +85,8 @@ func (b *Buffer) Setptr() func(int, DType, unsafe.Pointer) {
 // provided to created function will result in a first buffer's element
 // returned. This logic simplifies access operation to scalars.
 func (b *Buffer) At() func(int) unsafe.Pointer {
+	b.init()
+
 	if b.Size() == 1 {
 		if b.typ.IsDynamic() {
 			return func(int) unsafe.Pointer { return b.pts[0] }
@@ -86,6 +108,8 @@ func (b *Buffer) At() func(int) unsafe.Pointer {
 
 // Iterate calls f on each element stored in the buffer.
 func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {
+	b.init()
+
 	size := uintptr(b.Size())
 
 	p := unsafe.Pointer(&b.data[0])
@@ -102,6 +126,8 @@ func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {
 // String satisfies fmt.Stringer interface. It produces the same results as the
 // specific type slices would produce with default formatting.
 func (b *Buffer) String() string {
+	b.init()
+
 	vs, scf := []string(nil), b.typ.AsStringFunc()
 
 	b.Iterate(func(_ int, p unsafe.Pointer) {
@@ -207,4 +233,10 @@ func (b *Buffer) AsType(typ DType) *Buffer {
 	b.typ = typ
 
 	return b
+}
+
+func (b *Buffer) init() {
+	if b.typ == 0 {
+		b.AsType(DefaultBufferDType)
+	}
 }

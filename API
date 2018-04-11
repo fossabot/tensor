@@ -26,8 +26,8 @@ API:
 
   (D) - package level functions. They **ALWAYS** create a new Tensor. Operations
         at this level **MAY** change Tensor shape.
-    [ o] - tensor.New(shape ...int) *Tensor // tensor constructor.
-    [  ] - tensor.NewScalar(val complex128) *Tensor // 0-rank tensor ctor.
+    [x] - tensor.New(shape ...int) *Tensor // tensor constructor.
+    [  ] - tensor.NewScalar(val interface{}) *Tensor // 0-rank tensor ctor.
     [ +] - tensor.NewDelegate(dst *Tensor) *Delegate // delegate operation
            // result to dst.
     [  ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
@@ -49,7 +49,7 @@ API:
   (E) - object level methods. If operation changes the Tensor, it **MUST**
         modify Tensor data buffer in place. (*)
     [  ] - t.NDim() int // rank, num dimensions, num axes.
-    [  ] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
+    [ +] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
     [  ] - t.Size() int // total number of elements.
     [  ] - t.Data() []byte // data buffer. Owner buffer for views.
     [  ] - t.Owner() bool // true for `owners`.
@@ -146,7 +146,7 @@ Multitype feature:
     [  ] - Object DType  = 11 // ? bytes.
 
   (E) - object level methods.
-    [  ] - t.AsType(k DType) // convert Tensor internal data type.
+    [ +] - t.AsType(k DType) // convert Tensor internal data type.
     [  ] - t.Bool() bool // get t as boolean value. (@)
     [  ] - t.Byte() byte // get t to byte value. (@)
     [  ] - t.Int() int // get t to signed 64-bit integer. (@)
@@ -155,7 +155,7 @@ Multitype feature:
     [  ] - t.String() string // get t to string value.
     [  ] - t.Object() interface{} // get t as Go empty interface. (@)
 
-  (@) - tensor **MUST** be 0 rank (scalar).
+  (@) - tensor **MUST** be of size 1 (scalar).
 
 Future features:
 [  ] - txtfmt package: custom display options for I/O formatting.
