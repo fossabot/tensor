@@ -7,30 +7,6 @@ import (
 	"github.com/ppknap/tacvs"
 )
 
-func TestTensorInitializationPanic(t *testing.T) {
-	tests := map[string]struct {
-		Init func()
-	}{
-		"negative axis size": {
-			Init: func() {
-				_ = tacvs.NewTensor(3, -2)
-			},
-		},
-	}
-
-	for name, test := range tests {
-		t.Run(name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("test should have panicked, but it did not")
-				}
-			}()
-
-			test.Init()
-		})
-	}
-}
-
 func TestTensorIndexing(t *testing.T) {
 	tests := []struct {
 		Tensor *tacvs.Tensor

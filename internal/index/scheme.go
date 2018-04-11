@@ -52,5 +52,5 @@ func (s IdxScheme) String() string {
 }
 
 var schemeNames = map[IdxScheme]string{
-	IdxSchemeColMajor: "column-major",
+	IdxSchemeColMajor: "column-major (F)",
 }

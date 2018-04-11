@@ -15,6 +15,7 @@ type Tensor struct {
 	buf *core.Buffer
 }
 
+// New creates a new tensor with a given shape. Empty shape creates a scalar.
 func New(shape ...int) *Tensor {
 	return nil
 }
