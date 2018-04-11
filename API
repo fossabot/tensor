@@ -34,11 +34,11 @@ API:
            // compare two tensors and return the result as a new one. (+)($)
     [ +] - tensor.Add(a, b *Tensor) *Tensor // return a new Tensor that stores
            a+b. (+)($)
-    [  ] - tensor.Sub(a, b *Tensor) *Tensor // return a new Tensor that stores
+    [  ] - tensor.Subtract(a, b *Tensor) *Tensor // return a new Tensor that stores
            a-b. (+)($)
-    [  ] - tensor.Mul(a, b *Tensor) *Tensor // return a new Tensor that stores
+    [  ] - tensor.Multiply(a, b *Tensor) *Tensor // return a new Tensor that stores
            element-wise a*b. (+)($)
-    [  ] - tensor.Div(a, b *Tensor) *Tensor // return a new Tensor that stores
+    [  ] - tensor.Divide(a, b *Tensor) *Tensor // return a new Tensor that stores
            element-wise a/b. (+)($)
     [ o] - tensor.Dot(a, b *Tensor) *Tensor // return a new Tensor that stores
            dot product of a and b. Tensor shapes must follow dot product dim
@@ -48,24 +48,27 @@ API:
 
   (E) - object level methods. If operation changes the Tensor, it **MUST**
         modify Tensor data buffer in place. (*)
-    [  ] - t.NDim() int // rank, num dimensions, num axes.
-    [ +] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
-    [  ] - t.Size() int // total number of elements.
-    [  ] - t.Data() []byte // data buffer. Owner buffer for views.
-    [  ] - t.Owner() bool // true for `owners`.
-    [ +] - t.Delegate() *Delegate // create delegate to self.
-    [  ] - t.Base() *Tensor // non-nil for views.
-    [  ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
-    [  ] - t.FillBuf(data []byte) *Tensor // set data buffer. Panics if not
+    [. ] - t.NDim() int // rank, num dimensions, num axes.
+    [.+] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
+    [. ] - t.Strides() []int // elements to step in each dimension.
+    [. ] - t.Size() int // total number of elements.
+    [. ] - t.Data() []byte // data buffer. Owner buffer for views.
+    [. ] - t.Owner() bool // true for `owners`.
+    [. ] - t.NBytes() int // n bytes consumed by array buffer.
+    [.+] - t.Delegate() *Delegate // create delegate to self.
+    [. ] - t.Base() *Tensor // returns view's owner.
+    [. ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
+    [. ] - t.FillBuf(data []interface{}) *Tensor // set data buffer. Panics if not
           `owner`.
-    [  ] - t.Each(f func(t *Tensor)) *Tensor // iterates over each element.
+    [. ] - t.Each(f func(pos []int, t *Tensor)) *Tensor // iterates over each element.
     [  ] - t.Zeros() *Tensor // fill with 0 values.
     [  ] - t.Ones() *Tensor // fill with 1 values.
+    [  ] - t.Fill(v *Tensor) // fill with a scalar value.
     [  ] - t.Arange(start, step complex128) *Tensor // fill from start to end
            increasing by step.
     [  ] - t.Linspace(start, end complex128) *Tensor // fill from start to end
            increasing by constant step.
-    [  ] - t.Pow(v complex128) *Tensor // store element-wise t^v in t and return t.
+    [  ] - t.Power(v complex128) *Tensor // store element-wise t^v in t and return t.
     [  ] - t.Sqrt() *Tensor // store element-wise t^0.5 in t and return t.
     [  ] - t.Sin() *Tensor // store element-wise sin(t) in t and return t.
     [  ] - t.Exp() *Tensor // store element-wise e^t in t and return t.
@@ -75,9 +78,9 @@ API:
     [  ] - t.Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor //
            compare with u tensor and store the result in t. (+)($)
     [ o] - t.Add(u *Tensor) *Tensor // element-wise t+u -> t and return t. (+)($)
-    [  ] - t.Sub(u *Tensor) *Tensor // element-wise t-u -> t and return t. (+)($)
-    [  ] - t.Mul(u *Tensor) *Tensor // element-wise t*u -> t and return t. (+)($)
-    [  ] - t.Div(u *Tensor) *Tensor // element-wise t/u -> t and return t. (+)($)
+    [  ] - t.Subtract(u *Tensor) *Tensor // element-wise t-u -> t and return t. (+)($)
+    [  ] - t.Multiply(u *Tensor) *Tensor // element-wise t*u -> t and return t. (+)($)
+    [  ] - t.Divide(u *Tensor) *Tensor // element-wise t/u -> t and return t. (+)($)
     [  ] - t.Dot(u *Tensor) *Tensor // dot product of t (o) u -> t return t. (^)
     [  ] - t.Sum() *Tensor // sum of all tensor elements. (+)
     [  ] - t.Max() *Tensor // minimum of all tensor elements. (+)
@@ -88,7 +91,6 @@ API:
     [  ] - t.Re() *Tensor // remove imaginary part from tensor.
     [  ] - t.Im() *Tensor // remove real part from tensor.
     [  ] - t.T() *Tensor // transpose t. (+)
-    [  ] - t.Inv() *Tensor // inverse t^(-1) of t. (#)(+)
     [ o] - t.Eye() *Tensor // 1s on diagonal, 0s elsewhere. (+)
     [  ] - t.Trace() *Tensor // sum diag elements. (+)
     [ +] - t.At(idx ...int) *Tensor // get scalar from tensor index. (+)
@@ -146,7 +148,8 @@ Multitype feature:
     [  ] - Object DType  = 11 // ? bytes.
 
   (E) - object level methods.
-    [ +] - t.AsType(k DType) // convert Tensor internal data type.
+    [.+] - t.AsType(k DType) // convert Tensor internal data type.
+    [. ] - t.DType() DType // get tensor data type.
     [  ] - t.Bool() bool // get t as boolean value. (@)
     [  ] - t.Byte() byte // get t to byte value. (@)
     [  ] - t.Int() int // get t to signed 64-bit integer. (@)

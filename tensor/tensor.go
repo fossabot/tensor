@@ -3,8 +3,6 @@ package tensor
 import (
 	"fmt"
 
-	"github.com/ppknap/tacvs/dtype"
-
 	"github.com/ppknap/tacvs/internal/core"
 	"github.com/ppknap/tacvs/internal/index"
 	"github.com/ppknap/tacvs/internal/math"
@@ -25,18 +23,6 @@ func New(shape ...int) *Tensor {
 	}
 }
 
-func (t *Tensor) AsType(typ dtype.DType) *Tensor {
-	return t
-}
-
-func (t *Tensor) DType() dtype.DType {
-	return t.buf.DType()
-}
-
-func (t *Tensor) Shape() []int {
-	return t.idx.Shape()
-}
-
 func (t *Tensor) At(pos ...int) *Tensor {
 	if !t.idx.Validate(pos) {
 		panic(fmt.Sprintf("tensor: invalid position %v for %v", pos, t.idx))
@@ -46,6 +32,11 @@ func (t *Tensor) At(pos ...int) *Tensor {
 		idx: t.idx.Scalar(pos),
 		buf: t.buf,
 	}
+}
+
+// Each TODO.
+func Each(f func(t *Tensor)) *Tensor {
+	return nil
 }
 
 func (t *Tensor) View() *Tensor {

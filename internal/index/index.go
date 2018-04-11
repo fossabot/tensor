@@ -22,6 +22,12 @@ func NewIndex(shape []int, scheme IdxScheme) *Index {
 		scheme = IdxSchemeColMajor
 	}
 
+	// Shape with no length is treated as scalar.
+	if len(shape) == 0 {
+		shape = nil
+	}
+
+	// Negative axes are not allowed.
 	for i := range shape {
 		if shape[i] < 0 {
 			panic(core.NewError("invalid shape %v", shape))
