@@ -9,7 +9,7 @@ import (
 // to succeed. It panics when such operation is not possible.
 func EWArgShape(li, ri *index.Index) (shape []int) {
 	switch lsz, rsz := li.Size(), ri.Size(); {
-	case lsz > 1 && rsz > 1 && index.IsSameShape(li, ri):
+	case lsz > 1 && rsz > 1 && li.EqShape(ri):
 		// Higher rank tensors operation. Only equal shapes are allowed.
 		return li.Shape()
 	case lsz == 1 && rsz == 1:

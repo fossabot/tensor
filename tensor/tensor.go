@@ -3,13 +3,32 @@ package tensor
 import (
 	"fmt"
 
+	"github.com/ppknap/tacvs/dtype"
+
 	"github.com/ppknap/tacvs/internal/core"
 	"github.com/ppknap/tacvs/internal/index"
+	"github.com/ppknap/tacvs/internal/math"
 )
 
 type Tensor struct {
 	idx *index.Index
 	buf *core.Buffer
+}
+
+func New(shape ...int) *Tensor {
+	return nil
+}
+
+func (t *Tensor) AsType(typ dtype.DType) *Tensor {
+	return t
+}
+
+func (t *Tensor) DType() dtype.DType {
+	return t.buf.DType()
+}
+
+func (t *Tensor) Shape() []int {
+	return t.idx.Shape()
 }
 
 func (t *Tensor) At(pos ...int) *Tensor {
@@ -24,7 +43,7 @@ func (t *Tensor) At(pos ...int) *Tensor {
 }
 
 func (t *Tensor) View() *Tensor {
-	if t.idx != nil && t.idx.IsView() {
+	if t.idx != nil && t.idx.Flags().IsView() {
 		return t
 	}
 
@@ -46,14 +65,22 @@ func NewDelegate(dst *Tensor) *Delegate {
 	return &Delegate{dst: dst}
 }
 
-func (d *Delegate) Add(a, b *Tensor) *Tensor {
+func (d *Delegate) Add(a, b *Tensor) (dst *Tensor) {
 	if a == nil || b == nil {
-		panic("tensor: nil argument provided")
+		panic(core.NewError("nil argument provided"))
 	}
 
-	//	var dst = a
-	//	math.Binary()
-	return nil
+	var shape = math.EWArgShape(a.idx, b.idx)
+
+	if dst = d.dst; dst == nil {
+		dst = New(shape...).AsType(core.Merge(a.DType(), b.DType()))
+	} else if ds := dst.Shape(); !index.EqShape(ds, shape) {
+		panic(core.NewError("invalid dst shape %v for %v", ds, shape))
+	}
+
+	math.Binary(dst.idx, a.idx, b.idx, dst.buf, a.buf, b.buf, math.Add)
+
+	return dst
 }
 
 // View

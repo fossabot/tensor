@@ -92,6 +92,11 @@ func (idx *Index) Flags() Flags {
 	return idx.flags
 }
 
+// EqShape returns true when shapes of provided indexes are identical.
+func (idx *Index) EqShape(b *Index) bool {
+	return EqShape(idx.shape, b.shape)
+}
+
 // Iterate walks over N-dimensional index calling f with every possible indices.
 // Slice given as function argument is reused by iterator logic and must not be
 // modified. The last dimmension is iterated over first.

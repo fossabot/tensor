@@ -1,13 +1,13 @@
 package index
 
-// IsSameShape returns true when shapes of provided indexes are identical.
-func IsSameShape(ai, bi *Index) bool {
-	if len(ai.shape) != len(bi.shape) {
+// EqShape returns true when provided shapes are identical.
+func EqShape(ai, bi []int) bool {
+	if len(ai) != len(bi) {
 		return false
 	}
 
-	for i := range ai.shape {
-		if ai.shape[i] != bi.shape[i] {
+	for i := range ai {
+		if ai[i] != bi[i] {
 			return false
 		}
 	}
