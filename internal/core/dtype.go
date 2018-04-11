@@ -29,13 +29,18 @@ func (dt DType) Size() uintptr { return uintptr(dt >> 32) }
 // IsDynamic returns true when data type does not own all its data.
 func (dt DType) IsDynamic() bool { return dt&flagDynamic != 0 }
 
-// String returns the type name.
-func (dt DType) String() string {
+// Name returns the name of called data type.
+func (dt DType) Name() string {
 	if name, ok := dTypeNames[dt]; ok {
 		return name
 	}
 
 	return fmt.Sprintf("unknown(%x)", uint64(dt))
+}
+
+// String satisfies fmt.Stringer interface. It behaves like Name method.
+func (dt DType) String() string {
+	return dt.Name()
 }
 
 var dTypeNames = map[DType]string{
