@@ -17,7 +17,12 @@ type Tensor struct {
 
 // New creates a new tensor with a given shape. Empty shape creates a scalar.
 func New(shape ...int) *Tensor {
-	return nil
+	var idx = index.NewIndex(shape, 0)
+
+	return &Tensor{
+		idx: idx,
+		buf: core.NewBuffer(idx.Size()),
+	}
 }
 
 func (t *Tensor) AsType(typ dtype.DType) *Tensor {
