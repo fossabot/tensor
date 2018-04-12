@@ -12,156 +12,138 @@ Forms:
 [x] - `owner` - tensor that owns data buffer.
 [x] - `view` - "pointer" to data owner Tensor or another view.
 
-API:
-  (A) - package level types.
-    [ +] - type Delegate struct { ... }
-    [ +] - type Tensor struct {...}
-    [  ] - type TensorSlice []*Tensor
+API (tensor):
+ "tensor.go":
+  [+] - type Tensor struct {...}
+  [x] - tensor.New(shape ...int) *Tensor
+  [ ] - tensor.NewScalar(v interface{}) *Tensor
+ "delegate.go":
+  [+] - type Delegate struct {...}
+  [+] - tensor.NewDelegate(dst *Tensor) *Delegate
+  [+] - (*Tensor) Delegate() *Delegate
+  [ ] - (*Delegate) Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
+  [+] - (*Delegate) Add(a, b *Tensor) *Tensor
+  [ ] - (*Delegate) Subtract(a, b *Tensor) *Tensor
+  [ ] - (*Delegate) Multiply(a, b *Tensor) *Tensor
+  [ ] - (*Delegate) Divide(a, b *Tensor) *Tensor
+  [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor
+  [ ] - (*Delegate) Maximum(TODO) *Tensor
+  [ ] - (*Delegate) Minimum(TODO) *Tensor
+ "layout.go":
+  [ ] - (*Tensor) NDim() int
+  [ ] - (*Tensor) Shape() []int
+  [ ] - (*Tensor) Strides() []int
+  [ ] - (*Tensor) Size() int
+  [ ] - (*Tensor) Data() []byte
+  [ ] - (*Tensor) Owner() bool
+  [ ] - (*Tensor) NBytes()
+  [ ] - (*Tensor) Base()
+  [ ] - (*Tensor) FillBuf(data []interface{}) *Tensor
+  [ ] - (*Tensor) DType() dtype.DType
+ "conv.go":
+  [ ] - (*Tensor) Copy() *Tensor
+  [ ] - (*Tensor) View() *Tensor
+  [ ] - (*Tensor) AsType(dt DType) *Tensor
+  [ ] - (*Tensor) Bool() bool
+  [ ] - (*Tensor) Byte() byte
+  [ ] - (*Tensor) Int() int
+  [ ] - (*Tensor) Float() float64
+  [ ] - (*Tensor) Cmplx() complex128
+  [ ] - (*Tensor) String() string
+  [ ] - (*Tensor) Object() interface{}
+ "format.go":
+  [ ] - var PrintElementsThreshold = 8
+  [ ] - (*Tensor) String() string
+ "fill.go":
+  [ ] - (*Tensor) Zeros() *Tensor
+  [ ] - (*Tensor) Ones() *Tensor
+  [ ] - (*Tensor) Full(v *Tensor)
+  [ ] - (*Tensor) Arange(start, step *Tensor) *Tensor
+  [ ] - (*Tensor) Linspace(start, end *Tensor) *Tensor
+  [ ] - (*Tensor) Eye() *Tensor
+ "shape.go":
+  [ ] - (*Tensor) Ravel() *Tensor
+  [ ] - (*Tensor) T() *Tensor
+  [ ] - (*Tensor) Transpose() *Tensor
+  [ ] - (*Tensor) H() *Tensor
+  [ ] - (*Tensor) t.Destruct() []*Tensor
+  [ ] - (*Tensor) Split(dim int) []*Tensor
+  [ ] - (*Tensor) Slice(dim, from int, to ...int) *Tensor
+  [ ] - (*Tensor) Reshape(shape ...int) *Tensor
+  [ ] - (*Tensor) Resize(shape ...int) *Tensor
+ "elements.go":
+  [ ] - (*Tensor) Each(f func(pos []int, t *Tensor)) *Tensor
+  [ ] - (*Tensor) ItemAt(idx ...int) *Tensor
+  [ ] - (*Tensor) ItemSet(v *Tensor, idx ...int) *Tensor
+ "arith.go":
+  [ ] - (*Tensor) Add(u *Tensor) *Tensor
+  [ ] - (*Tensor) Subtract(u *Tensor) *Tensor
+  [ ] - (*Tensor) Multiply(u *Tensor) *Tensor
+  [ ] - (*Tensor) Divide(u *Tensor) *Tensor
+  [ ] - (*Tensor) Negative() *Tensor
+  [ ] - (*Tensor) Mod(TODO) *Tensor
+  [ ] - (*Tensor) FMod(TODO) *Tensor
+ "logic.go":
+  [ ] - (*Tensor) Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor
+  [ ] - (*Tensor) SameAs(u *Tensor) bool
+  [ ] - (*Tensor) Equal(TODO) *Tensor
+  [ ] - (*Tensor) Less(TODO) *Tensor
+  [ ] - (*Tensor) All() bool
+  [ ] - (*Tensor) Any() bool
+ "trigono.go":
+  [ ] - (*Tensor) Sin() *Tensor
+  [ ] - (*Tensor) Cos() *Tensor
+  [ ] - (*Tensor) Tan() *Tensor
+ "stat.go":
+  [ ] - (*Tensor) Min() *Tensor
+  [ ] - (*Tensor) Minimum() *Tensor
+  [ ] - (*Tensor) Max() *Tensor
+  [ ] - (*Tensor) Maximum *Tensor
+  [ ] - (*Tensor) Mean() TODO
+  [ ] - (*Tensor) Median() TODO
+  [ ] - (*Tensor) Std() TODO
+  [ ] - (*Tensor) CorrCoef() TODO
+ "sort.go":
+  [ ] - (*Tensor) Sort() TODO
+ "random.go":
+  [ ] - (*Tensor) Random() TODO
+ "explog.go":
+  [ ] - (*Tensor) Exp() *Tensor
+  [ ] - (*Tensor) Power(v *Tensor) *Tensor
+  [ ] - (*Tensor) Sqrt() *Tensor
+  [ ] - (*Tensor) Log() *Tensor
+  [ ] - (*Tensor) Log10() *Tensor
+ "cmplx.go":
+  [ ] - (*Tensor) Re() *Tensor
+  [ ] - (*Tensor) Im() *Tensor
+ linalg.go":
+  [ ] - (*Tensor) Dot(u *Tensor) *Tensor
+  [ ] - (*Tensor) Diag() *Tensor
+  [ ] - (*Tensor) DiagFlat() *Tensor
+  [ ] - (*Tensor) Trace() *Tensor
+ "prodsum.go"
+  [ ] - (*Tensor) Prod() *Tensor
+  [ ] - (*Tensor) Sum() *Tensor
+  [ ] - (*Tensor) CumSum() *Tensor
 
-  (B) - package level constants.
+API (dtype):
+ "dtype.go":
+  [x] - type DType = core.DType
+  [x] - const Bool = core.Bool
+  [ ] - const Byte = core.Byte
+  [x] - const Int = core.Int
+  [ ] - const Int32 = core.Int32
+  [x] - const Int64 = core.Int64
+  [ ] - const UInt32 = core.UInt32
+  [ ] - const UInt64 = core.UInt64
+  [ ] - const Float32 = core.Float32
+  [ ] - const Float64 = core.Float64
+  [ ] - const Cmplx = core.Cmplx
+  [x] - const String = core.String
+  [ ] - const Object = core.Object
 
-  (C) - package level values.
-    [  ] - PrintElementsThreshold = 8 // Number of printed Tensor elements.
-           Negative value means unlimited.
-
-  (D) - package level functions. They **ALWAYS** create a new Tensor. Operations
-        at this level **MAY** change Tensor shape.
-    [x] - tensor.New(shape ...int) *Tensor // tensor constructor.
-    [  ] - tensor.NewScalar(val interface{}) *Tensor // 0-rank tensor ctor.
-    [ +] - tensor.NewDelegate(dst *Tensor) *Delegate // delegate operation
-           // result to dst.
-    [  ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
-           // compare two tensors and return the result as a new one. (+)($)
-    [ +] - tensor.Add(a, b *Tensor) *Tensor // return a new Tensor that stores
-           a+b. (+)($)
-    [  ] - tensor.Subtract(a, b *Tensor) *Tensor // return a new Tensor that stores
-           a-b. (+)($)
-    [  ] - tensor.Multiply(a, b *Tensor) *Tensor // return a new Tensor that stores
-           element-wise a*b. (+)($)
-    [  ] - tensor.Divide(a, b *Tensor) *Tensor // return a new Tensor that stores
-           element-wise a/b. (+)($)
-    [ o] - tensor.Dot(a, b *Tensor) *Tensor // return a new Tensor that stores
-           dot product of a and b. Tensor shapes must follow dot product dim
-           rules.
-    [  ] - tensor.Resize(t *Tensor, shape ...int) // return a new Tensor that
-           stores copies of t - either repeated or truncated to match new shape.
-
-  (E) - object level methods. If operation changes the Tensor, it **MUST**
-        modify Tensor data buffer in place. (*)
-    [. ] - t.NDim() int // rank, num dimensions, num axes.
-    [.+] - t.Shape() []int // exact dimensions of tensor: len(t.Shape()) == t.NDim().
-    [. ] - t.Strides() []int // elements to step in each dimension.
-    [. ] - t.Size() int // total number of elements.
-    [. ] - t.Data() []byte // data buffer. Owner buffer for views.
-    [. ] - t.Owner() bool // true for `owners`.
-    [. ] - t.NBytes() int // n bytes consumed by array buffer.
-    [.+] - t.Delegate() *Delegate // create delegate to self.
-    [. ] - t.Base() *Tensor // returns view's owner.
-    [. ] - t.Reshape(shape ...int) *Tensor // reshape tensor. Panics if (*).
-    [. ] - t.FillBuf(data []interface{}) *Tensor // set data buffer. Panics if not
-          `owner`.
-    [. ] - t.Each(f func(pos []int, t *Tensor)) *Tensor // iterates over each element.
-    [  ] - t.Zeros() *Tensor // fill with 0 values.
-    [  ] - t.Ones() *Tensor // fill with 1 values.
-    [  ] - t.Fill(v *Tensor) // fill with a scalar value.
-    [  ] - t.Arange(start, step complex128) *Tensor // fill from start to end
-           increasing by step.
-    [  ] - t.Linspace(start, end complex128) *Tensor // fill from start to end
-           increasing by constant step.
-    [  ] - t.Power(v complex128) *Tensor // store element-wise t^v in t and return t.
-    [  ] - t.Sqrt() *Tensor // store element-wise t^0.5 in t and return t.
-    [  ] - t.Sin() *Tensor // store element-wise sin(t) in t and return t.
-    [  ] - t.Exp() *Tensor // store element-wise e^t in t and return t.
-    [  ] - t.String() string // display formatted tensor. First dimension is
-           horizontal. Non ASCII characters are not used.
-    [ o] - t.Copy() *Tensor // create a copy of t. Return value is the `owner`.
-    [  ] - t.Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor //
-           compare with u tensor and store the result in t. (+)($)
-    [ o] - t.Add(u *Tensor) *Tensor // element-wise t+u -> t and return t. (+)($)
-    [  ] - t.Subtract(u *Tensor) *Tensor // element-wise t-u -> t and return t. (+)($)
-    [  ] - t.Multiply(u *Tensor) *Tensor // element-wise t*u -> t and return t. (+)($)
-    [  ] - t.Divide(u *Tensor) *Tensor // element-wise t/u -> t and return t. (+)($)
-    [  ] - t.Dot(u *Tensor) *Tensor // dot product of t (o) u -> t return t. (^)
-    [  ] - t.Sum() *Tensor // sum of all tensor elements. (+)
-    [  ] - t.Max() *Tensor // minimum of all tensor elements. (+)
-    [  ] - t.Min() *Tensor // maximum of all tensor elements. (+)
-    [  ] - t.CumSum() *Tensor // cumulative sum of all tensor elements. (+)
-    [  ] - t.Ravel() *Tensor // flatten tensor to 1 dim with t.Size() size.
-    [  ] - t.Random(source rand.Source) *Tensor // fill t with random values.
-    [  ] - t.Re() *Tensor // remove imaginary part from tensor.
-    [  ] - t.Im() *Tensor // remove real part from tensor.
-    [  ] - t.T() *Tensor // transpose t. (+)
-    [ o] - t.Eye() *Tensor // 1s on diagonal, 0s elsewhere. (+)
-    [  ] - t.Trace() *Tensor // sum diag elements. (+)
-    [ +] - t.At(idx ...int) *Tensor // get scalar from tensor index. (+)
-
-  (F) - views creation methods. They **MUST NOT** modify called Tensor. Instead,
-        they **MUST** return Tensor view or a slice of Tensor views. Views
-        **MUST** be supported by function from (D), (E), (F).
-    [ +] - t.View() *Tensor // crate a view of entire t.
-    [  ] - t.Slice(dim, from int, to ...int) *Tensor // create a view over a
-           subset of t.
-    [  ] - t.Destruct() TensorSlice // create a view on each element.
-    [  ] - t.Split(dim int) TensorSlice // split along given axis.
-
-  (G) - tensor slice methods. They **MUST** return a new tensor or fill
-        delegated one.
-    [  ] - ts.VStack() *Tensor // stack tensors along their first axis.
-    [  ] - ts.HStack() *Tensor // stack tensors along their second axis.
-
-  (H) - delegate methods.
-    [  ] - d.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
-           // compare two tensors and save the result to delegated one. (+)($)
-    [ +] - d.Add(a, b *Tensor) *Tensor // store in delegated tensor a+b. (+)($)
-    [  ] - d.Sub(a, b *Tensor) *Tensor // store in delegated tensor a-b. (+)($)
-    [  ] - d.Mul(a, b *Tensor) *Tensor // store in delegated tensor a*b. (+)($)
-    [  ] - d.Div(a, b *Tensor) *Tensor // store in delegated tensor a/b. (+)($)
-    [ o] - d.Dot(a, b *Tensor) *Tensor // store in delegated tensor a dot
-           product of a and b. Tensor shapes must follow dot product dim rules.
-    [  ] - d.Resize(t *Tensor, shape ...int) *Tensor // save in delegated tensor
-           a copy of t - either repeated or truncated to match new shape.
-
-  (*) - operation **MUST NOT** change Tensor size.
-  (+) - operation **MUST** support scalars.
-  ($) - operation **MUST** panic when tensors have different shape.
-  (^) - tensor shapes and dimensions **MUST** be equal.
-  (#) - tensor must be squared.
-
-Multitype feature:
-[  ] - dtype package: custom type instead of complex128.
-  (A) - package level types.
-    [  ] - type DType uint
-    [  ] - type Value interface{}
-
-  (B) - package level constants.
-    [  ] - Invalid DType = 0  // 0 bytes.
-    [  ] - Bool DType    = 1  // 1 byte signed.
-    [  ] - Byte DType    = 2  // 1 byte unsigned.
-    [  ] - Int32 DType   = 3  // 4 byte signed.
-    [  ] - Int64 DType   = 4  // 8 byte signed.
-    [  ] - UInt32 DType  = 5  // 4 byte unsigned.
-    [  ] - UInt64 DType  = 6  // 8 byte unsigned.
-    [  ] - Float32 DType = 7  // 4 bytes.
-    [  ] - Float64 DType = 8  // 8 bytes.
-    [  ] - Cmplx DType   = 9  // 16 bytes.
-    [  ] - String DType  = 10 // ? bytes.
-    [  ] - Object DType  = 11 // ? bytes.
-
-  (E) - object level methods.
-    [.+] - t.AsType(k DType) // convert Tensor internal data type.
-    [. ] - t.DType() DType // get tensor data type.
-    [  ] - t.Bool() bool // get t as boolean value. (@)
-    [  ] - t.Byte() byte // get t to byte value. (@)
-    [  ] - t.Int() int // get t to signed 64-bit integer. (@)
-    [  ] - t.Float() float64 // get t to std 32-bit floating point. (@)
-    [  ] - t.Cmplx() complex128 // get t to 128-bit complex value. (@)
-    [  ] - t.String() string // get t to string value.
-    [  ] - t.Object() interface{} // get t as Go empty interface. (@)
-
-  (@) - tensor **MUST** be of size 1 (scalar).
-
-Future features:
-[  ] - txtfmt package: custom display options for I/O formatting.
-[  ] - broadcasting for package level functions.
-[  ] - masks.
-[  ] - custom fields.
+Planed features:
+[ ] - txtfmt package: custom display options for I/O formatting.
+[ ] - broadcasting for package level functions.
+[ ] - masks.
+[ ] - custom fields.
