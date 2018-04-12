@@ -34,10 +34,10 @@ API (tensor):
   [ ] - (*Tensor) Shape() []int
   [ ] - (*Tensor) Strides() []int
   [ ] - (*Tensor) Size() int
-  [ ] - (*Tensor) Data() []byte
   [ ] - (*Tensor) Owner() bool
   [ ] - (*Tensor) NBytes()
   [ ] - (*Tensor) Base()
+  [ ] - (*Tensor) Data() []byte
   [ ] - (*Tensor) FillBuf(data []interface{}) *Tensor
   [ ] - (*Tensor) DType() dtype.DType
  "conv.go":
@@ -62,15 +62,15 @@ API (tensor):
   [ ] - (*Tensor) Linspace(start, end *Tensor) *Tensor
   [ ] - (*Tensor) Eye() *Tensor
  "shape.go":
-  [ ] - (*Tensor) Ravel() *Tensor
   [ ] - (*Tensor) T() *Tensor
   [ ] - (*Tensor) Transpose() *Tensor
   [ ] - (*Tensor) H() *Tensor
-  [ ] - (*Tensor) t.Destruct() []*Tensor
+  [ ] - (*Tensor) Destruct() []*Tensor
   [ ] - (*Tensor) Split(dim int) []*Tensor
   [ ] - (*Tensor) Slice(dim, from int, to ...int) *Tensor
   [ ] - (*Tensor) Reshape(shape ...int) *Tensor
   [ ] - (*Tensor) Resize(shape ...int) *Tensor
+  [ ] - (*Tensor) Ravel() *Tensor
  "elements.go":
   [ ] - (*Tensor) Each(f func(pos []int, t *Tensor)) *Tensor
   [ ] - (*Tensor) ItemAt(idx ...int) *Tensor
