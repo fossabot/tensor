@@ -6,8 +6,25 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 	"text/template"
 )
+
+func init() {
+	// Check if numpy is available in given version.
+	const numpyVer = "1.14"
+
+	switch ver, err := runPyCmd("version.version"); {
+	case ver == "":
+		panic("cannot check numpy version")
+	case err != nil:
+		panic(err)
+	case strings.HasPrefix(ver, numpyVer):
+		fmt.Printf("Numpy %s will be used to generate test cases.\n", ver)
+	default:
+		panic(fmt.Sprintf("invalid numpy version %s (want: %s)", ver, numpyVer))
+	}
+}
 
 var instances = []struct {
 	Name string // Tensor name.
@@ -54,15 +71,15 @@ type TestFull struct {
 }
 
 func generateTests(group string) (res []TestFull) {
-	methods, ok := methods[group]
-	if !ok {
-		panic("unknown test group: " + group)
-	}
+	// methods, ok := methods[group]
+	// if !ok {
+	// 	panic("unknown test group: " + group)
+	// }
 
-	for i, method := range methods {
-		tf := TestFull{Name: method.Name}
+	// for i, method := range methods {
+	// 	tf := TestFull{Name: method.Name}
 
-	}
+	// }
 
 	return res
 }
@@ -83,7 +100,7 @@ func generator() {
 	_ = methods
 }
 
-func runPyCmd(op string) string {
+func runPyCmd(op string) (string, error) {
 	var (
 		code = fmt.Sprintf("import numpy as np\nprint(np.%s)", op)
 		cmd  = exec.Command("python3", "-c", code)
@@ -93,13 +110,13 @@ func runPyCmd(op string) string {
 	if err != nil {
 		_, ok := err.(*exec.ExitError)
 		if ok && !bytes.Contains(out, []byte("SyntaxError")) {
-			return ""
+			return "", nil
 		}
 
-		panic(fmt.Sprintf("cannot run %q: %v (output %q)", code, err, out))
+		return "", fmt.Errorf("cannot run %q: %v (output %q)", code, err, out)
 	}
 
-	return string(bytes.TrimSpace(out))
+	return string(bytes.TrimSpace(out)), nil
 }
 
 func cmpInt(output string) string {
