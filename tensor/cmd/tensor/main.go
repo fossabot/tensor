@@ -46,7 +46,7 @@ var methods = map[string][]struct {
 		Calls: []Call{
 			{
 				Go: "NDim()",
-				Py: "ndim",
+				Py: "ndim(1)",
 			},
 		},
 	}, {
@@ -185,25 +185,39 @@ package tensor_test
 
 import (
 	"testing"
-)
+){{ range . }}{{ if .Pass }}
 
-{{ range . }}
 func TestTensor{{ .Name }}(t *testing.T) {
 	tests := map[string]struct {
-		Got  {{ .RTyp }}
-		Want {{ .RTyp }}
+		Got, Want {{ .RTyp }}
 	}{ {{- range .Pass }}
 		"{{ .Name }}": {
-			Tensor: {{ .Expr }},
+			Got: {{ .Expr }},
 			Want: {{ .Want }},
-		} {{ end }}
+		},{{ end }}
 	}
 
 	for name, test := range tests {
-		if !reflect.DeepEqual(got, want) {
-			t.Errorf("want %v; got %v", want, got)
-		}
+		t.Run(name, func(t *testing.T) {
+			if !reflect.DeepEqual(got, want) {
+				t.Errorf("want %v; got %v", want, got)
+			}
+		})
 	}
-}
-{{ end }}
+}{{ end }}{{ if .Panic }}
+
+func TestTensorPanic{{ .Name }}(t *testing.T) {
+	tests := map[string]func() {
+		{{- range .Panic }}
+		"{{ .Name }}": func() {
+			_ = {{ .Expr }}
+		},{{ end }}
+	}
+
+	for name, fn := range tests {
+		t.Run(name, func(t *testing.T) {
+			fn()
+		})
+	}
+}{{ end }}{{ end }}
 `))
