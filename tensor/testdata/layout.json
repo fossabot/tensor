@@ -1,0 +1,24 @@
+[
+    {
+        "name": "NDim",
+        "rtyp": "int",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.NDim()",
+                "py": "$inst$.ndim"
+            }
+        ]
+    },
+    {
+        "name": "Size",
+        "rtyp": "int",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.Size()",
+                "py": "$inst$.size"
+            }
+        ]
+    }
+]

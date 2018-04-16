@@ -1,3 +1,5 @@
+// +build ignore
+
 package main
 
 import (
@@ -27,58 +29,25 @@ func init() {
 	}
 }
 
+// Instance represents an object on which tests are called.
 type Instance struct {
-	Name    string // Tensor name.
-	Tensor  string // Go tensor initialization.
-	NDArray string // Python's ndarray initialization.
+	Name    string `json:"name"`    // Tensor name.
+	Tensor  string `json:"tensor"`  // Go tensor initialization.
+	NDArray string `json:"ndarray"` // Python's ndarray initialization.
 }
 
-var instances = []*Instance{
-	&Instance{
-		Name:    "matrix one element",
-		Tensor:  "tensor.New(1, 1)",
-		NDArray: "np.zeros((1, 1))",
-	},
-}
-
+// Method describes the call on a single instance.
 type Method struct {
-	Name  string  // Method name.
-	RTyp  string  // Function return type.
-	Calls []*Call // Go to python method call.
-}
-
-var methods = map[string][]*Method{
-	"layout": {{
-		Name: "NDim",
-		RTyp: "int",
-		Calls: []*Call{
-			&Call{
-				Go: "$inst$.NDim()",
-				Py: "$inst$.ndim",
-			},
-			&Call{
-				Dsc: "two",
-				Go:  "$inst$.NDim()",
-				Py:  "$inst$.ndim",
-			},
-		},
-	}, {
-		Name: "Size",
-		RTyp: "int",
-		Calls: []*Call{
-			&Call{
-				Go: "$inst$.Size()",
-				Py: "$inst$.size",
-			},
-		},
-	}},
+	Name  string  `json:"name"`  // Method name.
+	RTyp  string  `json:"rtyp"`  // Function return type.
+	Calls []*Call `json:"calls"` // Go to python method call.
 }
 
 // Call describes corresponding Go and Python method calls.
 type Call struct {
-	Dsc string // Additional description.
-	Go  string // Call in Go.
-	Py  string // Call in Python.
+	Dsc string `json:"dsc"` // Additional description.
+	Go  string `json:"go"`  // Call in Go.
+	Py  string `json:"py"`  // Call in Python.
 }
 
 // TestFull describes all tests for a single method.

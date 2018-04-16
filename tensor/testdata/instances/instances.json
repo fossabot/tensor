@@ -1,0 +1,7 @@
+[
+    {
+        "name": "matrix one element",
+        "tensor": "tensor.New(1, 1)",
+        "ndarray": "np.zeros((1, 1))"
+    }
+]

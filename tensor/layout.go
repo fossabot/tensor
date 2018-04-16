@@ -2,6 +2,11 @@ package tensor
 
 import "github.com/ppknap/tacvs/dtype"
 
+// NDim TODO.
+func (t *Tensor) NDim() int {
+	return 0
+}
+
 // Owner TODO.
 func (t *Tensor) Owner() bool {
 	return false
@@ -10,11 +15,6 @@ func (t *Tensor) Owner() bool {
 // Base TODO.
 func (t *Tensor) Base() *Tensor {
 	return nil
-}
-
-// NDim TODO.
-func (t *Tensor) NDim() int {
-	return 0
 }
 
 // Shape TODO.
