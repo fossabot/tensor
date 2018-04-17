@@ -1,7 +1,47 @@
 [
     {
+        "name": "zero value",
+        "tensor": "&tensor.Tensor{}",
+        "ndarray": "np.zeros(())"
+    },
+    {
+        "name": "new empty tensor aka scalar",
+        "tensor": "tensor.New()",
+        "ndarray": "np.zeros(())"
+    },
+    {
+        "name": "vector with one element",
+        "tensor": "tensor.New(1)",
+        "ndarray": "np.zeros((1))"
+    },
+    {
+        "name": "vector with 5 elements",
+        "tensor": "tensor.New(5)",
+        "ndarray": "np.zeros((5))"
+    },
+    {
         "name": "matrix one element",
         "tensor": "tensor.New(1, 1)",
         "ndarray": "np.zeros((1, 1))"
+    },
+    {
+        "name": "square matrix",
+        "tensor": "tensor.New(3, 3)",
+        "ndarray": "np.zeros((3, 3))"
+    },
+    {
+        "name": "matrix three rows two cols",
+        "tensor": "tensor.New(3, 2)",
+        "ndarray": "np.zeros((3, 2))"
+    },
+    {
+        "name": "three dim tensor",
+        "tensor": "tensor.New(3, 2, 3)",
+        "ndarray": "np.zeros((3, 2, 3))"
+    },
+    {
+        "name": "six dim tensor one element",
+        "tensor": "tensor.New(1, 1, 1, 1, 1, 1)",
+        "ndarray": "np.zeros((1, 1, 1, 1, 1, 1))"
     }
 ]
