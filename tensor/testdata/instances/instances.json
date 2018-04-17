@@ -1,7 +1,7 @@
 [
     {
         "name": "zero value",
-        "tensor": "&tensor.Tensor{}",
+        "tensor": "(&tensor.Tensor{})",
         "ndarray": "np.zeros(())"
     },
     {
@@ -28,6 +28,11 @@
         "name": "square matrix",
         "tensor": "tensor.New(3, 3)",
         "ndarray": "np.zeros((3, 3))"
+    },
+    {
+        "name": "square matrix view",
+        "tensor": "tensor.New(3, 3).View()",
+        "ndarray": "np.zeros((3, 3)).view()"
     },
     {
         "name": "matrix three rows two cols",

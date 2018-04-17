@@ -210,7 +210,10 @@ var typeToExpr = map[string]func(string) string{
 		panic("invalid integer: " + output)
 	}),
 	"[]int": skipEmpty(func(output string) string {
-		toks := strings.Split(strings.Trim(output, "()"), ", ")
+		toks := strings.Split(strings.Trim(output, "(,)"), ", ")
+		if len(toks) == 1 && toks[0] == "" {
+			return "nil"
+		}
 
 		for _, tok := range toks {
 			if _, err := strconv.Atoi(tok); err != nil {
@@ -238,10 +241,14 @@ var tmpl = template.Must(template.New("").Funcs(funcMap).Parse(`// Code generate
 package tensor_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/ppknap/tacvs/tensor"
-){{ range . }}{{ if .Pass }}
+)
+
+// Use reflect package in case it isn't used in tests.
+var _ = reflect.TypeOf(&tensor.Tensor{}){{ range . }}{{ if .Pass }}
 
 func TestTensor{{ .Name }}(t *testing.T) {
 	tests := map[string]struct {

@@ -11,6 +11,28 @@
         ]
     },
     {
+        "name": "Shape",
+        "rtyp": "[]int",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.Shape()",
+                "py": "$inst$.shape"
+            }
+        ]
+    },
+    {
+        "name": "Strides",
+        "rtyp": "[]int",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.Strides()",
+                "py": "$inst$.strides"
+            }
+        ]
+    },
+    {
         "name": "Size",
         "rtyp": "int",
         "calls": [
@@ -18,6 +40,28 @@
                 "dsc": "",
                 "go": "$inst$.Size()",
                 "py": "$inst$.size"
+            }
+        ]
+    },
+    {
+        "name": "Owner",
+        "rtyp": "bool",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.Owner()",
+                "py": "$inst$.base is None"
+            }
+        ]
+    },
+    {
+        "name": "NBytes",
+        "rtyp": "int",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.NBytes()",
+                "py": "$inst$.nbytes"
             }
         ]
     }
