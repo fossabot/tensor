@@ -35,8 +35,8 @@ API (tensor):
   [ ] - (*Tensor) Strides() []int
   [ ] - (*Tensor) Size() int
   [ ] - (*Tensor) Owner() bool
-  [ ] - (*Tensor) NBytes()
-  [ ] - (*Tensor) Base()
+  [ ] - (*Tensor) NBytes() int
+  [ ] - (*Tensor) Base() *Tensor
   [ ] - (*Tensor) Data() []byte
   [ ] - (*Tensor) FillBuf(data []interface{}) *Tensor
   [ ] - (*Tensor) DType() dtype.DType

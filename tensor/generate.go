@@ -197,11 +197,28 @@ func runPyCmd(op string) (string, error) {
 }
 
 var typeToExpr = map[string]func(string) string{
+	"bool": skipEmpty(func(output string) string {
+		if b, err := strconv.ParseBool(output); err == nil {
+			return fmt.Sprintf("%t", b)
+		}
+		panic("invalid boolean: " + output)
+	}),
 	"int": skipEmpty(func(output string) string {
 		if _, err := strconv.Atoi(output); err == nil {
 			return output
 		}
 		panic("invalid integer: " + output)
+	}),
+	"[]int": skipEmpty(func(output string) string {
+		toks := strings.Split(strings.Trim(output, "()"), ", ")
+
+		for _, tok := range toks {
+			if _, err := strconv.Atoi(tok); err != nil {
+				panic("invalid integer: " + output)
+			}
+		}
+
+		return "[]int{" + strings.Join(toks, ", ") + "}"
 	}),
 }
 
@@ -263,7 +280,7 @@ var funcMap = template.FuncMap{
 	// makeComparator creates a testing expression in test.
 	"makeComparator": func(t string) string {
 		switch t {
-		case "int":
+		case "bool", "int":
 			return "test.Want != test.Got"
 		default:
 			return "reflect.DeepEqual(test.Want, test.Got)"
