@@ -3,6 +3,7 @@ package tensor
 import (
 	"fmt"
 
+	"github.com/ppknap/tacvs/dtype"
 	"github.com/ppknap/tacvs/internal/core"
 	"github.com/ppknap/tacvs/internal/index"
 	"github.com/ppknap/tacvs/internal/math"
@@ -52,6 +53,16 @@ func (t *Tensor) View() *Tensor {
 
 func (t *Tensor) Delegate() *Delegate {
 	return NewDelegate(t)
+}
+
+// Reshape TODO.
+func (t *Tensor) Reshape(shape ...int) *Tensor {
+	return nil
+}
+
+// AsType TODO.
+func (t *Tensor) AsType(typ dtype.DType) *Tensor {
+	return t
 }
 
 type Delegate struct {

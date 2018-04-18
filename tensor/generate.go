@@ -262,9 +262,9 @@ func TestTensor{{ .Name }}(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			if {{ makeComparator .RTyp }} {
-				t.Errorf("want %v; got %v", test.Want, test.Got)
-			}
+			{{ range $expr, $msg := makeComparators .RTyp }}if {{ $expr }} {
+				t.Errorf({{ $msg }})
+			}{{ end }}
 		})
 	}
 }{{ end }}{{ if .Panic }}
@@ -284,13 +284,17 @@ func TestTensorPanic{{ .Name }}(t *testing.T) {
 `))
 
 var funcMap = template.FuncMap{
-	// makeComparator creates a testing expression in test.
-	"makeComparator": func(t string) string {
+	// makeComparators creates a testing expressions based on tested type.
+	"makeComparators": func(t string) map[string]string {
 		switch t {
 		case "bool", "int":
-			return "test.Want != test.Got"
+			return map[string]string{
+				"test.Want != test.Got": `"want %v; got %v", test.Want, test.Got`,
+			}
 		default:
-			return "reflect.DeepEqual(test.Want, test.Got)"
+			return map[string]string{
+				"reflect.DeepEqual(test.Want, test.Got)": `"want %v; got %v", test.Want, test.Got`,
+			}
 		}
 	},
 }
