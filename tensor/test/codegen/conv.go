@@ -15,7 +15,7 @@ var typeToExpr = map[string]func(string) string{
 	"string":         skipEmpty(nil),
 	"[]int":          skipEmpty(tupleToIntSlice),
 	"dtype.DType":    skipEmpty(dtypeToDType),
-	"*tensor.Tensor": skipEmpty(ndarrayToTensor), // TODO
+	"*tensor.Tensor": skipEmpty(ndarrayToTensor),
 }
 
 // boolToBool checks and converts Python's boolean string to Go format.
@@ -63,7 +63,7 @@ func tupleToIntSlice(output string) string {
 	}
 
 	for i := range toks {
-		_ = intToInt(toks[i])
+		_ = numToInt(toks[i])
 	}
 
 	return "[]int{" + strings.Join(toks, ", ") + "}"
@@ -84,7 +84,9 @@ func dtypeToDType(output string) string {
 // ndarrayToTensor takes info about Python's ndarray and creates corresponding
 // Tensor object expression.
 func ndarrayToTensor(output string) string {
-	return "tensor.New()"
+	toks := strings.Fields(output)
+
+	return fmt.Sprintf("tensor.New(%s)", strings.Trim(toks[0], "(,)"))
 }
 
 // typeToExpr i a set of functions that format and validate given output to
