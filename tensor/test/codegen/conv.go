@@ -11,10 +11,10 @@ var typeToExpr = map[string]func(string) string{
 	"byte":           skipEmpty(numToByte),
 	"int":            skipEmpty(numToInt),
 	"float64":        skipEmpty(numToFloat64),
-	"complex128":     skipEmpty(numToCmplx), // TODO
+	"complex128":     skipEmpty(numToCmplx),
 	"string":         skipEmpty(nil),
 	"[]int":          skipEmpty(tupleToIntSlice),
-	"dtype.DType":    skipEmpty(dtypeToDType),    // TODO
+	"dtype.DType":    skipEmpty(dtypeToDType),
 	"*tensor.Tensor": skipEmpty(ndarrayToTensor), // TODO
 }
 
@@ -52,7 +52,7 @@ func numToFloat64(output string) string {
 
 // numToCmplx converts Python's complex number to Go complex type string.
 func numToCmplx(output string) string {
-	return ""
+	return strings.TrimSpace(strings.Replace(output, "j", "i", -1))
 }
 
 // tupleToIntSlice converts Python's tuple to Go int slice string.
@@ -67,6 +67,18 @@ func tupleToIntSlice(output string) string {
 	}
 
 	return "[]int{" + strings.Join(toks, ", ") + "}"
+}
+
+// dtypeToDType takes numpy's dtype name and converts it to coresponding DType
+// object expression.
+func dtypeToDType(output string) string {
+	typ := strings.Trim(output, "<>=")
+
+	if strings.HasPrefix(typ, "U") {
+		return "dtype.String"
+	}
+
+	return "dtype." + strings.Title(typ)
 }
 
 // ndarrayToTensor takes info about Python's ndarray and creates corresponding
