@@ -25,9 +25,9 @@ func init() {
 }
 
 func main() {
-	mtsPattern := flag.String("methods", "*.jsonv", "pattern for methods definition JSON files")
-	insPath := flag.String("instances", "instancev.json", "tensor instances definition file")
-	outPath := flag.String("out", ".v", "generated files destination directory")
+	mtsPattern := flag.String("methods", "*.json", "pattern for methods definition JSON files")
+	insPath := flag.String("instances", "instance.json", "tensor instances definition file")
+	outPath := flag.String("out", ".", "generated files destination directory")
 
 	flag.Parse()
 

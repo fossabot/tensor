@@ -8,9 +8,14 @@ import (
 
 var typeToExpr = map[string]func(string) string{
 	"bool":           skipEmpty(boolToBool),
-	"int":            skipEmpty(intToInt),
+	"byte":           skipEmpty(numToByte),
+	"int":            skipEmpty(numToInt),
+	"float64":        skipEmpty(numToFloat64),
+	"complex128":     skipEmpty(numToCmplx), // TODO
+	"string":         skipEmpty(nil),
 	"[]int":          skipEmpty(tupleToIntSlice),
-	"*tensor.Tensor": skipEmpty(ndarrayToTensor),
+	"dtype.DType":    skipEmpty(dtypeToDType),    // TODO
+	"*tensor.Tensor": skipEmpty(ndarrayToTensor), // TODO
 }
 
 // boolToBool checks and converts Python's boolean string to Go format.
@@ -21,12 +26,33 @@ func boolToBool(output string) string {
 	panic("invalid boolean: " + output)
 }
 
-// intToInt checks if provided integer string is valid.
-func intToInt(output string) string {
+// numToByte checks if provided byte string is valid.
+func numToByte(output string) string {
+	if n, err := strconv.ParseUint(output, 10, 8); err == nil {
+		return fmt.Sprintf("%v", n)
+	}
+	panic("invalid byte: " + output)
+}
+
+// numToInt checks if provided integer string is valid.
+func numToInt(output string) string {
 	if _, err := strconv.Atoi(output); err == nil {
 		return output
 	}
 	panic("invalid integer: " + output)
+}
+
+// numToFloat64 checks if provided float string is valid.
+func numToFloat64(output string) string {
+	if f, err := strconv.ParseFloat(output, 64); err == nil {
+		return fmt.Sprintf("%v", f)
+	}
+	panic("invalid float: " + output)
+}
+
+// numToCmplx converts Python's complex number to Go complex type string.
+func numToCmplx(output string) string {
+	return ""
 }
 
 // tupleToIntSlice converts Python's tuple to Go int slice string.
@@ -56,6 +82,11 @@ func skipEmpty(f func(string) string) func(string) string {
 		if output == "" {
 			return ""
 		}
+
+		if f == nil {
+			return output
+		}
+
 		return f(output)
 	}
 }
