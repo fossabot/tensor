@@ -51,7 +51,7 @@ type cas struct {
 func newTestCas(typ string, inst *instance, call *call) (*cas, bool, error) {
 	var expr = strings.Replace(call.Py, "$inst$", inst.NDArray, -1)
 
-	output, err := execPythonCmd(expr)
+	output, err := execPythonCmd(typ, expr)
 	if err != nil {
 		return nil, false, fmt.Errorf("cannot execute %q: %v", expr, err)
 	}

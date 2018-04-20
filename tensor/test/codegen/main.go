@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 	"path/filepath"
@@ -11,7 +12,7 @@ func init() {
 	// Check if numpy is available in given version.
 	const numpyVer = "1.14"
 
-	switch ver, err := execPythonCmd("np.version.version"); {
+	switch ver, err := execPythonCmd("", "np.version.version"); {
 	case ver == "":
 		log.Fatal("cannot check numpy version")
 	case err != nil:
@@ -24,23 +25,25 @@ func init() {
 }
 
 func main() {
-	mtsPattern := filepath.Join("testdata", "*.json")
-	insPath := filepath.Join("testdata", "instances", "instances.json")
-	outPath := "."
+	mtsPattern := flag.String("methods", "*.jsonv", "pattern for methods definition JSON files")
+	insPath := flag.String("instances", "instancev.json", "tensor instances definition file")
+	outPath := flag.String("out", ".v", "generated files destination directory")
 
-	ins, err := loadInstances(insPath)
+	flag.Parse()
+
+	ins, err := loadInstances(*insPath)
 	if err != nil {
 		log.Fatalf("cannot loat test instances: %v", err)
 	}
 
-	match, err := filepath.Glob(mtsPattern)
+	match, err := filepath.Glob(*mtsPattern)
 	if err != nil {
 		log.Fatalf("cannot get methods directory: %v", err)
 	}
 
 	for _, m := range match {
 		name := strings.TrimSuffix(filepath.Base(m), ".json")
-		outFilepath := filepath.Join(outPath, name+"_test.go")
+		outFilepath := filepath.Join(*outPath, name+"_test.go")
 
 		mts, err := loadMethods(m)
 		if err != nil {

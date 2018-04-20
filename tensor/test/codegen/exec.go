@@ -4,13 +4,12 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
-	"strings"
 )
 
-func execPythonCmd(op string) (string, error) {
-	// If op does not print anything, print the whole statement result.
-	if !strings.Contains(op, "print(") {
-		op = "print(" + op + ")"
+func execPythonCmd(typ, op string) (string, error) {
+	op, err := prepareOp(typ, op)
+	if err != nil {
+		return "", err
 	}
 
 	cmd := exec.Command("python3", "-c", "import numpy as np\n"+op)
@@ -26,4 +25,12 @@ func execPythonCmd(op string) (string, error) {
 	}
 
 	return "", fmt.Errorf("cannot run %q: %v (output %q)", op, err, out)
+}
+
+func prepareOp(typ, op string) (string, error) {
+	switch typ {
+	default:
+		// If op does not print anything, print the whole statement result.
+		return "print(" + op + ")", nil
+	}
 }
