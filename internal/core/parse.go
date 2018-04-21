@@ -2,6 +2,7 @@ package core
 
 import (
 	"strconv"
+	"strings"
 )
 
 // strAsBool converts provided string to boolean type.
@@ -91,9 +92,26 @@ func strAsFloat(s string) float64 {
 
 // strAsComplex converts provided string to complex number type.
 func strAsComplex(s string) complex128 {
-	if s == "" {
+	tok := strings.Replace(strings.Trim(s, "(,)"), "j", "i", -1)
+	if tok == "" {
 		return 0.0
 	}
 
-	return 0
+	idx := strings.LastIndexFunc(tok, func(r rune) bool {
+		return r == '-' || r == '+'
+	})
+
+	var re, im string
+	switch {
+	case idx <= 0 && tok[len(tok)-1] == 'i':
+		re, im = "0", tok[:len(tok)-1]
+	case idx <= 0:
+		re, im = tok, "0"
+	case idx > 0 && tok[len(tok)-1] == 'i':
+		re, im = tok[:idx], tok[idx:len(tok)-1]
+	case idx > 0:
+		re, im = tok[:idx], tok[idx:]
+	}
+
+	return complex(strAsFloat(re), strAsFloat(im))
 }
