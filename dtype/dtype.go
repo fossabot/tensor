@@ -13,6 +13,7 @@ const (
 	Uint       = core.Uint
 	Uint8      = core.Uint8
 	Uint16     = core.Uint16
+	Uint32     = core.Uint32
 	Uint64     = core.Uint64
 	Float32    = core.Float32
 	Float64    = core.Float64

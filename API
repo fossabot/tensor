@@ -137,8 +137,8 @@ API (dtype):
   [x] - const Int64 = core.Int64
   [x] - const Uint = core.Uint
   [x] - const Uint8 = core.Uint8
-  [ ] - const Uint16 = core.Uint16
-  [ ] - const Uint32 = core.Uint32
+  [x] - const Uint16 = core.Uint16
+  [x] - const Uint32 = core.Uint32
   [x] - const Uint64 = core.Uint64
   [ ] - const Uintptr = core.Uintptr
   [x] - const Float32 = core.Float32
