@@ -1,6 +1,6 @@
 package tensor
 
-import "github.com/ppknap/tacvs/dtype"
+import "github.com/ppknap/tensor/dtype"
 
 // NDim TODO.
 func (t *Tensor) NDim() int {
@@ -39,11 +39,12 @@ func (t *Tensor) Base() *Tensor {
 
 // Data TODO.
 func (t *Tensor) Data() []byte {
+	// TODO: testgen when fill func is implemented.
 	return nil
 }
 
 // FillBuf TODO.
-func (t *Tensor) FillBuf(data []interface{}) *Tensor {
+func (t *Tensor) FillBuf(data interface{}) *Tensor {
 	return nil
 }
 

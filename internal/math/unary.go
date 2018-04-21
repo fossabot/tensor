@@ -3,7 +3,7 @@ package math
 import (
 	"unsafe"
 
-	"github.com/ppknap/tacvs/internal/core"
+	"github.com/ppknap/tensor/internal/core"
 )
 
 // UnaryFunc represents a mathematical operation with only one operand. The

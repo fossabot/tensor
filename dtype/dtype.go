@@ -1,7 +1,7 @@
 package dtype
 
 import (
-	"github.com/ppknap/tacvs/internal/core"
+	"github.com/ppknap/tensor/internal/core"
 )
 
 type DType = core.DType

@@ -3,7 +3,7 @@ package math
 import (
 	"unsafe"
 
-	"github.com/ppknap/tacvs/internal/core"
+	"github.com/ppknap/tensor/internal/core"
 )
 
 // Add is a binary function responsible for addition operation.

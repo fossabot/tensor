@@ -10,11 +10,12 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ppknap/tacvs/tensor"
+	"github.com/ppknap/tensor"
+	"github.com/ppknap/tensor/dtype"
 )
 
-// Use reflect package in case it isn't used in tests.
-var _ = reflect.TypeOf(&tensor.Tensor{}){{ range . }}{{ if .Pass }}
+// Use reflect and dtype packages in case they aren't used in tests.
+var _ = reflect.TypeOf(dtype.DType(0)){{ range . }}{{ if .Pass }}
 
 func TestTensor{{ .Name }}(t *testing.T) {
 	tests := map[string]struct {

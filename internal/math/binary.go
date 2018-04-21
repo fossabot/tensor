@@ -3,8 +3,8 @@ package math
 import (
 	"unsafe"
 
-	"github.com/ppknap/tacvs/internal/core"
-	"github.com/ppknap/tacvs/internal/index"
+	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/index"
 )
 
 // BinaryFunc represents a mathematical operation that combines two operands and

@@ -1,8 +1,8 @@
 package math
 
 import (
-	"github.com/ppknap/tacvs/internal/core"
-	"github.com/ppknap/tacvs/internal/index"
+	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/index"
 )
 
 // EWArgShape returns the required destination shape for element-wise operation

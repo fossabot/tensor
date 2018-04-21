@@ -31,8 +31,8 @@ func promote(at, bt DType, ts ...DType) DType {
 }
 
 var dTypeSet = map[DType]struct{}{
-	Bool:   struct{}{},
-	Int:    struct{}{},
-	Int64:  struct{}{},
-	String: struct{}{},
+	Bool:   {},
+	Int:    {},
+	Int64:  {},
+	String: {},
 }

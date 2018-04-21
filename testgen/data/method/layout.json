@@ -64,5 +64,38 @@
                 "py": "$inst$.nbytes"
             }
         ]
+    },
+    {
+        "name": "Base",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.Base()",
+                "py": "$inst$.base"
+            }
+        ]
+    },
+    {
+        "name": "FillBuf",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.FillBuf([]int{2, 2, 2, 2, 2, 2, 2, 2, 2})",
+                "py": "$inst$; tmp.fill(2) if tmp.size == 9 else exit()"
+            }
+        ]
+    },
+    {
+        "name": "DType",
+        "rtyp": "dtype.DType",
+        "calls": [
+            {
+                "dsc": "",
+                "go": "$inst$.DType()",
+                "py": "$inst$.dtype"
+            }
+        ]
     }
 ]

@@ -37,8 +37,8 @@ API (tensor):
   [ ] - (*Tensor) Owner() bool
   [ ] - (*Tensor) NBytes() int
   [ ] - (*Tensor) Base() *Tensor
-  [ ] - (*Tensor) Data() []byte
-  [ ] - (*Tensor) FillBuf(data []interface{}) *Tensor
+  [ ] - (*Tensor) Data() []byte // (Test)
+  [ ] - (*Tensor) FillBuf(data interface{}) *Tensor
   [ ] - (*Tensor) DType() dtype.DType
  "conv.go":
   [ ] - (*Tensor) Copy() *Tensor
@@ -57,7 +57,7 @@ API (tensor):
  "fill.go":
   [ ] - (*Tensor) Zeros() *Tensor
   [ ] - (*Tensor) Ones() *Tensor
-  [ ] - (*Tensor) Full(v *Tensor)
+  [ ] - (*Tensor) Fill(v *Tensor) *Tensor
   [ ] - (*Tensor) Arange(start, step *Tensor) *Tensor
   [ ] - (*Tensor) Linspace(start, end *Tensor) *Tensor
   [ ] - (*Tensor) Eye() *Tensor

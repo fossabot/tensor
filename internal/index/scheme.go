@@ -1,6 +1,6 @@
 package index
 
-import "github.com/ppknap/tacvs/internal/core"
+import "github.com/ppknap/tensor/internal/core"
 
 // IdxScheme defines the order of dimmensions in continuos memory.
 type IdxScheme Flags

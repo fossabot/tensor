@@ -30,7 +30,7 @@ func execPythonCmd(typ, op string) (string, error) {
 func prepareOp(typ, op string) (string, error) {
 	switch typ {
 	case "*tensor.Tensor":
-		return "tmp = " + op + "; print(tmp.shape)", nil
+		return "tmp = " + op + "; print('nil') if tmp is None else print(tmp.shape)", nil
 	default:
 		// If op does not print anything, print the whole statement result.
 		return "print(" + op + ")", nil

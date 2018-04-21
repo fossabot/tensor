@@ -3,7 +3,7 @@ package index
 import (
 	"fmt"
 
-	"github.com/ppknap/tacvs/internal/core"
+	"github.com/ppknap/tensor/internal/core"
 )
 
 // Index represents an N-dimensional view on one dimensional array. It does not

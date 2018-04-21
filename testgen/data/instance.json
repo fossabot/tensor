@@ -15,9 +15,9 @@
         "ndarray": "np.zeros((1))"
     },
     {
-        "name": "vector with 5 elements",
-        "tensor": "tensor.New(5)",
-        "ndarray": "np.zeros((5))"
+        "name": "vector with 9 elements",
+        "tensor": "tensor.New(9)",
+        "ndarray": "np.zeros((9))"
     },
     {
         "name": "matrix one element",

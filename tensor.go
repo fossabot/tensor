@@ -3,10 +3,10 @@ package tensor
 import (
 	"fmt"
 
-	"github.com/ppknap/tacvs/dtype"
-	"github.com/ppknap/tacvs/internal/core"
-	"github.com/ppknap/tacvs/internal/index"
-	"github.com/ppknap/tacvs/internal/math"
+	"github.com/ppknap/tensor/dtype"
+	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/index"
+	"github.com/ppknap/tensor/internal/math"
 )
 
 type Tensor struct {

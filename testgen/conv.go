@@ -84,7 +84,12 @@ func dtypeToDType(output string) string {
 // ndarrayToTensor takes info about Python's ndarray and creates corresponding
 // Tensor object expression.
 func ndarrayToTensor(output string) string {
-	toks := strings.Fields(output)
+	output = strings.TrimSpace(output)
+	if output == "nil" {
+		return "nil"
+	}
+
+	toks := strings.FieldsFunc(output, func(r rune) bool { return r == '\n' })
 
 	return fmt.Sprintf("tensor.New(%s)", strings.Trim(toks[0], "(,)"))
 }
