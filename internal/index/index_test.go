@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ppknap/tacvs/internal/index"
+	"github.com/ppknap/tensor/internal/index"
 )
 
 func TestIndexDimensions(t *testing.T) {

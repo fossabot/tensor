@@ -3,7 +3,7 @@ package index_test
 import (
 	"testing"
 
-	"github.com/ppknap/tacvs/internal/index"
+	"github.com/ppknap/tensor/internal/index"
 )
 
 func BenchmarkIterateRaw_1D_1E(b *testing.B)  { bckIterateRaw(b, []int{1}) }

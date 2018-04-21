@@ -1,4 +1,4 @@
-package tacvs
+package stale
 
 // Sum returns a sum of all tensor elements.
 func (t *Tensor) Sum() (sum complex128) {

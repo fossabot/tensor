@@ -1,15 +1,15 @@
-package tacvs_test
+package stale_test
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/ppknap/tacvs"
+	"github.com/ppknap/tensor/stale"
 )
 
 func TestTensorIndexing(t *testing.T) {
 	tests := []struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Pos    []int
 		Val    complex128
 	}{
@@ -133,7 +133,7 @@ func TestTensorIndexing(t *testing.T) {
 
 func TestTensorIndexingPanic(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Pos    []int
 	}{
 		"too many nonzero indexes": {
@@ -176,7 +176,7 @@ func TestTensorSplit(t *testing.T) {
 	type nVal2Pos []map[complex128][]int
 
 	tests := []struct {
-		Tensor   *tacvs.Tensor
+		Tensor   *stale.Tensor
 		Dim      int
 		Shape    []int
 		ValAtPos nVal2Pos
@@ -313,7 +313,7 @@ func TestTensorSplit(t *testing.T) {
 
 func TestTensorSplitPanic(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Dim    int
 	}{
 		"invalid dimension": {
@@ -344,7 +344,7 @@ func TestTensorSlice(t *testing.T) {
 	type val2Pos map[complex128][]int
 
 	tests := []struct {
-		Tensor   *tacvs.Tensor
+		Tensor   *stale.Tensor
 		Args     []int
 		Shape    []int
 		ValAtPos val2Pos
@@ -449,7 +449,7 @@ func TestTensorSlice(t *testing.T) {
 
 func TestTensorSlicePanic(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Args   []int
 	}{
 		"out of range from": {
@@ -497,13 +497,13 @@ func TestTensorSlicePanic(t *testing.T) {
 
 func TestTensorClone(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 	}{
 		"zero": {
-			Tensor: &tacvs.Tensor{},
+			Tensor: &stale.Tensor{},
 		},
 		"empty": {
-			Tensor: tacvs.NewTensor(),
+			Tensor: stale.NewTensor(),
 		},
 		"matrix": {
 			Tensor: tensorEnum(3, 3),
@@ -539,8 +539,8 @@ func TestTensorClone(t *testing.T) {
 
 // tensorEnum creates a new tensor and fills its internal buffer with numbers
 // that indicate element position in the memory.
-func tensorEnum(shape ...int) *tacvs.Tensor {
-	t := tacvs.NewTensor(shape...)
+func tensorEnum(shape ...int) *stale.Tensor {
+	t := stale.NewTensor(shape...)
 
 	for i, data := 0, t.Data(); i < len(data); i++ {
 		data[i] = complex(float64(i), 0)

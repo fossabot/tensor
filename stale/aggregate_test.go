@@ -1,23 +1,23 @@
-package tacvs_test
+package stale_test
 
 import (
 	"math/cmplx"
 	"testing"
 
-	"github.com/ppknap/tacvs"
+	"github.com/ppknap/tensor/stale"
 )
 
 func TestTensorSum(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Sum    complex128
 	}{
 		"empty": {
-			Tensor: tacvs.NewTensor(),
+			Tensor: stale.NewTensor(),
 			Sum:    0,
 		},
 		"zero sum": {
-			Tensor: tacvs.NewTensor(2, 3, 4),
+			Tensor: stale.NewTensor(2, 3, 4),
 			Sum:    0,
 		},
 		"matrix": {
@@ -25,7 +25,7 @@ func TestTensorSum(t *testing.T) {
 			Sum:    6,
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1i, 2i, 3i, 4i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{1i, 2i, 3i, 4i}),
 			Sum:    10i,
 		},
 		"slice": {
@@ -45,19 +45,19 @@ func TestTensorSum(t *testing.T) {
 
 func TestTensorMin(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Min    complex128
 	}{
 		"empty": {
-			Tensor: tacvs.NewTensor(),
+			Tensor: stale.NewTensor(),
 			Min:    0,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(3).Fill([]complex128{-2, 4, 30}),
+			Tensor: stale.NewTensor(3).Fill([]complex128{-2, 4, 30}),
 			Min:    -1,
 		},
 		"zero min": {
-			Tensor: tacvs.NewTensor(2, 3, 4),
+			Tensor: stale.NewTensor(2, 3, 4),
 			Min:    0,
 		},
 		"matrix": {
@@ -65,7 +65,7 @@ func TestTensorMin(t *testing.T) {
 			Min:    2,
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1i, 2i, 3i, 4i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{1i, 2i, 3i, 4i}),
 			Min:    2i,
 		},
 		"slice": {
@@ -85,19 +85,19 @@ func TestTensorMin(t *testing.T) {
 
 func TestTensorMax(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Max    complex128
 	}{
 		"empty": {
-			Tensor: tacvs.NewTensor(),
+			Tensor: stale.NewTensor(),
 			Max:    0,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(3).Fill([]complex128{-2, 4, 30}),
+			Tensor: stale.NewTensor(3).Fill([]complex128{-2, 4, 30}),
 			Max:    30,
 		},
 		"zero max": {
-			Tensor: tacvs.NewTensor(2, 3, 4),
+			Tensor: stale.NewTensor(2, 3, 4),
 			Max:    0,
 		},
 		"matrix": {
@@ -105,7 +105,7 @@ func TestTensorMax(t *testing.T) {
 			Max:    8,
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1i, 4i, 3i, 2i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{1i, 4i, 3i, 2i}),
 			Max:    4i,
 		},
 		"slice": {
@@ -125,19 +125,19 @@ func TestTensorMax(t *testing.T) {
 
 func TestTensorMean(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Mean   complex128
 	}{
 		"empty": {
-			Tensor: tacvs.NewTensor(),
+			Tensor: stale.NewTensor(),
 			Mean:   0,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(3).Fill([]complex128{-2, 4, 31}),
+			Tensor: stale.NewTensor(3).Fill([]complex128{-2, 4, 31}),
 			Mean:   11,
 		},
 		"zero mean": {
-			Tensor: tacvs.NewTensor(2, 3, 4),
+			Tensor: stale.NewTensor(2, 3, 4),
 			Mean:   0,
 		},
 		"matrix": {
@@ -145,7 +145,7 @@ func TestTensorMean(t *testing.T) {
 			Mean:   5,
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{2 + 1i, 1 - 4i, 4 + 3i, 9 + 2i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{2 + 1i, 1 - 4i, 4 + 3i, 9 + 2i}),
 			Mean:   4 + 0.5i,
 		},
 		"slice": {
@@ -165,19 +165,19 @@ func TestTensorMean(t *testing.T) {
 
 func TestTensorMedian(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Median complex128
 	}{
 		"empty": {
-			Tensor: tacvs.NewTensor(),
+			Tensor: stale.NewTensor(),
 			Median: 0,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(5).Fill([]complex128{-2, 4, 31, -1, 20}),
+			Tensor: stale.NewTensor(5).Fill([]complex128{-2, 4, 31, -1, 20}),
 			Median: 4,
 		},
 		"zero median": {
-			Tensor: tacvs.NewTensor(2, 3, 4),
+			Tensor: stale.NewTensor(2, 3, 4),
 			Median: 0,
 		},
 		"matrix": {
@@ -185,7 +185,7 @@ func TestTensorMedian(t *testing.T) {
 			Median: 4.5,
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{2 + 1i, 1 - 4i, 4 + 3i, 9 + 2i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{2 + 1i, 1 - 4i, 4 + 3i, 9 + 2i}),
 			Median: 3 + 2i,
 		},
 		"slice": {
@@ -205,19 +205,19 @@ func TestTensorMedian(t *testing.T) {
 
 func TestTensorStd(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Std    complex128
 	}{
 		"empty": {
-			Tensor: tacvs.NewTensor(),
+			Tensor: stale.NewTensor(),
 			Std:    cmplx.NaN(),
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(5).Fill([]complex128{-2, 4, 30, -10, 34}),
+			Tensor: stale.NewTensor(5).Fill([]complex128{-2, 4, 30, -10, 34}),
 			Std:    17.6,
 		},
 		"zero std": {
-			Tensor: tacvs.NewTensor(2, 3, 4),
+			Tensor: stale.NewTensor(2, 3, 4),
 			Std:    0,
 		},
 		"matrix": {
@@ -225,7 +225,7 @@ func TestTensorStd(t *testing.T) {
 			Std:    4.5,
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{8 + 2i, 2 - 2i, 6 + 4i, 4i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{8 + 2i, 2 - 2i, 6 + 4i, 4i}),
 			Std:    4,
 		},
 		"slice": {

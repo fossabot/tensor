@@ -5,7 +5,7 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/ppknap/tacvs/internal/core"
+	"github.com/ppknap/tensor/internal/core"
 )
 
 func BenchmarkRawInt_1(b *testing.B)       { bckRawInt(b, 1) }

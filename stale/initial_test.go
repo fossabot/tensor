@@ -1,4 +1,4 @@
-package tacvs_test
+package stale_test
 
 import (
 	"reflect"
@@ -6,12 +6,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ppknap/tacvs"
+	"github.com/ppknap/tensor/stale"
 )
 
 func TestTensorFull(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Val    complex128
 	}{
 		"zeros": {
@@ -31,7 +31,7 @@ func TestTensorFull(t *testing.T) {
 			Val:    1 + 45i,
 		},
 		"empty full": {
-			Tensor: tacvs.NewTensor().Full(34),
+			Tensor: stale.NewTensor().Full(34),
 			Val:    0,
 		},
 		"each": {
@@ -62,55 +62,55 @@ func TestTensorFull(t *testing.T) {
 
 func TestTensorArrange(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Start  complex128
 		Step   complex128
 		Data   []complex128
 	}{
 		"empty": {
-			Tensor: &tacvs.Tensor{},
+			Tensor: &stale.Tensor{},
 			Start:  3,
 			Step:   1,
 			Data:   nil,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(5),
+			Tensor: stale.NewTensor(5),
 			Start:  0,
 			Step:   1,
 			Data:   []complex128{0, 1, 2, 3, 4},
 		},
 		"matrix": {
-			Tensor: tacvs.NewTensor(2, 2),
+			Tensor: stale.NewTensor(2, 2),
 			Start:  1,
 			Step:   7,
 			Data:   []complex128{1, 8, 15, 22},
 		},
 		"matrix slice": {
-			Tensor: tacvs.NewTensor(3, 3).Slice(1, 1, 2),
+			Tensor: stale.NewTensor(3, 3).Slice(1, 1, 2),
 			Start:  1,
 			Step:   4,
 			Data:   []complex128{0, 0, 0, 1, 5, 9, 0, 0, 0},
 		},
 		"constant": {
-			Tensor: tacvs.NewTensor(2, 3),
+			Tensor: stale.NewTensor(2, 3),
 			Start:  3,
 			Step:   3,
 			Data:   []complex128{3, 6, 9, 12, 15, 18},
 		},
 		"zero step": {
-			Tensor: tacvs.NewTensor(2, 3),
+			Tensor: stale.NewTensor(2, 3),
 			Start:  3,
 			Step:   0,
 			Data:   []complex128{3, 3, 3, 3, 3, 3},
 		},
 		"negative": {
-			Tensor: tacvs.NewTensor(2, 3),
+			Tensor: stale.NewTensor(2, 3),
 			Start:  4,
 			Step:   -1,
 			Data:   []complex128{4, 3, 2, 1, 0, -1},
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 3),
+			Tensor: stale.NewTensor(2, 3),
 			Start:  -2 + 10i,
 			Step:   1 - 1i,
 			Data:   []complex128{-2 + 10i, -1 - 9i, 0 - 8i, 1 - 7i, 2 - 6i, 3 - 5i},
@@ -130,49 +130,49 @@ func TestTensorArrange(t *testing.T) {
 
 func TestTensorLinspace(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Start  complex128
 		End    complex128
 		Data   []complex128
 	}{
 		"empty": {
-			Tensor: &tacvs.Tensor{},
+			Tensor: &stale.Tensor{},
 			Start:  3,
 			End:    10,
 			Data:   nil,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(5),
+			Tensor: stale.NewTensor(5),
 			Start:  0,
 			End:    10,
 			Data:   []complex128{0, 2.5, 5, 7.5, 10},
 		},
 		"matrix": {
-			Tensor: tacvs.NewTensor(2, 2),
+			Tensor: stale.NewTensor(2, 2),
 			Start:  1,
 			End:    7,
 			Data:   []complex128{1, 3, 5, 7},
 		},
 		"matrix slice": {
-			Tensor: tacvs.NewTensor(3, 3).Slice(1, 1, 2),
+			Tensor: stale.NewTensor(3, 3).Slice(1, 1, 2),
 			Start:  1,
 			End:    9,
 			Data:   []complex128{0, 0, 0, 1, 5, 9, 0, 0, 0},
 		},
 		"constant": {
-			Tensor: tacvs.NewTensor(2, 3),
+			Tensor: stale.NewTensor(2, 3),
 			Start:  3,
 			End:    3,
 			Data:   []complex128{3, 3, 3, 3, 3, 3},
 		},
 		"negative": {
-			Tensor: tacvs.NewTensor(2, 3),
+			Tensor: stale.NewTensor(2, 3),
 			Start:  10,
 			End:    -15,
 			Data:   []complex128{10, 5, 0, -5, -10, -15},
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 3),
+			Tensor: stale.NewTensor(2, 3),
 			Start:  -2 + 10i,
 			End:    3 - 15i,
 			Data:   []complex128{-2 + 10i, -1 + 5i, 0, 1 - 5i, 2 - 10i, 3 - 15i},
@@ -194,12 +194,12 @@ func TestTensorEye(t *testing.T) {
 	type val2Pos map[complex128][][]int
 
 	tests := map[string]struct {
-		Tensor   *tacvs.Tensor
+		Tensor   *stale.Tensor
 		Sum      complex128
 		ValAtPos val2Pos
 	}{
 		"empty": {
-			Tensor:   tacvs.NewTensor().Eye(),
+			Tensor:   stale.NewTensor().Eye(),
 			Sum:      0,
 			ValAtPos: nil,
 		},
@@ -286,23 +286,23 @@ func TestTensorRandomSource(t *testing.T) {
 
 func TestTensorRe(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Data   []complex128
 	}{
 		"empty": {
-			Tensor: &tacvs.Tensor{},
+			Tensor: &stale.Tensor{},
 			Data:   nil,
 		},
 		"matrix": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
 			Data:   []complex128{1, 2, 3, 4},
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(4).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
+			Tensor: stale.NewTensor(4).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
 			Data:   []complex128{1, 2, 3, 4},
 		},
 		"matrix slice": {
-			Tensor: tacvs.NewTensor(1, 2).Fill([]complex128{1 + 1i, 2 + 2i}).Slice(1, 1, 2),
+			Tensor: stale.NewTensor(1, 2).Fill([]complex128{1 + 1i, 2 + 2i}).Slice(1, 1, 2),
 			Data:   []complex128{1 + 1i, 2},
 		},
 	}
@@ -319,23 +319,23 @@ func TestTensorRe(t *testing.T) {
 }
 func TestTensorIm(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Data   []complex128
 	}{
 		"empty": {
-			Tensor: &tacvs.Tensor{},
+			Tensor: &stale.Tensor{},
 			Data:   nil,
 		},
 		"matrix": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
 			Data:   []complex128{1i, 2i, 3i, 4i},
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(4).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
+			Tensor: stale.NewTensor(4).Fill([]complex128{1 + 1i, 2 + 2i, 3 + 3i, 4 + 4i}),
 			Data:   []complex128{1i, 2i, 3i, 4i},
 		},
 		"matrix slice": {
-			Tensor: tacvs.NewTensor(1, 2).Fill([]complex128{1 + 1i, 2 + 2i}).Slice(1, 1, 2),
+			Tensor: stale.NewTensor(1, 2).Fill([]complex128{1 + 1i, 2 + 2i}).Slice(1, 1, 2),
 			Data:   []complex128{1 + 1i, 2i},
 		},
 	}
@@ -352,32 +352,32 @@ func TestTensorIm(t *testing.T) {
 }
 func TestTensorApply(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		CallN  int
 		Data   []complex128
 	}{
 		"matrix": {
-			Tensor: tacvs.NewTensor(3, 3),
+			Tensor: stale.NewTensor(3, 3),
 			CallN:  9,
 			Data:   []complex128{1, 1, 1, 1, 1, 1, 1, 1, 1},
 		},
 		"empty": {
-			Tensor: &tacvs.Tensor{},
+			Tensor: &stale.Tensor{},
 			CallN:  0,
 			Data:   nil,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(4),
+			Tensor: stale.NewTensor(4),
 			CallN:  4,
 			Data:   []complex128{1, 1, 1, 1},
 		},
 		"matrix horizontal slice": {
-			Tensor: tacvs.NewTensor(3, 3).Slice(0, 1, 2),
+			Tensor: stale.NewTensor(3, 3).Slice(0, 1, 2),
 			CallN:  3,
 			Data:   []complex128{0, 1, 0, 0, 1, 0, 0, 1, 0},
 		},
 		"matrix vertical slice": {
-			Tensor: tacvs.NewTensor(3, 3).Slice(1, 1, 2),
+			Tensor: stale.NewTensor(3, 3).Slice(1, 1, 2),
 			CallN:  3,
 			Data:   []complex128{0, 0, 0, 1, 1, 1, 0, 0, 0},
 		},
@@ -387,7 +387,7 @@ func TestTensorApply(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			callN, callM := 0, map[string]int{}
 
-			tr := test.Tensor.Apply(func(tr *tacvs.Tensor, idx []int) {
+			tr := test.Tensor.Apply(func(tr *stale.Tensor, idx []int) {
 				idxStr := make([]string, len(idx))
 				for i := range idx {
 					idxStr[i] = strconv.Itoa(idx[i])
@@ -418,7 +418,7 @@ func TestTensorFill(t *testing.T) {
 	type val2Pos map[complex128][]int
 
 	tests := map[string]struct {
-		Tensor   *tacvs.Tensor
+		Tensor   *stale.Tensor
 		Vs       []complex128
 		ValAtPos val2Pos
 	}{
@@ -468,7 +468,7 @@ func TestTensorFill(t *testing.T) {
 
 func TestTensorFillPanic(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Vs     []complex128
 	}{
 		"invalid source size": {
@@ -496,19 +496,19 @@ func TestTensorFillPanic(t *testing.T) {
 
 func TestTensorCumSum(t *testing.T) {
 	tests := map[string]struct {
-		Tensor *tacvs.Tensor
+		Tensor *stale.Tensor
 		Data   []complex128
 	}{
 		"empty": {
-			Tensor: tacvs.NewTensor(),
+			Tensor: stale.NewTensor(),
 			Data:   nil,
 		},
 		"vector": {
-			Tensor: tacvs.NewTensor(3).Fill([]complex128{-2, 4, 30}),
+			Tensor: stale.NewTensor(3).Fill([]complex128{-2, 4, 30}),
 			Data:   []complex128{-2, 2, 32},
 		},
 		"zero max": {
-			Tensor: tacvs.NewTensor(2, 3),
+			Tensor: stale.NewTensor(2, 3),
 			Data:   []complex128{0, 0, 0, 0, 0, 0},
 		},
 		"matrix": {
@@ -516,7 +516,7 @@ func TestTensorCumSum(t *testing.T) {
 			Data:   []complex128{8, 10, 13, 17},
 		},
 		"complex": {
-			Tensor: tacvs.NewTensor(2, 2).Fill([]complex128{1i, 4i, 3i, 2i}),
+			Tensor: stale.NewTensor(2, 2).Fill([]complex128{1i, 4i, 3i, 2i}),
 			Data:   []complex128{1i, 5i, 8i, 10i},
 		},
 		"slice": {

@@ -1,64 +1,64 @@
-package tacvs_test
+package stale_test
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/ppknap/tacvs"
+	"github.com/ppknap/tensor/stale"
 )
 
 func TestTensorInfo(t *testing.T) {
 	tests := []struct {
-		Tensor   *tacvs.Tensor
+		Tensor   *stale.Tensor
 		Shape    []int
 		Size     int
 		DataSize int
 	}{
 		{
 			// 0 //
-			Tensor:   tacvs.NewTensor(1, 1),
+			Tensor:   stale.NewTensor(1, 1),
 			Shape:    []int{1, 1},
 			Size:     1,
 			DataSize: 1,
 		},
 		{
 			// 1 //
-			Tensor:   tacvs.NewTensor(1, 2, 3, 4),
+			Tensor:   stale.NewTensor(1, 2, 3, 4),
 			Shape:    []int{1, 2, 3, 4},
 			Size:     24,
 			DataSize: 24,
 		},
 		{
 			// 2 //
-			Tensor:   tacvs.NewTensor(1, 1, 1, 1),
+			Tensor:   stale.NewTensor(1, 1, 1, 1),
 			Shape:    []int{1, 1},
 			Size:     1,
 			DataSize: 1,
 		},
 		{
 			// 3 //
-			Tensor:   tacvs.NewTensor(6, 1, 1, 1, 1),
+			Tensor:   stale.NewTensor(6, 1, 1, 1, 1),
 			Shape:    []int{6, 1},
 			Size:     6,
 			DataSize: 6,
 		},
 		{
 			// 4 //
-			Tensor:   tacvs.NewTensor(),
+			Tensor:   stale.NewTensor(),
 			Shape:    []int{},
 			Size:     0,
 			DataSize: 0,
 		},
 		{
 			// 5 //
-			Tensor:   &tacvs.Tensor{},
+			Tensor:   &stale.Tensor{},
 			Shape:    []int{},
 			Size:     0,
 			DataSize: 0,
 		},
 		{
 			// 6 //
-			Tensor:   tacvs.NewTensor(2),
+			Tensor:   stale.NewTensor(2),
 			Shape:    []int{2, 1},
 			Size:     2,
 			DataSize: 2,

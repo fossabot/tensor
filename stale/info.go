@@ -1,4 +1,4 @@
-package tacvs
+package stale
 
 // Data returns the internal root buffer of the tensor. The returned slice may
 // not point to the data when called on views.

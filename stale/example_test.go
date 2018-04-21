@@ -1,14 +1,14 @@
-package tacvs_test
+package stale_test
 
 import (
 	"fmt"
 	"math/cmplx"
 
-	"github.com/ppknap/tacvs"
+	"github.com/ppknap/tensor/stale"
 )
 
-func ExampleSoftmax() {
-	softmax := func(t *tacvs.Tensor) *tacvs.Tensor {
+func ExampleTensorSoftmax() {
+	softmax := func(t *stale.Tensor) *stale.Tensor {
 		// Compute exponential of each tensor element.
 		sm := t.Clone().Each(cmplx.Exp)
 
@@ -25,6 +25,6 @@ func ExampleSoftmax() {
 	// Sample values.
 	vals := []complex128{3.0, 1.0, 0.2}
 
-	fmt.Println(softmax(tacvs.NewTensor(1, 3).Fill(vals)))
+	fmt.Println(softmax(stale.NewTensor(1, 3).Fill(vals)))
 	// Output: [ 0.8360188027814407 0.11314284146556011 0.05083835575299916]
 }
