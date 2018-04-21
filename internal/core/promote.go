@@ -11,6 +11,8 @@ func Promote(at, bt DType) DType {
 		return promote(at, bt, Bool, Int)
 	case Uint:
 		return Float64 // TODO
+	case Uint8:
+		return Float64 // TODO
 	case Float64:
 		return promote(at, bt, Bool, Int, Int64)
 	case Complex128:
@@ -41,6 +43,7 @@ var dTypeSet = map[DType]struct{}{
 	Int:        {},
 	Int64:      {},
 	Uint:       {},
+	Uint8:      {},
 	Float64:    {},
 	Complex128: {},
 	String:     {},
