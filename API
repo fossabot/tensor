@@ -130,15 +130,21 @@ API (dtype):
  "dtype.go":
   [x] - type DType = core.DType
   [x] - const Bool = core.Bool
-  [ ] - const Byte = core.Byte
   [x] - const Int = core.Int
+  [ ] - const Int8 = core.Int8
+  [ ] - const Int16 = core.Int16
   [ ] - const Int32 = core.Int32
   [x] - const Int64 = core.Int64
-  [ ] - const UInt32 = core.UInt32
-  [ ] - const UInt64 = core.UInt64
-  [ ] - const Float32 = core.Float32
-  [ ] - const Float64 = core.Float64
-  [ ] - const Cmplx = core.Cmplx
+  [x] - const Uint = core.Uint
+  [x] - const Uint8 = core.Uint8
+  [ ] - const Uint16 = core.Uint16
+  [ ] - const Uint32 = core.Uint32
+  [x] - const Uint64 = core.Uint64
+  [ ] - const Uintptr = core.Uintptr
+  [x] - const Float32 = core.Float32
+  [x] - const Float64 = core.Float64
+  [x] - const Complex64 = core.Complex64
+  [x] - const Complex128 = core.Complex128
   [x] - const String = core.String
   [ ] - const Object = core.Object
 
