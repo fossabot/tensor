@@ -12,10 +12,12 @@ import (
 
 	"github.com/ppknap/tensor"
 	"github.com/ppknap/tensor/dtype"
+
+	"github.com/ppknap/tensor/internal/core"
 )
 
-// Use reflect and dtype packages in case they aren't used in tests.
-var _ = reflect.TypeOf(dtype.DType(0)){{ range . }}{{ if .Pass }}
+// Use reflect, core, and dtype packages in case they aren't used in tests.
+var _ = reflect.TypeOf(dtype.DType(0) == core.DType(0)){{ range . }}{{ if .Pass }}
 
 func TestTensor{{ .Name }}(t *testing.T) {
 	tests := map[string]struct {
@@ -44,6 +46,12 @@ func TestTensorPanic{{ .Name }}(t *testing.T) {
 
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
+			defer func() {
+				if e, ok := recover().(*core.Error); !ok || e == nil {
+					t.Fatalf("test should have panicked with Error, but it did not")
+				}
+			}()
+
 			fn()
 		})
 	}
