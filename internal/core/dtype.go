@@ -13,17 +13,18 @@ type DType uint64
 const (
 	Bool       DType = DType(unsafe.Sizeof(bool(false)))<<32 | 1
 	Int        DType = DType(unsafe.Sizeof(int(0)))<<32 | 2
-	Int64      DType = DType(unsafe.Sizeof(int64(0)))<<32 | 3
-	Uint       DType = DType(unsafe.Sizeof(uint(0)))<<32 | 4
-	Uint8      DType = DType(unsafe.Sizeof(uint8(0)))<<32 | 5
-	Uint16     DType = DType(unsafe.Sizeof(uint16(0)))<<32 | 6
-	Uint32     DType = DType(unsafe.Sizeof(uint32(0)))<<32 | 7
-	Uint64     DType = DType(unsafe.Sizeof(uint64(0)))<<32 | 8
-	Float32    DType = DType(unsafe.Sizeof(float32(0)))<<32 | 9
-	Float64    DType = DType(unsafe.Sizeof(float64(0)))<<32 | 10
-	Complex64  DType = DType(unsafe.Sizeof(complex64(0)))<<32 | 11
-	Complex128 DType = DType(unsafe.Sizeof(complex128(0)))<<32 | 12
-	String     DType = DType(unsafe.Sizeof(unsafe.Pointer(nil)))<<32 | 13 | flagDynamic
+	Int16      DType = DType(unsafe.Sizeof(int64(0)))<<32 | 3
+	Int64      DType = DType(unsafe.Sizeof(int64(0)))<<32 | 4
+	Uint       DType = DType(unsafe.Sizeof(uint(0)))<<32 | 5
+	Uint8      DType = DType(unsafe.Sizeof(uint8(0)))<<32 | 6
+	Uint16     DType = DType(unsafe.Sizeof(uint16(0)))<<32 | 7
+	Uint32     DType = DType(unsafe.Sizeof(uint32(0)))<<32 | 8
+	Uint64     DType = DType(unsafe.Sizeof(uint64(0)))<<32 | 9
+	Float32    DType = DType(unsafe.Sizeof(float32(0)))<<32 | 10
+	Float64    DType = DType(unsafe.Sizeof(float64(0)))<<32 | 11
+	Complex64  DType = DType(unsafe.Sizeof(complex64(0)))<<32 | 12
+	Complex128 DType = DType(unsafe.Sizeof(complex128(0)))<<32 | 13
+	String     DType = DType(unsafe.Sizeof(unsafe.Pointer(nil)))<<32 | 14 | flagDynamic
 )
 
 const (
@@ -55,6 +56,7 @@ func (dt DType) String() string {
 var dTypeNames = map[DType]string{
 	Bool:       "bool",
 	Int:        "int",
+	Int16:      "int16",
 	Int64:      "int64",
 	Uint:       "uint",
 	Uint8:      "uint8",

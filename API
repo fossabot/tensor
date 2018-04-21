@@ -132,7 +132,7 @@ API (dtype):
   [x] - const Bool = core.Bool
   [x] - const Int = core.Int
   [ ] - const Int8 = core.Int8
-  [ ] - const Int16 = core.Int16
+  [x] - const Int16 = core.Int16
   [ ] - const Int32 = core.Int32
   [x] - const Int64 = core.Int64
   [x] - const Uint = core.Uint
@@ -150,6 +150,7 @@ API (dtype):
 
 Planed features:
 [ ] - txtfmt package: custom display options for I/O formatting.
-[ ] - broadcasting for package level functions.
+[ ] - broadcasting.
 [ ] - masks.
 [ ] - custom fields.
+[ ] - more flexible dtype.
