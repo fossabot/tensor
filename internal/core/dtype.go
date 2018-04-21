@@ -16,10 +16,11 @@ const (
 	Int64      DType = DType(unsafe.Sizeof(int64(0)))<<32 | 3
 	Uint       DType = DType(unsafe.Sizeof(uint(0)))<<32 | 4
 	Uint8      DType = DType(unsafe.Sizeof(uint8(0)))<<32 | 5
-	Float32    DType = DType(unsafe.Sizeof(float32(0)))<<32 | 6
-	Float64    DType = DType(unsafe.Sizeof(float64(0)))<<32 | 7
-	Complex128 DType = DType(unsafe.Sizeof(complex128(0)))<<32 | 8
-	String     DType = DType(unsafe.Sizeof(unsafe.Pointer(nil)))<<32 | 9 | flagDynamic
+	Uint64     DType = DType(unsafe.Sizeof(uint64(0)))<<32 | 6
+	Float32    DType = DType(unsafe.Sizeof(float32(0)))<<32 | 7
+	Float64    DType = DType(unsafe.Sizeof(float64(0)))<<32 | 8
+	Complex128 DType = DType(unsafe.Sizeof(complex128(0)))<<32 | 9
+	String     DType = DType(unsafe.Sizeof(unsafe.Pointer(nil)))<<32 | 10 | flagDynamic
 )
 
 const (
@@ -54,6 +55,7 @@ var dTypeNames = map[DType]string{
 	Int64:      "int64",
 	Uint:       "uint",
 	Uint8:      "uint8",
+	Uint64:     "uint64",
 	Float32:    "float32",
 	Float64:    "float64",
 	Complex128: "complex128",
