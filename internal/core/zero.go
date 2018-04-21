@@ -19,6 +19,9 @@ func (dt DType) Zero() unsafe.Pointer {
 	case Float64:
 		v := float64(0)
 		return unsafe.Pointer(&v)
+	case Complex128:
+		v := complex128(0)
+		return unsafe.Pointer(&v)
 	case String:
 		v := ""
 		return unsafe.Pointer(&v)

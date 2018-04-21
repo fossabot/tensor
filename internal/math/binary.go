@@ -110,6 +110,17 @@ func binaryConvert(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) Bin
 				fn(d, ldt.AsFloat64Ptr(l), rdt.AsFloat64Ptr(r))
 			}
 		}
+	case core.Complex128:
+		switch {
+		case ldt == core.Complex128 && rdt != core.Complex128:
+			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsComplex128Ptr(r)) }
+		case ldt != core.Complex128 && rdt == core.Complex128:
+			return func(d, l, r unsafe.Pointer) { fn(d, ldt.AsComplex128Ptr(l), r) }
+		case ldt != core.Complex128 && rdt != core.Complex128:
+			return func(d, l, r unsafe.Pointer) {
+				fn(d, ldt.AsComplex128Ptr(l), rdt.AsComplex128Ptr(r))
+			}
+		}
 	case core.String:
 		switch {
 		case ldt == core.String && rdt != core.String:

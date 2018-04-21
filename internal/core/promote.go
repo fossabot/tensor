@@ -11,8 +11,10 @@ func Promote(at, bt DType) DType {
 		return promote(at, bt, Bool, Int)
 	case Float64:
 		return promote(at, bt, Bool, Int, Int64)
-	case String:
+	case Complex128:
 		return promote(at, bt, Bool, Int, Int64, Float64)
+	case String:
+		return promote(at, bt, Bool, Int, Int64, Float64, Complex128)
 	}
 
 	panic(NewError("core: unsupported type: %q", at))
@@ -33,9 +35,10 @@ func promote(at, bt DType, ts ...DType) DType {
 }
 
 var dTypeSet = map[DType]struct{}{
-	Bool:    {},
-	Int:     {},
-	Int64:   {},
-	Float64: {},
-	String:  {},
+	Bool:       {},
+	Int:        {},
+	Int64:      {},
+	Float64:    {},
+	Complex128: {},
+	String:     {},
 }

@@ -17,6 +17,8 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 		*dst = *(*int64)(p) != int64(0)
 	case Float64:
 		*dst = *(*float64)(p) != float64(0)
+	case Complex128:
+		*dst = *(*complex128)(p) != complex128(0)
 	case String:
 		*dst = strAsBool(*(*string)(p))
 	}
@@ -52,6 +54,8 @@ func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 		*dst = (int)(*(*int64)(p))
 	case Float64:
 		*dst = (int)(*(*float64)(p))
+	case Complex128:
+		*dst = (int)(real(*(*complex128)(p)))
 	case String:
 		*dst = int(strAsInt(*(*string)(p)))
 	}
@@ -87,6 +91,8 @@ func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 		*dst = *(*int64)(p)
 	case Float64:
 		*dst = (int64)(*(*float64)(p))
+	case Complex128:
+		*dst = (int64)(real(*(*complex128)(p)))
 	case String:
 		*dst = strAsInt(*(*string)(p))
 	}
@@ -122,6 +128,8 @@ func (dt DType) AsFloat64(dst *float64, p unsafe.Pointer) {
 		*dst = (float64)(*(*int64)(p))
 	case Float64:
 		*dst = *(*float64)(p)
+	case Complex128:
+		*dst = real(*(*complex128)(p))
 	case String:
 		*dst = strAsFloat(*(*string)(p))
 	}
@@ -142,6 +150,43 @@ func (dt DType) AsFloat64Ptr(p unsafe.Pointer) unsafe.Pointer {
 	return unsafe.Pointer(&v)
 }
 
+// AsComplex128 converts value under provided pointer to complex128 type and
+// saves the result to dst. Conversion depends on called data type.
+func (dt DType) AsComplex128(dst *complex128, p unsafe.Pointer) {
+	switch dt {
+	case Bool:
+		if *(*bool)(p) {
+			*dst = complex(1, 0)
+		}
+		*dst = complex(0, 0)
+	case Int:
+		*dst = complex((float64)(*(*int)(p)), 0)
+	case Int64:
+		*dst = complex((float64)(*(*int64)(p)), 0)
+	case Float64:
+		*dst = complex(*(*float64)(p), 0)
+	case Complex128:
+		*dst = *(*complex128)(p)
+	case String:
+		*dst = strAsComplex(*(*string)(p))
+	}
+
+	panic(NewError("unsupported type: %q", dt))
+}
+
+// AsComplex128Ptr converts value under provided pointer to float64 type and returns
+// a pointer to its data.
+func (dt DType) AsComplex128Ptr(p unsafe.Pointer) unsafe.Pointer {
+	if dt == Complex128 {
+		return p
+	}
+
+	var v complex128
+	dt.AsComplex128(&v, p)
+
+	return unsafe.Pointer(&v)
+}
+
 // AsString converts value under provided pointer to string type and saves the
 // result to dst. Conversion depends on called data type.
 func (dt DType) AsString(dst *string, p unsafe.Pointer) {
@@ -154,6 +199,8 @@ func (dt DType) AsString(dst *string, p unsafe.Pointer) {
 		*dst = fmt.Sprint(*(*int64)(p))
 	case Float64:
 		*dst = fmt.Sprint(*(*float64)(p))
+	case Complex128:
+		*dst = fmt.Sprint(*(*complex128)(p))
 	case String:
 		*dst = *(*string)(p)
 	}
@@ -186,6 +233,8 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int64)(p)) }
 	case Float64:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*float64)(p)) }
+	case Complex128:
+		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*complex128)(p)) }
 	case String:
 		return func(p unsafe.Pointer) string { return *(*string)(p) }
 	}
@@ -206,6 +255,8 @@ func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 		return st.AsInt64Ptr(p)
 	case Float64:
 		return st.AsFloat64Ptr(p)
+	case Complex128:
+		return st.AsComplex128Ptr(p)
 	case String:
 		return st.AsStringPtr(p)
 	}
