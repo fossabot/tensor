@@ -15,6 +15,8 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 		*dst = *(*int)(p) != 0
 	case Int64:
 		*dst = *(*int64)(p) != int64(0)
+	case Float64:
+		*dst = *(*float64)(p) != float64(0)
 	case String:
 		*dst = strAsBool(*(*string)(p))
 	}
@@ -48,6 +50,8 @@ func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 		*dst = *(*int)(p)
 	case Int64:
 		*dst = (int)(*(*int64)(p))
+	case Float64:
+		*dst = (int)(*(*float64)(p))
 	case String:
 		*dst = int(strAsInt(*(*string)(p)))
 	}
@@ -81,6 +85,8 @@ func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 		*dst = (int64)(*(*int)(p))
 	case Int64:
 		*dst = *(*int64)(p)
+	case Float64:
+		*dst = (int64)(*(*float64)(p))
 	case String:
 		*dst = strAsInt(*(*string)(p))
 	}
@@ -101,6 +107,41 @@ func (dt DType) AsInt64Ptr(p unsafe.Pointer) unsafe.Pointer {
 	return unsafe.Pointer(&v)
 }
 
+// AsFloat64 converts value under provided pointer to float64 type and saves
+// the result to dst. Conversion depends on called data type.
+func (dt DType) AsFloat64(dst *float64, p unsafe.Pointer) {
+	switch dt {
+	case Bool:
+		if *(*bool)(p) {
+			*dst = float64(1)
+		}
+		*dst = float64(0)
+	case Int:
+		*dst = (float64)(*(*int)(p))
+	case Int64:
+		*dst = (float64)(*(*int64)(p))
+	case Float64:
+		*dst = *(*float64)(p)
+	case String:
+		*dst = strAsFloat(*(*string)(p))
+	}
+
+	panic(NewError("unsupported type: %q", dt))
+}
+
+// AsFloat64Ptr converts value under provided pointer to float64 type and returns
+// a pointer to its data.
+func (dt DType) AsFloat64Ptr(p unsafe.Pointer) unsafe.Pointer {
+	if dt == Float64 {
+		return p
+	}
+
+	var v float64
+	dt.AsFloat64(&v, p)
+
+	return unsafe.Pointer(&v)
+}
+
 // AsString converts value under provided pointer to string type and saves the
 // result to dst. Conversion depends on called data type.
 func (dt DType) AsString(dst *string, p unsafe.Pointer) {
@@ -111,6 +152,8 @@ func (dt DType) AsString(dst *string, p unsafe.Pointer) {
 		*dst = fmt.Sprint(*(*int)(p))
 	case Int64:
 		*dst = fmt.Sprint(*(*int64)(p))
+	case Float64:
+		*dst = fmt.Sprint(*(*float64)(p))
 	case String:
 		*dst = *(*string)(p)
 	}
@@ -141,6 +184,8 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int)(p)) }
 	case Int64:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int64)(p)) }
+	case Float64:
+		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*float64)(p)) }
 	case String:
 		return func(p unsafe.Pointer) string { return *(*string)(p) }
 	}
@@ -159,6 +204,8 @@ func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 		return st.AsIntPtr(p)
 	case Int64:
 		return st.AsInt64Ptr(p)
+	case Float64:
+		return st.AsFloat64Ptr(p)
 	case String:
 		return st.AsStringPtr(p)
 	}
