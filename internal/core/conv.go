@@ -19,6 +19,8 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 		*dst = *(*uint)(p) != uint(0)
 	case Uint8:
 		*dst = *(*uint8)(p) != uint8(0)
+	case Uint16:
+		*dst = *(*uint16)(p) != uint16(0)
 	case Uint64:
 		*dst = *(*uint64)(p) != uint64(0)
 	case Float32:
@@ -66,6 +68,8 @@ func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 		*dst = (int)(*(*uint)(p))
 	case Uint8:
 		*dst = (int)(*(*uint8)(p))
+	case Uint16:
+		*dst = (int)(*(*uint16)(p))
 	case Uint64:
 		*dst = (int)(*(*uint64)(p))
 	case Float32:
@@ -113,6 +117,8 @@ func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 		*dst = (int64)(*(*uint)(p))
 	case Uint8:
 		*dst = (int64)(*(*uint8)(p))
+	case Uint16:
+		*dst = (int64)(*(*uint16)(p))
 	case Uint64:
 		*dst = (int64)(*(*uint64)(p))
 	case Float32:
@@ -160,6 +166,8 @@ func (dt DType) AsUint(dst *uint, p unsafe.Pointer) {
 		*dst = *(*uint)(p)
 	case Uint8:
 		*dst = (uint)(*(*uint8)(p))
+	case Uint16:
+		*dst = (uint)(*(*uint16)(p))
 	case Uint64:
 		*dst = (uint)(*(*uint64)(p))
 	case Float32:
@@ -207,6 +215,8 @@ func (dt DType) AsUint8(dst *uint8, p unsafe.Pointer) {
 		*dst = (uint8)(*(*uint)(p))
 	case Uint8:
 		*dst = *(*uint8)(p)
+	case Uint16:
+		*dst = (uint8)(*(*uint16)(p))
 	case Uint64:
 		*dst = (uint8)(*(*uint64)(p))
 	case Float32:
@@ -237,6 +247,55 @@ func (dt DType) AsUint8Ptr(p unsafe.Pointer) unsafe.Pointer {
 	return unsafe.Pointer(&v)
 }
 
+// AsUint16 converts value under provided pointer to uint16 type and saves the
+// result to dst. Conversion depends on called data type.
+func (dt DType) AsUint16(dst *uint16, p unsafe.Pointer) {
+	switch dt {
+	case Bool:
+		if *(*bool)(p) {
+			*dst = uint16(1)
+		}
+		*dst = uint16(0)
+	case Int:
+		*dst = (uint16)(*(*int)(p))
+	case Int64:
+		*dst = (uint16)(*(*int64)(p))
+	case Uint:
+		*dst = (uint16)(*(*uint)(p))
+	case Uint8:
+		*dst = (uint16)(*(*uint8)(p))
+	case Uint16:
+		*dst = *(*uint16)(p)
+	case Uint64:
+		*dst = (uint16)(*(*uint64)(p))
+	case Float32:
+		*dst = (uint16)(*(*float32)(p))
+	case Float64:
+		*dst = (uint16)(*(*float64)(p))
+	case Complex64:
+		*dst = (uint16)(real(*(*complex64)(p)))
+	case Complex128:
+		*dst = (uint16)(real(*(*complex128)(p)))
+	case String:
+		*dst = (uint16)(strAsUint(*(*string)(p)))
+	}
+
+	panic(NewError("unsupported type: %q", dt))
+}
+
+// AsUint16Ptr converts value under provided pointer to uint16 type and returns
+// a pointer to its data.
+func (dt DType) AsUint16Ptr(p unsafe.Pointer) unsafe.Pointer {
+	if dt == Uint16 {
+		return p
+	}
+
+	var v uint16
+	dt.AsUint16(&v, p)
+
+	return unsafe.Pointer(&v)
+}
+
 // AsUint64 converts value under provided pointer to uint64 type and saves the
 // result to dst. Conversion depends on called data type.
 func (dt DType) AsUint64(dst *uint64, p unsafe.Pointer) {
@@ -254,6 +313,8 @@ func (dt DType) AsUint64(dst *uint64, p unsafe.Pointer) {
 		*dst = (uint64)(*(*uint)(p))
 	case Uint8:
 		*dst = (uint64)(*(*uint8)(p))
+	case Uint16:
+		*dst = (uint64)(*(*uint16)(p))
 	case Uint64:
 		*dst = *(*uint64)(p)
 	case Float32:
@@ -301,6 +362,8 @@ func (dt DType) AsFloat32(dst *float32, p unsafe.Pointer) {
 		*dst = (float32)(*(*uint)(p))
 	case Uint8:
 		*dst = (float32)(*(*uint8)(p))
+	case Uint16:
+		*dst = (float32)(*(*uint16)(p))
 	case Uint64:
 		*dst = (float32)(*(*uint64)(p))
 	case Float32:
@@ -348,6 +411,8 @@ func (dt DType) AsFloat64(dst *float64, p unsafe.Pointer) {
 		*dst = (float64)(*(*uint)(p))
 	case Uint8:
 		*dst = (float64)(*(*uint8)(p))
+	case Uint16:
+		*dst = (float64)(*(*uint16)(p))
 	case Uint64:
 		*dst = (float64)(*(*uint64)(p))
 	case Float32:
@@ -395,6 +460,8 @@ func (dt DType) AsComplex64(dst *complex64, p unsafe.Pointer) {
 		*dst = complex((float32)(*(*uint)(p)), 0)
 	case Uint8:
 		*dst = complex((float32)(*(*uint8)(p)), 0)
+	case Uint16:
+		*dst = complex((float32)(*(*uint16)(p)), 0)
 	case Uint64:
 		*dst = complex((float32)(*(*uint64)(p)), 0)
 	case Float32:
@@ -442,6 +509,8 @@ func (dt DType) AsComplex128(dst *complex128, p unsafe.Pointer) {
 		*dst = complex((float64)(*(*uint)(p)), 0)
 	case Uint8:
 		*dst = complex((float64)(*(*uint8)(p)), 0)
+	case Uint16:
+		*dst = complex((float64)(*(*uint16)(p)), 0)
 	case Uint64:
 		*dst = complex((float64)(*(*uint64)(p)), 0)
 	case Float32:
@@ -486,6 +555,8 @@ func (dt DType) AsString(dst *string, p unsafe.Pointer) {
 		*dst = fmt.Sprint(*(*uint)(p))
 	case Uint8:
 		*dst = fmt.Sprint(*(*uint8)(p))
+	case Uint16:
+		*dst = fmt.Sprint(*(*uint16)(p))
 	case Uint64:
 		*dst = fmt.Sprint(*(*uint64)(p))
 	case Float32:
@@ -530,6 +601,8 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint)(p)) }
 	case Uint8:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint8)(p)) }
+	case Uint16:
+		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint16)(p)) }
 	case Uint64:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint64)(p)) }
 	case Float32:
@@ -562,6 +635,8 @@ func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 		return st.AsUintPtr(p)
 	case Uint8:
 		return st.AsUint8Ptr(p)
+	case Uint16:
+		return st.AsUint16Ptr(p)
 	case Uint64:
 		return st.AsUint64Ptr(p)
 	case Float32:
