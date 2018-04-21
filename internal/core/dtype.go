@@ -14,9 +14,10 @@ const (
 	Bool       DType = DType(unsafe.Sizeof(bool(false)))<<32 | 1
 	Int        DType = DType(unsafe.Sizeof(int(0)))<<32 | 2
 	Int64      DType = DType(unsafe.Sizeof(int64(0)))<<32 | 3
-	Float64    DType = DType(unsafe.Sizeof(float64(0)))<<32 | 4
-	Complex128 DType = DType(unsafe.Sizeof(complex128(0)))<<32 | 5
-	String     DType = DType(unsafe.Sizeof(unsafe.Pointer(nil)))<<32 | 6 | flagDynamic
+	Uint       DType = DType(unsafe.Sizeof(uint(0)))<<32 | 4
+	Float64    DType = DType(unsafe.Sizeof(float64(0)))<<32 | 5
+	Complex128 DType = DType(unsafe.Sizeof(complex128(0)))<<32 | 6
+	String     DType = DType(unsafe.Sizeof(unsafe.Pointer(nil)))<<32 | 7 | flagDynamic
 )
 
 const (
@@ -49,6 +50,7 @@ var dTypeNames = map[DType]string{
 	Bool:       "bool",
 	Int:        "int",
 	Int64:      "int64",
+	Uint:       "uint",
 	Float64:    "float64",
 	Complex128: "complex128",
 	String:     "string",

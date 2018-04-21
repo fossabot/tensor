@@ -42,7 +42,31 @@ func strAsInt(s string) int64 {
 		return 0
 	}
 
-	panic(NewError("cannot convert %q to an integer value", s))
+	panic(NewError("cannot convert %q to integer value", s))
+}
+
+// strAsUint converts provided string to unsigned integer type.
+func strAsUint(s string) uint64 {
+	if s == "" {
+		return 0
+	}
+
+	if n, err := strconv.ParseUint(s, 10, 64); err == nil {
+		return n
+	}
+
+	if f, err := strconv.ParseFloat(s, 64); err == nil {
+		return uint64(f)
+	}
+
+	if b, err := strconv.ParseBool(s); err == nil {
+		if b {
+			return 1
+		}
+		return 0
+	}
+
+	panic(NewError("cannot convert %q to unsigned integer value", s))
 }
 
 // strAsFloat converts provided string to floating point number type.
