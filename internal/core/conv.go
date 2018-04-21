@@ -25,6 +25,8 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 		*dst = *(*float32)(p) != float32(0)
 	case Float64:
 		*dst = *(*float64)(p) != float64(0)
+	case Complex64:
+		*dst = *(*complex64)(p) != complex64(0)
 	case Complex128:
 		*dst = *(*complex128)(p) != complex128(0)
 	case String:
@@ -70,6 +72,8 @@ func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 		*dst = (int)(*(*float32)(p))
 	case Float64:
 		*dst = (int)(*(*float64)(p))
+	case Complex64:
+		*dst = (int)(real(*(*complex64)(p)))
 	case Complex128:
 		*dst = (int)(real(*(*complex128)(p)))
 	case String:
@@ -115,6 +119,8 @@ func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 		*dst = (int64)(*(*float32)(p))
 	case Float64:
 		*dst = (int64)(*(*float64)(p))
+	case Complex64:
+		*dst = (int64)(real(*(*complex64)(p)))
 	case Complex128:
 		*dst = (int64)(real(*(*complex128)(p)))
 	case String:
@@ -160,6 +166,8 @@ func (dt DType) AsUint(dst *uint, p unsafe.Pointer) {
 		*dst = (uint)(*(*float32)(p))
 	case Float64:
 		*dst = (uint)(*(*float64)(p))
+	case Complex64:
+		*dst = (uint)(real(*(*complex64)(p)))
 	case Complex128:
 		*dst = (uint)(real(*(*complex128)(p)))
 	case String:
@@ -205,6 +213,8 @@ func (dt DType) AsUint8(dst *uint8, p unsafe.Pointer) {
 		*dst = (uint8)(*(*float32)(p))
 	case Float64:
 		*dst = (uint8)(*(*float64)(p))
+	case Complex64:
+		*dst = (uint8)(real(*(*complex64)(p)))
 	case Complex128:
 		*dst = (uint8)(real(*(*complex128)(p)))
 	case String:
@@ -250,6 +260,8 @@ func (dt DType) AsUint64(dst *uint64, p unsafe.Pointer) {
 		*dst = (uint64)(*(*float32)(p))
 	case Float64:
 		*dst = (uint64)(*(*float64)(p))
+	case Complex64:
+		*dst = (uint64)(real(*(*complex64)(p)))
 	case Complex128:
 		*dst = (uint64)(real(*(*complex128)(p)))
 	case String:
@@ -295,6 +307,8 @@ func (dt DType) AsFloat32(dst *float32, p unsafe.Pointer) {
 		*dst = *(*float32)(p)
 	case Float64:
 		*dst = (float32)(*(*float64)(p))
+	case Complex64:
+		*dst = real(*(*complex64)(p))
 	case Complex128:
 		*dst = (float32)(real(*(*complex128)(p)))
 	case String:
@@ -340,6 +354,8 @@ func (dt DType) AsFloat64(dst *float64, p unsafe.Pointer) {
 		*dst = (float64)(*(*float32)(p))
 	case Float64:
 		*dst = *(*float64)(p)
+	case Complex64:
+		*dst = (float64)(real(*(*complex64)(p)))
 	case Complex128:
 		*dst = real(*(*complex128)(p))
 	case String:
@@ -358,6 +374,53 @@ func (dt DType) AsFloat64Ptr(p unsafe.Pointer) unsafe.Pointer {
 
 	var v float64
 	dt.AsFloat64(&v, p)
+
+	return unsafe.Pointer(&v)
+}
+
+// AsComplex64 converts value under provided pointer to complex64 type and
+// saves the result to dst. Conversion depends on called data type.
+func (dt DType) AsComplex64(dst *complex64, p unsafe.Pointer) {
+	switch dt {
+	case Bool:
+		if *(*bool)(p) {
+			*dst = complex(1, 0)
+		}
+		*dst = complex(0, 0)
+	case Int:
+		*dst = complex((float32)(*(*int)(p)), 0)
+	case Int64:
+		*dst = complex((float32)(*(*int64)(p)), 0)
+	case Uint:
+		*dst = complex((float32)(*(*uint)(p)), 0)
+	case Uint8:
+		*dst = complex((float32)(*(*uint8)(p)), 0)
+	case Uint64:
+		*dst = complex((float32)(*(*uint64)(p)), 0)
+	case Float32:
+		*dst = complex(*(*float32)(p), 0)
+	case Float64:
+		*dst = complex((float32)(*(*float64)(p)), 0)
+	case Complex64:
+		*dst = *(*complex64)(p)
+	case Complex128:
+		*dst = (complex64)(*(*complex128)(p))
+	case String:
+		*dst = (complex64)(strAsComplex(*(*string)(p)))
+	}
+
+	panic(NewError("unsupported type: %q", dt))
+}
+
+// AsComplex64Ptr converts value under provided pointer to complex64 type and
+// returns a pointer to its data.
+func (dt DType) AsComplex64Ptr(p unsafe.Pointer) unsafe.Pointer {
+	if dt == Complex64 {
+		return p
+	}
+
+	var v complex64
+	dt.AsComplex64(&v, p)
 
 	return unsafe.Pointer(&v)
 }
@@ -385,6 +448,8 @@ func (dt DType) AsComplex128(dst *complex128, p unsafe.Pointer) {
 		*dst = complex((float64)(*(*float32)(p)), 0)
 	case Float64:
 		*dst = complex(*(*float64)(p), 0)
+	case Complex64:
+		*dst = (complex128)(*(*complex64)(p))
 	case Complex128:
 		*dst = *(*complex128)(p)
 	case String:
@@ -394,8 +459,8 @@ func (dt DType) AsComplex128(dst *complex128, p unsafe.Pointer) {
 	panic(NewError("unsupported type: %q", dt))
 }
 
-// AsComplex128Ptr converts value under provided pointer to float64 type and returns
-// a pointer to its data.
+// AsComplex128Ptr converts value under provided pointer to complex128 type and
+// returns a pointer to its data.
 func (dt DType) AsComplex128Ptr(p unsafe.Pointer) unsafe.Pointer {
 	if dt == Complex128 {
 		return p
@@ -427,6 +492,8 @@ func (dt DType) AsString(dst *string, p unsafe.Pointer) {
 		*dst = fmt.Sprint(*(*float32)(p))
 	case Float64:
 		*dst = fmt.Sprint(*(*float64)(p))
+	case Complex64:
+		*dst = fmt.Sprint(*(*complex64)(p))
 	case Complex128:
 		*dst = fmt.Sprint(*(*complex128)(p))
 	case String:
@@ -469,6 +536,8 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*float32)(p)) }
 	case Float64:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*float64)(p)) }
+	case Complex64:
+		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*complex64)(p)) }
 	case Complex128:
 		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*complex128)(p)) }
 	case String:
@@ -499,6 +568,8 @@ func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 		return st.AsFloat32Ptr(p)
 	case Float64:
 		return st.AsFloat64Ptr(p)
+	case Complex64:
+		return st.AsComplex64Ptr(p)
 	case Complex128:
 		return st.AsComplex128Ptr(p)
 	case String:

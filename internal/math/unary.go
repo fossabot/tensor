@@ -36,6 +36,8 @@ func unaryConvert(ddt, mdt core.DType, op func(core.DType) UnaryFunc) UnaryFunc 
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsFloat32Ptr(m)) }
 	case core.Float64:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsFloat64Ptr(m)) }
+	case core.Complex64:
+		return func(d, m unsafe.Pointer) { fn(d, mdt.AsComplex64Ptr(m)) }
 	case core.Complex128:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsComplex128Ptr(m)) }
 	case core.String:
