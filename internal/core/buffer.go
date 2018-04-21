@@ -7,7 +7,7 @@ import (
 
 // DefaultBufferDType is a default type used by buffer type when its data type
 // was not set explicitly.
-const DefaultBufferDType = Int64
+const DefaultBufferDType = Float64
 
 // Buffer stores a set of data elements. Its size is predefined thus, it is like
 // constant size array that can store objects of different type. The ones that

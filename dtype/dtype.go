@@ -12,6 +12,7 @@ const (
 	Int64      = core.Int64
 	Uint       = core.Uint
 	Uint8      = core.Uint8
+	Float32    = core.Float32
 	Float64    = core.Float64
 	Complex128 = core.Complex128
 	String     = core.String
