@@ -1,6 +1,7 @@
 package core
 
 import (
+	"reflect"
 	"strings"
 	"unsafe"
 )
@@ -73,6 +74,31 @@ func (b *Buffer) Data() []byte {
 	b.init()
 
 	return b.data
+}
+
+// Fill copies provided slice to buffer. The size of a given array and called
+// buffer must be equal. This function takes care of any conversions between
+// types.
+func (b *Buffer) Fill(data interface{}) {
+	v := reflect.ValueOf(data)
+
+	setval := b.Setval()
+	if k := v.Kind(); k != reflect.Slice && k != reflect.Array {
+		if b.Size() != 1 {
+			panic(NewError("cannot set %v to a non scalar object", data))
+		}
+
+		setval(0, data)
+		return
+	}
+
+	if v.Len() != b.Size() {
+		panic(NewError("invalid data size (%d!=%d)", v.Len(), b.Size()))
+	}
+
+	for i := 0; i < v.Len(); i++ {
+		setval(i, v.Index(i).Interface())
+	}
 }
 
 // Setptr sets value under p to a given position in a buffer. Conversion might
