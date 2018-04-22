@@ -68,11 +68,11 @@ var funcMap = template.FuncMap{
 			}
 		case "*tensor.Tensor":
 			return map[string]string{
-				"ws, ts := test.Want.Shape(), test.Got.Shape(); reflect.DeepEqual(ws, ts)": `"want shape=%v; got %v", ws, ts`,
+				"ws, ts := test.Want.Shape(), test.Got.Shape(); !reflect.DeepEqual(ws, ts)": `"want shape=%v; got %v", ws, ts`,
 			}
 		default:
 			return map[string]string{
-				"reflect.DeepEqual(test.Want, test.Got)": `"want %v; got %v", test.Want, test.Got`,
+				"!reflect.DeepEqual(test.Want, test.Got)": `"want %v; got %v", test.Want, test.Got`,
 			}
 		}
 	},

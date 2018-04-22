@@ -118,7 +118,7 @@ func TestTensorShape(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			if reflect.DeepEqual(test.Want, test.Got) {
+			if !reflect.DeepEqual(test.Want, test.Got) {
 				t.Errorf("want %v; got %v", test.Want, test.Got)
 			}
 		})
@@ -151,19 +151,19 @@ func TestTensorStrides(t *testing.T) {
 		},
 		"square matrix": {
 			Got:  tensor.New(3, 3).Strides(),
-			Want: []int{24, 8},
+			Want: []int{8, 24},
 		},
 		"square matrix view": {
 			Got:  tensor.New(3, 3).View().Strides(),
-			Want: []int{24, 8},
+			Want: []int{8, 24},
 		},
 		"matrix three rows two cols": {
 			Got:  tensor.New(3, 2).Strides(),
-			Want: []int{16, 8},
+			Want: []int{8, 24},
 		},
 		"three dim tensor": {
 			Got:  tensor.New(3, 2, 3).Strides(),
-			Want: []int{48, 24, 8},
+			Want: []int{8, 24, 48},
 		},
 		"six dim tensor one element": {
 			Got:  tensor.New(1, 1, 1, 1, 1, 1).Strides(),
@@ -173,7 +173,7 @@ func TestTensorStrides(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			if reflect.DeepEqual(test.Want, test.Got) {
+			if !reflect.DeepEqual(test.Want, test.Got) {
 				t.Errorf("want %v; got %v", test.Want, test.Got)
 			}
 		})
@@ -393,7 +393,7 @@ func TestTensorBase(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			if ws, ts := test.Want.Shape(), test.Got.Shape(); reflect.DeepEqual(ws, ts) {
+			if ws, ts := test.Want.Shape(), test.Got.Shape(); !reflect.DeepEqual(ws, ts) {
 				t.Errorf("want shape=%v; got %v", ws, ts)
 			}
 		})
@@ -420,7 +420,7 @@ func TestTensorFillBuf(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			if ws, ts := test.Want.Shape(), test.Got.Shape(); reflect.DeepEqual(ws, ts) {
+			if ws, ts := test.Want.Shape(), test.Got.Shape(); !reflect.DeepEqual(ws, ts) {
 				t.Errorf("want shape=%v; got %v", ws, ts)
 			}
 		})

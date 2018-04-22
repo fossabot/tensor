@@ -2,51 +2,51 @@
     {
         "name": "zero value",
         "tensor": "(&tensor.Tensor{})",
-        "ndarray": "np.zeros(())"
+        "ndarray": "np.zeros((), order='F')"
     },
     {
         "name": "new empty tensor aka scalar",
         "tensor": "tensor.New()",
-        "ndarray": "np.zeros(())"
+        "ndarray": "np.zeros((), order='F')"
     },
     {
         "name": "vector with one element",
         "tensor": "tensor.New(1)",
-        "ndarray": "np.zeros((1))"
+        "ndarray": "np.zeros((1), order='F')"
     },
     {
         "name": "vector with 9 elements",
         "tensor": "tensor.New(9)",
-        "ndarray": "np.zeros((9))"
+        "ndarray": "np.zeros((9), order='F')"
     },
     {
         "name": "matrix one element",
         "tensor": "tensor.New(1, 1)",
-        "ndarray": "np.zeros((1, 1))"
+        "ndarray": "np.zeros((1, 1), order='F')"
     },
     {
         "name": "square matrix",
         "tensor": "tensor.New(3, 3)",
-        "ndarray": "np.zeros((3, 3))"
+        "ndarray": "np.zeros((3, 3), order='F')"
     },
     {
         "name": "square matrix view",
         "tensor": "tensor.New(3, 3).View()",
-        "ndarray": "np.zeros((3, 3)).view()"
+        "ndarray": "np.zeros((3, 3), order='F').view()"
     },
     {
         "name": "matrix three rows two cols",
         "tensor": "tensor.New(3, 2)",
-        "ndarray": "np.zeros((3, 2))"
+        "ndarray": "np.zeros((3, 2), order='F')"
     },
     {
         "name": "three dim tensor",
         "tensor": "tensor.New(3, 2, 3)",
-        "ndarray": "np.zeros((3, 2, 3))"
+        "ndarray": "np.zeros((3, 2, 3), order='F')"
     },
     {
         "name": "six dim tensor one element",
         "tensor": "tensor.New(1, 1, 1, 1, 1, 1)",
-        "ndarray": "np.zeros((1, 1, 1, 1, 1, 1))"
+        "ndarray": "np.zeros((1, 1, 1, 1, 1, 1), order='F')"
     }
 ]

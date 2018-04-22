@@ -44,7 +44,11 @@ func NewIndex(shape []int, scheme IdxScheme) *Index {
 
 // NDim returns the number of dimmensions represented by index.
 func (idx *Index) NDim() int {
-	return len(idx.shape)
+	if idx != nil {
+		return len(idx.shape)
+	}
+
+	return 0
 }
 
 // Size returns the number of elements safely accessible by index.
@@ -93,12 +97,20 @@ func (idx *Index) Validate(pos []int) bool {
 
 // Strides returns offsets to step in each dimmension when traversing 1D array.
 func (idx *Index) Strides() []int {
-	return cloneInts(idx.stride)
+	if idx != nil {
+		return cloneInts(idx.stride)
+	}
+
+	return nil
 }
 
 // Shape returns an array representing dimmension sizes of the index.
 func (idx *Index) Shape() []int {
-	return cloneInts(idx.shape)
+	if idx != nil {
+		return cloneInts(idx.shape)
+	}
+
+	return nil
 }
 
 // Flags returns index properties.
