@@ -11,32 +11,46 @@ func (dt DType) AsBool(dst *bool, p unsafe.Pointer) {
 	switch dt {
 	case Bool:
 		*dst = *(*bool)(p)
+		return
 	case Int:
 		*dst = *(*int)(p) != 0
+		return
 	case Int16:
 		*dst = *(*int16)(p) != int16(0)
+		return
 	case Int64:
 		*dst = *(*int64)(p) != int64(0)
+		return
 	case Uint:
 		*dst = *(*uint)(p) != uint(0)
+		return
 	case Uint8:
 		*dst = *(*uint8)(p) != uint8(0)
+		return
 	case Uint16:
 		*dst = *(*uint16)(p) != uint16(0)
+		return
 	case Uint32:
 		*dst = *(*uint32)(p) != uint32(0)
+		return
 	case Uint64:
 		*dst = *(*uint64)(p) != uint64(0)
+		return
 	case Float32:
 		*dst = *(*float32)(p) != float32(0)
+		return
 	case Float64:
 		*dst = *(*float64)(p) != float64(0)
+		return
 	case Complex64:
 		*dst = *(*complex64)(p) != complex64(0)
+		return
 	case Complex128:
 		*dst = *(*complex128)(p) != complex128(0)
+		return
 	case String:
 		*dst = strAsBool(*(*string)(p))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -62,34 +76,49 @@ func (dt DType) AsInt(dst *int, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = 1
+			return
 		}
 		*dst = 0
+		return
 	case Int:
 		*dst = *(*int)(p)
+		return
 	case Int16:
 		*dst = (int)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = (int)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = (int)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = (int)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = (int)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = (int)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = (int)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = (int)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = (int)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = (int)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = (int)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = (int)(strAsInt(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -115,34 +144,49 @@ func (dt DType) AsInt64(dst *int64, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = int64(1)
+			return
 		}
 		*dst = int64(0)
+		return
 	case Int:
 		*dst = (int64)(*(*int)(p))
+		return
 	case Int16:
 		*dst = (int64)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = *(*int64)(p)
+		return
 	case Uint:
 		*dst = (int64)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = (int64)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = (int64)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = (int64)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = (int64)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = (int64)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = (int64)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = (int64)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = (int64)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = strAsInt(*(*string)(p))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -168,34 +212,49 @@ func (dt DType) AsInt16(dst *int16, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = int16(1)
+			return
 		}
 		*dst = int16(0)
+		return
 	case Int:
 		*dst = (int16)(*(*int)(p))
+		return
 	case Int16:
 		*dst = *(*int16)(p)
+		return
 	case Int64:
 		*dst = (int16)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = (int16)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = (int16)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = (int16)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = (int16)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = (int16)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = (int16)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = (int16)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = (int16)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = (int16)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = (int16)(strAsInt(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -221,34 +280,49 @@ func (dt DType) AsUint(dst *uint, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = uint(1)
+			return
 		}
 		*dst = uint(0)
+		return
 	case Int:
 		*dst = (uint)(*(*int)(p))
+		return
 	case Int16:
 		*dst = (uint)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = (uint)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = *(*uint)(p)
+		return
 	case Uint8:
 		*dst = (uint)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = (uint)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = (uint)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = (uint)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = (uint)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = (uint)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = (uint)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = (uint)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = (uint)(strAsUint(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -274,34 +348,49 @@ func (dt DType) AsUint8(dst *uint8, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = uint8(1)
+			return
 		}
 		*dst = uint8(0)
+		return
 	case Int:
 		*dst = (uint8)(*(*int)(p))
+		return
 	case Int16:
 		*dst = (uint8)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = (uint8)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = (uint8)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = *(*uint8)(p)
+		return
 	case Uint16:
 		*dst = (uint8)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = (uint8)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = (uint8)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = (uint8)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = (uint8)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = (uint8)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = (uint8)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = (uint8)(strAsUint(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -327,34 +416,49 @@ func (dt DType) AsUint16(dst *uint16, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = uint16(1)
+			return
 		}
 		*dst = uint16(0)
+		return
 	case Int:
 		*dst = (uint16)(*(*int)(p))
+		return
 	case Int16:
 		*dst = (uint16)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = (uint16)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = (uint16)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = (uint16)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = *(*uint16)(p)
+		return
 	case Uint32:
 		*dst = (uint16)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = (uint16)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = (uint16)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = (uint16)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = (uint16)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = (uint16)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = (uint16)(strAsUint(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -380,34 +484,49 @@ func (dt DType) AsUint32(dst *uint32, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = uint32(1)
+			return
 		}
 		*dst = uint32(0)
+		return
 	case Int:
 		*dst = (uint32)(*(*int)(p))
+		return
 	case Int16:
 		*dst = (uint32)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = (uint32)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = (uint32)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = (uint32)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = (uint32)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = *(*uint32)(p)
+		return
 	case Uint64:
 		*dst = (uint32)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = (uint32)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = (uint32)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = (uint32)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = (uint32)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = (uint32)(strAsUint(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -433,34 +552,49 @@ func (dt DType) AsUint64(dst *uint64, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = uint64(1)
+			return
 		}
 		*dst = uint64(0)
+		return
 	case Int:
 		*dst = (uint64)(*(*int)(p))
+		return
 	case Int16:
 		*dst = (uint64)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = (uint64)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = (uint64)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = (uint64)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = (uint64)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = (uint64)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = *(*uint64)(p)
+		return
 	case Float32:
 		*dst = (uint64)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = (uint64)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = (uint64)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = (uint64)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = (uint64)(strAsUint(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -486,34 +620,49 @@ func (dt DType) AsFloat32(dst *float32, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = float32(1)
+			return
 		}
 		*dst = float32(0)
+		return
 	case Int:
 		*dst = (float32)(*(*int)(p))
+		return
 	case Int16:
 		*dst = (float32)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = (float32)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = (float32)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = (float32)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = (float32)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = (float32)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = (float32)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = *(*float32)(p)
+		return
 	case Float64:
 		*dst = (float32)(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = real(*(*complex64)(p))
+		return
 	case Complex128:
 		*dst = (float32)(real(*(*complex128)(p)))
+		return
 	case String:
 		*dst = (float32)(strAsFloat(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -539,34 +688,49 @@ func (dt DType) AsFloat64(dst *float64, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = float64(1)
+			return
 		}
 		*dst = float64(0)
+		return
 	case Int:
 		*dst = (float64)(*(*int)(p))
+		return
 	case Int16:
 		*dst = (float64)(*(*int16)(p))
+		return
 	case Int64:
 		*dst = (float64)(*(*int64)(p))
+		return
 	case Uint:
 		*dst = (float64)(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = (float64)(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = (float64)(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = (float64)(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = (float64)(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = (float64)(*(*float32)(p))
+		return
 	case Float64:
 		*dst = *(*float64)(p)
+		return
 	case Complex64:
 		*dst = (float64)(real(*(*complex64)(p)))
+		return
 	case Complex128:
 		*dst = real(*(*complex128)(p))
+		return
 	case String:
 		*dst = strAsFloat(*(*string)(p))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -592,34 +756,49 @@ func (dt DType) AsComplex64(dst *complex64, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = complex(1, 0)
+			return
 		}
 		*dst = complex(0, 0)
+		return
 	case Int:
 		*dst = complex((float32)(*(*int)(p)), 0)
+		return
 	case Int16:
 		*dst = complex((float32)(*(*int16)(p)), 0)
+		return
 	case Int64:
 		*dst = complex((float32)(*(*int64)(p)), 0)
+		return
 	case Uint:
 		*dst = complex((float32)(*(*uint)(p)), 0)
+		return
 	case Uint8:
 		*dst = complex((float32)(*(*uint8)(p)), 0)
+		return
 	case Uint16:
 		*dst = complex((float32)(*(*uint16)(p)), 0)
+		return
 	case Uint32:
 		*dst = complex((float32)(*(*uint32)(p)), 0)
+		return
 	case Uint64:
 		*dst = complex((float32)(*(*uint64)(p)), 0)
+		return
 	case Float32:
 		*dst = complex(*(*float32)(p), 0)
+		return
 	case Float64:
 		*dst = complex((float32)(*(*float64)(p)), 0)
+		return
 	case Complex64:
 		*dst = *(*complex64)(p)
+		return
 	case Complex128:
 		*dst = (complex64)(*(*complex128)(p))
+		return
 	case String:
 		*dst = (complex64)(strAsComplex(*(*string)(p)))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -645,34 +824,49 @@ func (dt DType) AsComplex128(dst *complex128, p unsafe.Pointer) {
 	case Bool:
 		if *(*bool)(p) {
 			*dst = complex(1, 0)
+			return
 		}
 		*dst = complex(0, 0)
+		return
 	case Int:
 		*dst = complex((float64)(*(*int)(p)), 0)
+		return
 	case Int16:
 		*dst = complex((float64)(*(*int16)(p)), 0)
+		return
 	case Int64:
 		*dst = complex((float64)(*(*int64)(p)), 0)
+		return
 	case Uint:
 		*dst = complex((float64)(*(*uint)(p)), 0)
+		return
 	case Uint8:
 		*dst = complex((float64)(*(*uint8)(p)), 0)
+		return
 	case Uint16:
 		*dst = complex((float64)(*(*uint16)(p)), 0)
+		return
 	case Uint32:
 		*dst = complex((float64)(*(*uint32)(p)), 0)
+		return
 	case Uint64:
 		*dst = complex((float64)(*(*uint64)(p)), 0)
+		return
 	case Float32:
 		*dst = complex((float64)(*(*float32)(p)), 0)
+		return
 	case Float64:
 		*dst = complex(*(*float64)(p), 0)
+		return
 	case Complex64:
 		*dst = (complex128)(*(*complex64)(p))
+		return
 	case Complex128:
 		*dst = *(*complex128)(p)
+		return
 	case String:
 		*dst = strAsComplex(*(*string)(p))
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
@@ -697,32 +891,46 @@ func (dt DType) AsString(dst *string, p unsafe.Pointer) {
 	switch dt {
 	case Bool:
 		*dst = fmt.Sprint(*(*bool)(p))
+		return
 	case Int:
 		*dst = fmt.Sprint(*(*int)(p))
+		return
 	case Int16:
 		*dst = fmt.Sprint(*(*int16)(p))
+		return
 	case Int64:
 		*dst = fmt.Sprint(*(*int64)(p))
+		return
 	case Uint:
 		*dst = fmt.Sprint(*(*uint)(p))
+		return
 	case Uint8:
 		*dst = fmt.Sprint(*(*uint8)(p))
+		return
 	case Uint16:
 		*dst = fmt.Sprint(*(*uint16)(p))
+		return
 	case Uint32:
 		*dst = fmt.Sprint(*(*uint32)(p))
+		return
 	case Uint64:
 		*dst = fmt.Sprint(*(*uint64)(p))
+		return
 	case Float32:
 		*dst = fmt.Sprint(*(*float32)(p))
+		return
 	case Float64:
 		*dst = fmt.Sprint(*(*float64)(p))
+		return
 	case Complex64:
 		*dst = fmt.Sprint(*(*complex64)(p))
+		return
 	case Complex128:
 		*dst = fmt.Sprint(*(*complex128)(p))
+		return
 	case String:
 		*dst = *(*string)(p)
+		return
 	}
 
 	panic(NewError("unsupported type: %q", dt))
