@@ -36,9 +36,13 @@ func (t *Tensor) Strides() []int {
 	return strides
 }
 
-// Size TODO.
+// Size returns the size of a tensor. Scalars size is equal to one.
 func (t *Tensor) Size() int {
-	return 0
+	if t.idx != nil {
+		return t.idx.Size()
+	}
+
+	return 1
 }
 
 // Owner TODO.
