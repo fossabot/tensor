@@ -61,10 +61,29 @@ func main() {
 }
 
 func generate(outFilepath string, mts []*method, ins []*instance) error {
-	var tests []*test
-	for _, mt := range mts {
-		tests = append(tests, newTest(mt, ins))
+	type idxTest struct {
+		i int
+		t *test
 	}
+
+	testC := make(chan idxTest)
+	for i, mt := range mts {
+		i, mt := i, mt // Capture range variables.
+		go func() {
+			testC <- idxTest{
+				i: i,
+				t: newTest(mt, ins),
+			}
+		}()
+	}
+
+	tests := make([]*test, len(mts))
+	for i := 0; i < len(mts); i++ {
+		test := <-testC
+		tests[test.i] = test.t
+	}
+
+	close(testC)
 
 	f, err := os.Create(outFilepath)
 	if err != nil {
