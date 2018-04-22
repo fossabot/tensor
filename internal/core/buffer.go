@@ -68,6 +68,13 @@ func (b *Buffer) Setval() func(int, interface{}) {
 	}
 }
 
+// Data returns internal data slice.
+func (b *Buffer) Data() []byte {
+	b.init()
+
+	return b.data
+}
+
 // Setptr sets value under p to a given position in a buffer. Conversion might
 // happen when types differ.
 func (b *Buffer) Setptr() func(int, DType, unsafe.Pointer) {

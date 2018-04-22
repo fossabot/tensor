@@ -65,6 +65,12 @@ func (t *Tensor) AsType(typ dtype.DType) *Tensor {
 	return t
 }
 
+func (t *Tensor) init() {
+	if t.idx == nil && t.buf == nil {
+		*t = *New()
+	}
+}
+
 type Delegate struct {
 	dst *Tensor
 }

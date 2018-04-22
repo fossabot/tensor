@@ -66,10 +66,13 @@ func (t *Tensor) Base() *Tensor {
 	return nil
 }
 
-// Data TODO.
+// Data returns the internal byte slice object with tensor data. For dynamic
+// types, this function returns nil.
 func (t *Tensor) Data() []byte {
 	// TODO: testgen when fill func is implemented.
-	return nil
+	t.init()
+
+	return t.buf.Data()
 }
 
 // FillBuf TODO.
