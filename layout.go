@@ -83,9 +83,14 @@ func (t *Tensor) Data() []byte {
 	return t.buf.Data()
 }
 
-// FillBuf TODO.
+// FillBuf copies provided data to tensor's buffer. The size of a given slice
+// and called tensor must be equal. This method takes care of any conversions
+// between data types.
 func (t *Tensor) FillBuf(data interface{}) *Tensor {
-	return nil
+	t.init()
+	t.buf.Fill(data)
+
+	return t
 }
 
 // DType returns the data type of tensor's elements.

@@ -36,10 +36,10 @@ API (tensor):
   [x] - (*Tensor) Size() int
   [x] - (*Tensor) Owner() bool
   [x] - (*Tensor) NBytes() int
-  [ ] - (*Tensor) Base() *Tensor
+  [x] - (*Tensor) Base() *Tensor
   [x] - (*Tensor) Data() []byte // (Test)
-  [ ] - (*Tensor) FillBuf(data interface{}) *Tensor
-  [ ] - (*Tensor) DType() dtype.DType
+  [x] - (*Tensor) FillBuf(data interface{}) *Tensor
+  [x] - (*Tensor) DType() dtype.DType
  "conv.go":
   [ ] - (*Tensor) Copy() *Tensor
   [ ] - (*Tensor) View() *Tensor
