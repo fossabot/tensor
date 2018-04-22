@@ -80,7 +80,9 @@ func (t *Tensor) FillBuf(data interface{}) *Tensor {
 	return nil
 }
 
-// DType TODO.
+// DType returns the data type of tensor's elements.
 func (t *Tensor) DType() dtype.DType {
+	t.init()
+
 	return t.buf.DType()
 }
