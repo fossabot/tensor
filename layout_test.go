@@ -118,6 +118,16 @@ func TestTensorShape(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
+			if test.Want == nil && test.Got == nil {
+				return
+			}
+
+			if test.Want == nil && test.Got != nil {
+				t.Fatalf("want result to be nil, got %v", test.Got)
+			}
+			if test.Want != nil && test.Got == nil {
+				t.Fatalf("want result to be not nil")
+			}
 			if !reflect.DeepEqual(test.Want, test.Got) {
 				t.Errorf("want %v; got %v", test.Want, test.Got)
 			}
@@ -173,6 +183,16 @@ func TestTensorStrides(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
+			if test.Want == nil && test.Got == nil {
+				return
+			}
+
+			if test.Want == nil && test.Got != nil {
+				t.Fatalf("want result to be nil, got %v", test.Got)
+			}
+			if test.Want != nil && test.Got == nil {
+				t.Fatalf("want result to be not nil")
+			}
 			if !reflect.DeepEqual(test.Want, test.Got) {
 				t.Errorf("want %v; got %v", test.Want, test.Got)
 			}
@@ -393,6 +413,16 @@ func TestTensorBase(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
+			if test.Want == nil && test.Got == nil {
+				return
+			}
+
+			if test.Want == nil && test.Got != nil {
+				t.Fatalf("want result to be nil, got %v", test.Got)
+			}
+			if test.Want != nil && test.Got == nil {
+				t.Fatalf("want result to be not nil")
+			}
 			if ws, ts := test.Want.Shape(), test.Got.Shape(); !reflect.DeepEqual(ws, ts) {
 				t.Errorf("want shape=%v; got %v", ws, ts)
 			}
@@ -420,6 +450,16 @@ func TestTensorFillBuf(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
+			if test.Want == nil && test.Got == nil {
+				return
+			}
+
+			if test.Want == nil && test.Got != nil {
+				t.Fatalf("want result to be nil, got %v", test.Got)
+			}
+			if test.Want != nil && test.Got == nil {
+				t.Fatalf("want result to be not nil")
+			}
 			if ws, ts := test.Want.Shape(), test.Got.Shape(); !reflect.DeepEqual(ws, ts) {
 				t.Errorf("want shape=%v; got %v", ws, ts)
 			}

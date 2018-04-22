@@ -8,16 +8,18 @@ import (
 
 // test describes all test cases for a single method.
 type test struct {
-	Name  string // Tested method.
-	RTyp  string // Output type.
-	Pass  []*cas // Test cases that should pass.
-	Panic []*cas // Test cases that should panic.
+	Name     string // Tested method.
+	RTyp     string // Output type.
+	Nillable bool   // Wheather output type can be nil.
+	Pass     []*cas // Test cases that should pass.
+	Panic    []*cas // Test cases that should panic.
 }
 
 func newTest(method *method, instances []*instance) *test {
 	tf := &test{
-		Name: method.Name,
-		RTyp: method.RTyp,
+		Name:     method.Name,
+		RTyp:     method.RTyp,
+		Nillable: isNillable(method.RTyp),
 	}
 
 	for _, call := range method.Calls {
@@ -65,4 +67,8 @@ func newTestCas(typ string, inst *instance, call *call) (*cas, bool, error) {
 		Expr: strings.Replace(call.Go, "$inst$", inst.Tensor, -1),
 		Want: typeToExpr[typ](output),
 	}, output == "", nil
+}
+
+func isNillable(typ string) bool {
+	return typ == "*tensor.Tensor" || strings.HasPrefix(typ, "[]")
 }

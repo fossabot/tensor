@@ -31,7 +31,17 @@ func TestTensor{{ .Name }}(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			{{ range $expr, $msg := makeComparators .RTyp }}if {{ $expr }} {
+			{{ if .Nillable }}if test.Want == nil && test.Got == nil {
+				return
+			}
+
+			if test.Want == nil && test.Got != nil {
+				t.Fatalf("want result to be nil, got %v", test.Got)
+			}
+			if test.Want != nil && test.Got == nil {
+				t.Fatalf("want result to be not nil")
+			}
+			{{ end }}{{ range $expr, $msg := makeComparators .RTyp }}if {{ $expr }} {
 				t.Errorf({{ $msg }})
 			}{{ end }}
 		})
