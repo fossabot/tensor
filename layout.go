@@ -45,9 +45,14 @@ func (t *Tensor) Size() int {
 	return 1
 }
 
-// Owner TODO.
+// Owner checks if called tensor owns data buffer it uses. This method returns
+// false for views.
 func (t *Tensor) Owner() bool {
-	return false
+	if t.idx != nil {
+		return !t.idx.Flags().IsView()
+	}
+
+	return true
 }
 
 // NBytes TODO.
