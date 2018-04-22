@@ -5,7 +5,11 @@ type Flags uint64
 
 // IdxScheme gets indexing scheme stored in flags value.
 func (f Flags) IdxScheme() IdxScheme {
-	return IdxScheme(f & maskIdxScheme)
+	if scheme := IdxScheme(f & maskIdxScheme); scheme != 0 {
+		return scheme
+	}
+
+	return IdxSchemeColMajor
 }
 
 // IsView indicates whether the index represents a view over the data.

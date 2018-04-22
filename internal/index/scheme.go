@@ -12,20 +12,46 @@ const (
 	IdxSchemeColMajor IdxScheme = 0
 )
 
+// Shape creates a shape array from provided strides.
+func (s IdxScheme) Shape(strides []int) []int {
+	if f, ok := schemeShapeFuncs[s]; ok {
+		return f(strides)
+	}
+
+	panic(core.NewError("invalid strided indexing scheme"))
+}
+
+var schemeShapeFuncs = map[IdxScheme]func([]int) []int{
+	IdxSchemeColMajor: colMajorShape,
+}
+
+func colMajorShape(strides []int) []int {
+	if len(strides) == 0 {
+		return nil
+	}
+
+	shape := []int{1}
+	for i := 0; i < len(strides)-1; i++ {
+		shape = append(shape, shape[len(shape)-1]*strides[i])
+	}
+
+	return shape
+}
+
 // Strides returns an array which contains data offsets on each dimension.
 func (s IdxScheme) Strides(shape []int) []int {
-	if f, ok := schemeFuncs[s]; ok {
+	if f, ok := schemeStridesFuncs[s]; ok {
 		return f(shape)
 	}
 
 	panic(core.NewError("invalid strided indexing scheme"))
 }
 
-var schemeFuncs = map[IdxScheme]func([]int) []int{
-	IdxSchemeColMajor: colMajor,
+var schemeStridesFuncs = map[IdxScheme]func([]int) []int{
+	IdxSchemeColMajor: colMajorStrides,
 }
 
-func colMajor(shape []int) []int {
+func colMajorStrides(shape []int) []int {
 	if len(shape) == 0 {
 		return nil
 	}

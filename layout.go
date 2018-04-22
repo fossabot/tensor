@@ -61,8 +61,16 @@ func (t *Tensor) Owner() bool {
 // consumed by the pointers to the actual objects.
 func (t *Tensor) NBytes() int { return t.buf.NBytes() }
 
-// Base TODO.
+// Base returns the parent tensor if the called one is its view. It returns nil
+// when called on data owners.
 func (t *Tensor) Base() *Tensor {
+	if idx := t.idx.Base(); idx != nil {
+		return &Tensor{
+			idx: idx,
+			buf: t.buf,
+		}
+	}
+
 	return nil
 }
 

@@ -170,6 +170,20 @@ func (idx *Index) View() *Index {
 	}
 }
 
+// Base creates a new index with original shape retrieved from strides.
+func (idx *Index) Base() *Index {
+	if idx == nil || !idx.flags.IsView() {
+		return nil
+	}
+
+	return &Index{
+		flags:  idx.flags.WithView(false),
+		shape:  idx.flags.IdxScheme().Shape(idx.stride),
+		stride: idx.stride,
+		offset: 0,
+	}
+}
+
 // Scalar creates a 0-dimensional index representing a scalar object.
 func (idx *Index) Scalar(pos []int) *Index {
 	return &Index{
