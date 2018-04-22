@@ -46,7 +46,7 @@ func (b *Buffer) NBytes() int {
 
 // DType returns the underlying buffer's data type.
 func (b *Buffer) DType() DType {
-	if b.typ == 0 {
+	if b == nil || b.typ == 0 {
 		return DefaultBufferDType
 	}
 

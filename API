@@ -30,7 +30,7 @@ API (tensor):
   [ ] - (*Delegate) Maximum(TODO) *Tensor
   [ ] - (*Delegate) Minimum(TODO) *Tensor
  "layout.go":
-  [ ] - (*Tensor) NDim() int
+  [x] - (*Tensor) NDim() int
   [ ] - (*Tensor) Shape() []int
   [ ] - (*Tensor) Strides() []int
   [ ] - (*Tensor) Size() int
