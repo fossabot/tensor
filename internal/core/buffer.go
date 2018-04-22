@@ -37,6 +37,10 @@ func (b *Buffer) Size() int { return b.n }
 // NBytes returns the number of bytes used to store buffer's data. For dynamic
 // types only the object pointer size is counted.
 func (b *Buffer) NBytes() int {
+	if b == nil {
+		return int(DefaultBufferDType.Size())
+	}
+
 	if b.typ == 0 {
 		return b.Size() * int(DefaultBufferDType.Size())
 	}

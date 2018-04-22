@@ -36,7 +36,8 @@ func (t *Tensor) Strides() []int {
 	return strides
 }
 
-// Size returns the size of a tensor. Scalars size is equal to one.
+// Size returns the size of a tensor which is the same as the product of its
+// shape elements. Scalars size is equal to one.
 func (t *Tensor) Size() int {
 	if t.idx != nil {
 		return t.idx.Size()
@@ -55,10 +56,10 @@ func (t *Tensor) Owner() bool {
 	return true
 }
 
-// NBytes TODO.
-func (t *Tensor) NBytes() int {
-	return 0
-}
+// NBytes returns the number of bytes consumed by tensor elements. For dynamic
+// types which do not own their data, this function returns only the size
+// consumed by the pointers to the actual objects.
+func (t *Tensor) NBytes() int { return t.buf.NBytes() }
 
 // Base TODO.
 func (t *Tensor) Base() *Tensor {
