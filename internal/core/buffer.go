@@ -46,11 +46,11 @@ func (b *Buffer) NBytes() int {
 
 // DType returns the underlying buffer's data type.
 func (b *Buffer) DType() DType {
-	if b == nil || b.typ == 0 {
-		return DefaultBufferDType
+	if b.typ != 0 {
+		return b.typ
 	}
 
-	return b.typ
+	return DefaultBufferDType
 }
 
 // Setval sets interface value to a given position in the buffer. Conversion

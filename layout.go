@@ -3,14 +3,30 @@ package tensor
 import "github.com/ppknap/tensor/dtype"
 
 // NDim returns the number of dimensions of the tensor.
-func (t *Tensor) NDim() int { return t.idx.NDim() }
+func (t *Tensor) NDim() int {
+	if t.idx != nil {
+		return t.idx.NDim()
+	}
+
+	return 0
+}
 
 // Shape returns the shape of a tensor. For scalars this method returns nil.
-func (t *Tensor) Shape() []int { return t.idx.Shape() }
+func (t *Tensor) Shape() []int {
+	if t.idx != nil {
+		return t.idx.Shape()
+	}
+
+	return nil
+}
 
 // Strides returns the number of bytes to step in each dimmension to get the
 // next element on traversed axis.
 func (t *Tensor) Strides() []int {
+	if t.idx == nil || t.buf == nil {
+		return nil
+	}
+
 	strides, typ := t.idx.Strides(), t.buf.DType()
 
 	for i := range strides {
