@@ -13,16 +13,21 @@ func (dt DType) Setraw(dst, src unsafe.Pointer) {
 	switch dt.Size() {
 	case 1:
 		*(*uint8)(dst) = *(*uint8)(src)
+		return
 	case 2:
 		*(*uint16)(dst) = *(*uint16)(src)
+		return
 	case 4:
 		*(*uint32)(dst) = *(*uint32)(src)
+		return
 	case 8:
 		*(*uint64)(dst) = *(*uint64)(src)
+		return
 	case 16:
 		*(*uint64)(dst) = *(*uint64)(src)
 		*(*uint64)(unsafe.Pointer(uintptr(dst) + 8)) = *(*uint64)(unsafe.Pointer(uintptr(src) + 8))
+		return
 	}
 
-	panic(NewError("core: unsupported data size: %q", dt))
+	panic(NewError("core: unsupported data size: %q(%d)", dt, dt.Size()))
 }
