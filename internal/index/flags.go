@@ -32,5 +32,5 @@ func (f Flags) set(v bool, flag Flags) Flags {
 
 const (
 	maskIdxScheme Flags = 0xFF
-	flagIdxView         = 1<<9 + iota
+	flagIdxView         = 1 << (9 + iota)
 )

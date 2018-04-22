@@ -178,7 +178,7 @@ func (idx *Index) Base() *Index {
 
 	return &Index{
 		flags:  idx.flags.WithView(false),
-		shape:  idx.flags.IdxScheme().Shape(idx.stride),
+		shape:  idx.flags.IdxScheme().Shape(idx.stride, idx.Size()),
 		stride: idx.stride,
 		offset: 0,
 	}

@@ -1,6 +1,8 @@
 package index
 
-import "github.com/ppknap/tensor/internal/core"
+import (
+	"github.com/ppknap/tensor/internal/core"
+)
 
 // IdxScheme defines the order of dimmensions in continuos memory.
 type IdxScheme Flags
@@ -13,29 +15,29 @@ const (
 )
 
 // Shape creates a shape array from provided strides.
-func (s IdxScheme) Shape(strides []int) []int {
+func (s IdxScheme) Shape(strides []int, size int) []int {
 	if f, ok := schemeShapeFuncs[s]; ok {
-		return f(strides)
+		return f(strides, size)
 	}
 
 	panic(core.NewError("invalid strided indexing scheme"))
 }
 
-var schemeShapeFuncs = map[IdxScheme]func([]int) []int{
+var schemeShapeFuncs = map[IdxScheme]func([]int, int) []int{
 	IdxSchemeColMajor: colMajorShape,
 }
 
-func colMajorShape(strides []int) []int {
+func colMajorShape(strides []int, size int) []int {
 	if len(strides) == 0 {
 		return nil
 	}
 
-	shape := []int{1}
-	for i := 0; i < len(strides)-1; i++ {
-		shape = append(shape, shape[len(shape)-1]*strides[i])
+	var shape []int
+	for i := 1; i < len(strides); i++ {
+		shape = append(shape, strides[i]/strides[i-1])
 	}
 
-	return shape
+	return append(shape, size/strides[len(strides)-1])
 }
 
 // Strides returns an array which contains data offsets on each dimension.
