@@ -24,6 +24,10 @@ func New(shape ...int) *Tensor {
 	}
 }
 
+func NewScalar(scalar interface{}) *Tensor {
+	return nil
+}
+
 func (t *Tensor) At(pos ...int) *Tensor {
 	if !t.idx.Validate(pos) {
 		panic(fmt.Sprintf("tensor: invalid position %v for %v", pos, t.idx))

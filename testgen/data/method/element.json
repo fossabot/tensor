@@ -1,5 +1,16 @@
 [
     {
+        "name": "Each",
+        "rtyp": "*tensor.Tensor",
+        "func": "f := func() func([]int,*Tensor) {\ni := 1\nreturn func(_ []int, t *tensor.Tensor) {\ni++\nt.ItemSet(tensor.NewScalar(i))\n}\n}",
+        "calls": [
+            {
+                "go": "$inst$.Each(f())",
+                "py": "$inst$; tmp.put(np.arange(0,$inst$.size), np.arange(1,$inst$.size+1))"
+            }
+        ]
+    },
+    {
         "name": "ItemAt",
         "rtyp": "*tensor.Tensor",
         "calls": [

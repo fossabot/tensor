@@ -11,6 +11,7 @@ type test struct {
 	Name     string // Tested method.
 	RTyp     string // Output type.
 	Nillable bool   // Wheather output type can be nil.
+	Func     string // Optional helper function.
 	Pass     []*cas // Test cases that should pass.
 	Panic    []*cas // Test cases that should panic.
 }
@@ -20,6 +21,7 @@ func newTest(method *method, instances []*instance) *test {
 		Name:     method.Name,
 		RTyp:     method.RTyp,
 		Nillable: isNillable(method.RTyp),
+		Func:     method.Func,
 	}
 
 	for _, call := range method.Calls {

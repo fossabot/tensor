@@ -19,7 +19,10 @@ import (
 // Use reflect, core, and dtype packages in case they aren't used in tests.
 var _ = reflect.TypeOf(dtype.DType(0) == core.DType(0)){{ range . }}{{ if .Pass }}
 
-func TestTensor{{ .Name }}(t *testing.T) {
+func TestTensor{{ .Name }}(t *testing.T) { {{- if .Func }}
+{{ .Func }}
+
+{{ end }}
 	tests := map[string]struct {
 		Got, Want {{ .RTyp }}
 	}{ {{- range .Pass }}

@@ -30,6 +30,7 @@ func loadInstances(path string) (instances []*instance, err error) {
 type method struct {
 	Name  string  `json:"name"`  // Method name.
 	RTyp  string  `json:"rtyp"`  // Function return type.
+	Func  string  `json:"func"`  // Optional helper function.
 	Calls []*call `json:"calls"` // Go to python method call.
 }
 
