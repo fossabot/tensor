@@ -30,6 +30,8 @@ func Destruct(v interface{}) (DType, unsafe.Pointer) {
 		return Uint32, unsafe.Pointer(&v)
 	case uint64:
 		return Uint64, unsafe.Pointer(&v)
+	case uintptr:
+		return Uintptr, unsafe.Pointer(&v)
 	case float32:
 		return Float32, unsafe.Pointer(&v)
 	case float64:

@@ -18,6 +18,7 @@ const (
 	Uint16     = core.Uint16
 	Uint32     = core.Uint32
 	Uint64     = core.Uint64
+	Uintptr    = core.Uintptr
 	Float32    = core.Float32
 	Float64    = core.Float64
 	Complex64  = core.Complex64

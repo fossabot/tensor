@@ -187,6 +187,17 @@ func binaryConvert(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) Bin
 				fn(d, ldt.AsUint64Ptr(l), rdt.AsUint64Ptr(r))
 			}
 		}
+	case core.Uintptr:
+		switch {
+		case ldt == core.Uintptr && rdt != core.Uintptr:
+			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsUintptrPtr(r)) }
+		case ldt != core.Uintptr && rdt == core.Uintptr:
+			return func(d, l, r unsafe.Pointer) { fn(d, ldt.AsUintptrPtr(l), r) }
+		case ldt != core.Uintptr && rdt != core.Uintptr:
+			return func(d, l, r unsafe.Pointer) {
+				fn(d, ldt.AsUintptrPtr(l), rdt.AsUintptrPtr(r))
+			}
+		}
 	case core.Float32:
 		switch {
 		case ldt == core.Float32 && rdt != core.Float32:

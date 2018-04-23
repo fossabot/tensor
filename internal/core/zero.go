@@ -40,6 +40,9 @@ func (dt DType) Zero() unsafe.Pointer {
 	case Uint64:
 		v := uint64(0)
 		return unsafe.Pointer(&v)
+	case Uintptr:
+		v := uintptr(0)
+		return unsafe.Pointer(&v)
 	case Float32:
 		v := float32(0)
 		return unsafe.Pointer(&v)
