@@ -1,0 +1,22 @@
+[
+    {
+        "name": "ItemAt",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.FillBuf([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}).ItemAt(1, 1)",
+                "py": "$inst$; tmp.put(np.arange(0,9), np.arange(1,10)) if tmp.size == 9 else exit(); print(tmp[1,1])"
+            }
+        ]
+    },
+    {
+        "name": "ItemSet",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.ItemSet(tensor.NewScalar(5.0), 1, 1)",
+                "py": "$inst$; tmp[1,1]=5.0 if tmp.size == 9 else exit()"
+            }
+        ]
+    }
+]

@@ -71,7 +71,7 @@ API (tensor):
   [ ] - (*Tensor) Reshape(shape ...int) *Tensor
   [ ] - (*Tensor) Resize(shape ...int) *Tensor
   [ ] - (*Tensor) Ravel() *Tensor
- "elements.go":
+ "element.go":
   [ ] - (*Tensor) Each(f func(pos []int, t *Tensor)) *Tensor
   [ ] - (*Tensor) ItemAt(idx ...int) *Tensor
   [ ] - (*Tensor) ItemSet(v *Tensor, idx ...int) *Tensor
