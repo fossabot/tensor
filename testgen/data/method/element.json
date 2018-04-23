@@ -26,7 +26,7 @@
         "calls": [
             {
                 "go": "$inst$.ItemSet(tensor.NewScalar(5.0), 1, 1)",
-                "py": "$inst$; tmp[1,1]=5.0 if tmp.size == 9 else exit()"
+                "py": "$inst$; tmp[1,1]=5.0 if tmp.size in [9,6] else exit()"
             }
         ]
     }

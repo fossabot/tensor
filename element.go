@@ -2,7 +2,9 @@ package tensor
 
 import "github.com/ppknap/tensor/internal/core"
 
-// Each TODO.
+// Each calls f on each element of the tensor. The current iteration position
+// and a scalar view of underlying element will be passed to f. These arguments
+// may be reused by internal implementation after each iteration.
 func (t *Tensor) Each(f func(pos []int, t *Tensor)) *Tensor {
 	return t
 }
@@ -20,7 +22,18 @@ func (t *Tensor) ItemAt(pos ...int) *Tensor {
 	}
 }
 
-// ItemSet TODO.
-func (t *Tensor) ItemSet(v *Tensor, idx ...int) *Tensor {
+// ItemSet sets the value from provided scalar at a given position in called
+// tensor. This function panics if provided tensor size is not equal to one.
+func (t *Tensor) ItemSet(v *Tensor, pos ...int) *Tensor {
+	if !t.idx.Validate(pos) {
+		panic(core.NewError("invalid position %v for %v", pos, t.idx))
+	}
+
+	if v.Size() != 1 {
+		panic(core.NewError("invalid non scalar argument (shape:%v)", v.Shape()))
+	}
+
+	t.buf.Setptr()(t.idx.At()(pos), v.buf.DType(), v.buf.At()(0))
+
 	return t
 }

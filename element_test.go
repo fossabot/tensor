@@ -158,6 +158,10 @@ func TestTensorItemSet(t *testing.T) {
 			Got:  tensor.New(3, 3).View().ItemSet(tensor.NewScalar(5.0), 1, 1),
 			Want: tensor.New(3, 3),
 		},
+		"matrix three rows two cols": {
+			Got:  tensor.New(3, 2).ItemSet(tensor.NewScalar(5.0), 1, 1),
+			Want: tensor.New(3, 2),
+		},
 	}
 
 	for name, test := range tests {
@@ -186,7 +190,6 @@ func TestTensorPanicItemSet(t *testing.T) {
 		"vector with one element":     func() { _ = tensor.New(1).ItemSet(tensor.NewScalar(5.0), 1, 1) },
 		"vector with 9 elements":      func() { _ = tensor.New(9).ItemSet(tensor.NewScalar(5.0), 1, 1) },
 		"matrix one element":          func() { _ = tensor.New(1, 1).ItemSet(tensor.NewScalar(5.0), 1, 1) },
-		"matrix three rows two cols":  func() { _ = tensor.New(3, 2).ItemSet(tensor.NewScalar(5.0), 1, 1) },
 		"three dim tensor":            func() { _ = tensor.New(3, 2, 3).ItemSet(tensor.NewScalar(5.0), 1, 1) },
 		"six dim tensor one element":  func() { _ = tensor.New(1, 1, 1, 1, 1, 1).ItemSet(tensor.NewScalar(5.0), 1, 1) },
 	}
