@@ -6,6 +6,13 @@ import "github.com/ppknap/tensor/internal/core"
 // and a scalar view of underlying element will be passed to f. These arguments
 // may be reused by internal implementation after each iteration.
 func (t *Tensor) Each(f func(pos []int, t *Tensor)) *Tensor {
+	t.idx.Iterate(func(pos []int) {
+		f(pos, &Tensor{
+			idx: t.idx.Scalar(pos),
+			buf: t.buf,
+		})
+	})
+
 	return t
 }
 

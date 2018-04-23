@@ -72,9 +72,9 @@ API (tensor):
   [ ] - (*Tensor) Resize(shape ...int) *Tensor
   [ ] - (*Tensor) Ravel() *Tensor
  "element.go":
-  [ ] - (*Tensor) Each(f func(pos []int, t *Tensor)) *Tensor
-  [ ] - (*Tensor) ItemAt(idx ...int) *Tensor
-  [ ] - (*Tensor) ItemSet(v *Tensor, idx ...int) *Tensor
+  [x] - (*Tensor) Each(f func(pos []int, t *Tensor)) *Tensor
+  [x] - (*Tensor) ItemAt(idx ...int) *Tensor
+  [x] - (*Tensor) ItemSet(v *Tensor, idx ...int) *Tensor
  "arith.go":
   [ ] - (*Tensor) Add(u *Tensor) *Tensor
   [ ] - (*Tensor) Subtract(u *Tensor) *Tensor

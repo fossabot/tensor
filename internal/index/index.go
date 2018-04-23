@@ -116,7 +116,7 @@ func (idx *Index) EqShape(b *Index) bool {
 // modified. The last dimmension is iterated over first.
 func (idx *Index) Iterate(f func(pos []int)) {
 	// Scalars and zero slices are not supported by indexing iterator.
-	if len(idx.shape) == 0 || idx.Size() == 0 {
+	if idx == nil || len(idx.shape) == 0 || idx.Size() == 0 {
 		return
 	}
 
