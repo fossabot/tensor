@@ -14,18 +14,19 @@ const (
 	Bool       DType = DType(unsafe.Sizeof(bool(false)))<<32 | 1
 	Int        DType = DType(unsafe.Sizeof(int(0)))<<32 | 2
 	Int8       DType = DType(unsafe.Sizeof(int8(0)))<<32 | 3
-	Int16      DType = DType(unsafe.Sizeof(int64(0)))<<32 | 4
-	Int64      DType = DType(unsafe.Sizeof(int64(0)))<<32 | 5
-	Uint       DType = DType(unsafe.Sizeof(uint(0)))<<32 | 6
-	Uint8      DType = DType(unsafe.Sizeof(uint8(0)))<<32 | 7
-	Uint16     DType = DType(unsafe.Sizeof(uint16(0)))<<32 | 8
-	Uint32     DType = DType(unsafe.Sizeof(uint32(0)))<<32 | 9
-	Uint64     DType = DType(unsafe.Sizeof(uint64(0)))<<32 | 10
-	Float32    DType = DType(unsafe.Sizeof(float32(0)))<<32 | 11
-	Float64    DType = DType(unsafe.Sizeof(float64(0)))<<32 | 12
-	Complex64  DType = DType(unsafe.Sizeof(complex64(0)))<<32 | 13
-	Complex128 DType = DType(unsafe.Sizeof(complex128(0)))<<32 | 14
-	String     DType = DType(unsafe.Sizeof(unsafe.Pointer(nil)))<<32 | 15 | flagDynamic
+	Int16      DType = DType(unsafe.Sizeof(int16(0)))<<32 | 4
+	Int32      DType = DType(unsafe.Sizeof(int32(0)))<<32 | 5
+	Int64      DType = DType(unsafe.Sizeof(int64(0)))<<32 | 6
+	Uint       DType = DType(unsafe.Sizeof(uint(0)))<<32 | 7
+	Uint8      DType = DType(unsafe.Sizeof(uint8(0)))<<32 | 8
+	Uint16     DType = DType(unsafe.Sizeof(uint16(0)))<<32 | 9
+	Uint32     DType = DType(unsafe.Sizeof(uint32(0)))<<32 | 10
+	Uint64     DType = DType(unsafe.Sizeof(uint64(0)))<<32 | 11
+	Float32    DType = DType(unsafe.Sizeof(float32(0)))<<32 | 12
+	Float64    DType = DType(unsafe.Sizeof(float64(0)))<<32 | 13
+	Complex64  DType = DType(unsafe.Sizeof(complex64(0)))<<32 | 14
+	Complex128 DType = DType(unsafe.Sizeof(complex128(0)))<<32 | 15
+	String     DType = DType(unsafe.Sizeof(unsafe.Pointer(nil)))<<32 | 16 | flagDynamic
 )
 
 const (

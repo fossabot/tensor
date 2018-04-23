@@ -28,6 +28,8 @@ func unaryConvert(ddt, mdt core.DType, op func(core.DType) UnaryFunc) UnaryFunc 
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsInt8Ptr(m)) }
 	case core.Int16:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsInt16Ptr(m)) }
+	case core.Int32:
+		return func(d, m unsafe.Pointer) { fn(d, mdt.AsInt32Ptr(m)) }
 	case core.Int64:
 		return func(d, m unsafe.Pointer) { fn(d, mdt.AsInt64Ptr(m)) }
 	case core.Uint:

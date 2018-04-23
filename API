@@ -131,9 +131,9 @@ API (dtype):
   [x] - type DType = core.DType
   [x] - const Bool = core.Bool
   [x] - const Int = core.Int
-  [ ] - const Int8 = core.Int8
+  [x] - const Int8 = core.Int8
   [x] - const Int16 = core.Int16
-  [ ] - const Int32 = core.Int32
+  [x] - const Int32 = core.Int32
   [x] - const Int64 = core.Int64
   [x] - const Uint = core.Uint
   [x] - const Uint8 = core.Uint8

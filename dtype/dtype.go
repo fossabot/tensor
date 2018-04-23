@@ -11,6 +11,7 @@ const (
 	Int        = core.Int
 	Int8       = core.Int8
 	Int16      = core.Int16
+	Int32      = core.Int32
 	Int64      = core.Int64
 	Uint       = core.Uint
 	Uint8      = core.Uint8
