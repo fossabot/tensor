@@ -2,7 +2,7 @@
     {
         "name": "Each",
         "rtyp": "*tensor.Tensor",
-        "func": "f := func() func([]int,*Tensor) {\ni := 1\nreturn func(_ []int, t *tensor.Tensor) {\ni++\nt.ItemSet(tensor.NewScalar(i))\n}\n}",
+        "func": "f := func() func([]int,*tensor.Tensor) {\ni := 1\nreturn func(_ []int, t *tensor.Tensor) {\ni++\nt.ItemSet(tensor.NewScalar(i))\n}\n}",
         "calls": [
             {
                 "go": "$inst$.Each(f())",
@@ -16,7 +16,7 @@
         "calls": [
             {
                 "go": "$inst$.FillBuf([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}).ItemAt(1, 1)",
-                "py": "$inst$; tmp.put(np.arange(0,9), np.arange(1,10)) if tmp.size == 9 else exit(); print(tmp[1,1])"
+                "py": "$inst$; tmp.put(np.arange(0,9), np.arange(1,10)) if tmp.size == 9 else exit(); tmp = tmp[1,1]"
             }
         ]
     },

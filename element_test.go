@@ -16,7 +16,7 @@ import (
 var _ = reflect.TypeOf(dtype.DType(0) == core.DType(0))
 
 func TestTensorEach(t *testing.T) {
-	f := func() func([]int, *Tensor) {
+	f := func() func([]int, *tensor.Tensor) {
 		i := 1
 		return func(_ []int, t *tensor.Tensor) {
 			i++
@@ -94,11 +94,11 @@ func TestTensorItemAt(t *testing.T) {
 	}{
 		"square matrix": {
 			Got:  tensor.New(3, 3).FillBuf([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}).ItemAt(1, 1),
-			Want: tensor.New(5.0),
+			Want: tensor.New(),
 		},
 		"square matrix view": {
 			Got:  tensor.New(3, 3).View().FillBuf([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}).ItemAt(1, 1),
-			Want: tensor.New(5.0),
+			Want: tensor.New(),
 		},
 	}
 
