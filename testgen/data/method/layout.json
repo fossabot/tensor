@@ -4,7 +4,6 @@
         "rtyp": "int",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.NDim()",
                 "py": "$inst$.ndim"
             }
@@ -15,7 +14,6 @@
         "rtyp": "[]int",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.Shape()",
                 "py": "$inst$.shape"
             }
@@ -26,7 +24,6 @@
         "rtyp": "[]int",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.Strides()",
                 "py": "$inst$.strides"
             }
@@ -37,7 +34,6 @@
         "rtyp": "int",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.Size()",
                 "py": "$inst$.size"
             }
@@ -48,7 +44,6 @@
         "rtyp": "bool",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.Owner()",
                 "py": "$inst$.base is None"
             }
@@ -59,7 +54,6 @@
         "rtyp": "int",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.NBytes()",
                 "py": "$inst$.nbytes"
             }
@@ -70,7 +64,6 @@
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.Base()",
                 "py": "$inst$.base"
             }
@@ -81,7 +74,6 @@
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.FillBuf([]int{2, 2, 2, 2, 2, 2, 2, 2, 2})",
                 "py": "$inst$; tmp.fill(2) if tmp.size == 9 else exit()"
             }
@@ -92,7 +84,6 @@
         "rtyp": "dtype.DType",
         "calls": [
             {
-                "dsc": "",
                 "go": "$inst$.DType()",
                 "py": "$inst$.dtype"
             }

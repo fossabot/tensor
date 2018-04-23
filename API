@@ -20,7 +20,6 @@ API (tensor):
  "delegate.go":
   [+] - type Delegate struct {...}
   [+] - tensor.NewDelegate(dst *Tensor) *Delegate
-  [+] - (*Tensor) Delegate() *Delegate
   [ ] - (*Delegate) Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
   [+] - (*Delegate) Add(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Subtract(a, b *Tensor) *Tensor
@@ -29,6 +28,7 @@ API (tensor):
   [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor
   [ ] - (*Delegate) Maximum(TODO) *Tensor
   [ ] - (*Delegate) Minimum(TODO) *Tensor
+  [+] - (*Tensor) Delegate() *Delegate
  "layout.go":
   [x] - (*Tensor) NDim() int
   [x] - (*Tensor) Shape() []int
