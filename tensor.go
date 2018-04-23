@@ -24,8 +24,18 @@ func New(shape ...int) *Tensor {
 	}
 }
 
+// NewScalar creates a 0-dimensional tensor from a given value. The returned
+// object's data type will be inherited from a given argument.
 func NewScalar(scalar interface{}) *Tensor {
-	return nil
+	t := &Tensor{
+		idx: index.NewIndex(nil, 0),
+		buf: core.NewBuffer(1),
+	}
+
+	typ, p := core.Destruct(scalar)
+	t.buf.AsType(typ).Setptr()(0, typ, p)
+
+	return t
 }
 
 func (t *Tensor) At(pos ...int) *Tensor {
