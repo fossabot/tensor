@@ -17,6 +17,10 @@ func Add(dt core.DType) BinaryFunc {
 		return func(d, l, r unsafe.Pointer) {
 			*(*int)(d) = *(*int)(l) + *(*int)(r)
 		}
+	case core.Int8:
+		return func(d, l, r unsafe.Pointer) {
+			*(*int8)(d) = *(*int8)(l) + *(*int8)(r)
+		}
 	case core.Int16:
 		return func(d, l, r unsafe.Pointer) {
 			*(*int16)(d) = *(*int16)(l) + *(*int16)(r)

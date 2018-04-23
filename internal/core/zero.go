@@ -13,6 +13,9 @@ func (dt DType) Zero() unsafe.Pointer {
 	case Int:
 		v := 0
 		return unsafe.Pointer(&v)
+	case Int8:
+		v := int8(0)
+		return unsafe.Pointer(&v)
 	case Int16:
 		v := int16(0)
 		return unsafe.Pointer(&v)

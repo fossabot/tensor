@@ -9,6 +9,7 @@ type DType = core.DType
 const (
 	Bool       = core.Bool
 	Int        = core.Int
+	Int8       = core.Int8
 	Int16      = core.Int16
 	Int64      = core.Int64
 	Uint       = core.Uint

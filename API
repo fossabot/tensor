@@ -14,9 +14,9 @@ Forms:
 
 API (tensor):
  "tensor.go":
-  [+] - type Tensor struct {...}
+  [x] - type Tensor struct {...}
   [x] - tensor.New(shape ...int) *Tensor
-  [ ] - tensor.NewScalar(v interface{}) *Tensor
+  [x] - tensor.NewScalar(v interface{}) *Tensor
  "delegate.go":
   [+] - type Delegate struct {...}
   [+] - tensor.NewDelegate(dst *Tensor) *Delegate

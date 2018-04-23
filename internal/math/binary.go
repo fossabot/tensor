@@ -88,6 +88,17 @@ func binaryConvert(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) Bin
 				fn(d, ldt.AsIntPtr(l), rdt.AsIntPtr(r))
 			}
 		}
+	case core.Int8:
+		switch {
+		case ldt == core.Int8 && rdt != core.Int8:
+			return func(d, l, r unsafe.Pointer) { fn(d, l, rdt.AsInt8Ptr(r)) }
+		case ldt != core.Int8 && rdt == core.Int8:
+			return func(d, l, r unsafe.Pointer) { fn(d, ldt.AsInt8Ptr(l), r) }
+		case ldt != core.Int8 && rdt != core.Int8:
+			return func(d, l, r unsafe.Pointer) {
+				fn(d, ldt.AsInt8Ptr(l), rdt.AsInt8Ptr(r))
+			}
+		}
 	case core.Int16:
 		switch {
 		case ldt == core.Int16 && rdt != core.Int16:
