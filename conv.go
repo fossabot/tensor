@@ -1,10 +1,34 @@
 package tensor
 
-import "github.com/ppknap/tensor/dtype"
+import (
+	"github.com/ppknap/tensor/dtype"
+	"github.com/ppknap/tensor/internal/core"
+)
 
-// Copy TODO.
+// Copy creates a copy of called tensor. If this function is called on views, a
+// newly created object will own copied data. Thus, the view property will be
+// removed.
 func (t *Tensor) Copy() *Tensor {
-	return nil
+	if t.idx == nil || t.buf == nil {
+		return &Tensor{}
+	}
+
+	cp := &Tensor{idx: t.idx.CopyNoView()}
+	if t.IsOwner() {
+		cp.buf = t.buf.Copy()
+		return cp
+	}
+	typ := t.buf.DType()
+	cp.buf = core.NewBuffer(cp.idx.Size()).AsType(typ)
+
+	cpSetptr, cpAt := cp.buf.Setptr(), cp.idx.At()
+	tBufAt, tIdxAt := t.buf.At(), t.idx.At()
+
+	cp.idx.Iterate(func(pos []int) {
+		cpSetptr(cpAt(pos), typ, tBufAt(tIdxAt(pos)))
+	})
+
+	return cp
 }
 
 // View TODO.

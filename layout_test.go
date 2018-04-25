@@ -255,48 +255,48 @@ func TestTensorSize(t *testing.T) {
 	}
 }
 
-func TestTensorOwner(t *testing.T) {
+func TestTensorIsOwner(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want bool
 	}{
 		"zero value": {
-			Got:  (&tensor.Tensor{}).Owner(),
+			Got:  (&tensor.Tensor{}).IsOwner(),
 			Want: true,
 		},
 		"new empty tensor aka scalar": {
-			Got:  tensor.New().Owner(),
+			Got:  tensor.New().IsOwner(),
 			Want: true,
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).Owner(),
+			Got:  tensor.New(1).IsOwner(),
 			Want: true,
 		},
 		"vector with 9 elements": {
-			Got:  tensor.New(9).Owner(),
+			Got:  tensor.New(9).IsOwner(),
 			Want: true,
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).Owner(),
+			Got:  tensor.New(1, 1).IsOwner(),
 			Want: true,
 		},
 		"square matrix": {
-			Got:  tensor.New(3, 3).Owner(),
+			Got:  tensor.New(3, 3).IsOwner(),
 			Want: true,
 		},
 		"square matrix view": {
-			Got:  tensor.New(3, 3).View().Owner(),
+			Got:  tensor.New(3, 3).View().IsOwner(),
 			Want: false,
 		},
 		"matrix three rows two cols": {
-			Got:  tensor.New(3, 2).Owner(),
+			Got:  tensor.New(3, 2).IsOwner(),
 			Want: true,
 		},
 		"three dim tensor": {
-			Got:  tensor.New(3, 2, 3).Owner(),
+			Got:  tensor.New(3, 2, 3).IsOwner(),
 			Want: true,
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).Owner(),
+			Got:  tensor.New(1, 1, 1, 1, 1, 1).IsOwner(),
 			Want: true,
 		},
 	}

@@ -32,6 +32,26 @@ func NewBuffer(n int) *Buffer {
 	}
 }
 
+// Copy creates a copy of called buffer.
+func (b *Buffer) Copy() *Buffer {
+	cp := &Buffer{
+		n:   b.n,
+		typ: b.typ,
+	}
+
+	if b.data != nil {
+		cp.data = make([]byte, len(b.data))
+		copy(cp.data, b.data)
+	}
+
+	if b.pts != nil {
+		cp.pts = make([]unsafe.Pointer, len(b.pts))
+		copy(cp.pts, b.pts)
+	}
+
+	return cp
+}
+
 // Size returns the number of items the buffer can store.
 func (b *Buffer) Size() int { return b.n }
 

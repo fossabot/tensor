@@ -42,6 +42,12 @@ func NewIndex(shape []int, scheme IdxScheme) *Index {
 	}
 }
 
+// CopyNoView creates a copy of called index. It removes the index offset and
+// view flag.
+func (idx *Index) CopyNoView() *Index {
+	return NewIndex(idx.shape, idx.flags.IdxScheme())
+}
+
 // NDim returns the number of dimmensions represented by index.
 func (idx *Index) NDim() int {
 	return len(idx.shape)

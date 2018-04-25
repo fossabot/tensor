@@ -46,9 +46,9 @@ func (t *Tensor) Size() int {
 	return 1
 }
 
-// Owner checks if called tensor owns data buffer it uses. This method returns
+// IsOwner checks if called tensor owns data buffer it uses. This method returns
 // false for views.
-func (t *Tensor) Owner() bool {
+func (t *Tensor) IsOwner() bool {
 	if t.idx != nil {
 		return !t.idx.Flags().IsView()
 	}

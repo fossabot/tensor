@@ -40,11 +40,11 @@
         ]
     },
     {
-        "name": "Owner",
+        "name": "IsOwner",
         "rtyp": "bool",
         "calls": [
             {
-                "go": "$inst$.Owner()",
+                "go": "$inst$.IsOwner()",
                 "py": "$inst$.base is None"
             }
         ]

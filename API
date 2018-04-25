@@ -34,7 +34,7 @@ API (tensor):
   [x] - (*Tensor) Shape() []int
   [x] - (*Tensor) Strides() []int
   [x] - (*Tensor) Size() int
-  [x] - (*Tensor) Owner() bool
+  [x] - (*Tensor) IsOwner() bool
   [x] - (*Tensor) NBytes() int
   [x] - (*Tensor) Base() *Tensor
   [x] - (*Tensor) Data() []byte // (Test)
@@ -49,7 +49,7 @@ API (tensor):
   [ ] - (*Tensor) Int() int
   [ ] - (*Tensor) Float() float64
   [ ] - (*Tensor) Cmplx() complex128
-  [ ] - (*Tensor) Object() interface{}
+  [ ] - (*Tensor) Object() interface{} (test)
  "format.go":
   [ ] - var PrintElementsThreshold = 8
   [ ] - (*Tensor) String() string
