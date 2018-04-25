@@ -31,7 +31,8 @@ func (t *Tensor) Copy() *Tensor {
 	return cp
 }
 
-// View TODO.
+// View creates a view over the tensor. Views share the same data as their
+// owners but may differ in shape and element order.
 func (t *Tensor) View() *Tensor {
 	if t.idx != nil && t.idx.Flags().IsView() {
 		return t
