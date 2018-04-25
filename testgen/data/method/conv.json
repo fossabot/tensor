@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Copy",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Copy()",
+                "py": "$inst$"
+            }
+        ]
+    },
+    {
+        "name": "View",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.View()",
+                "py": "$inst$.view()"
+            }
+        ]
+    },
+    {
+        "name": "AsType",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.AsType(dtype.String)",
+                "py": "$inst$.astype(np.unicode_)"
+            }
+        ]
+    },
+    {
+        "name": "Bool",
+        "rtyp": "bool",
+        "calls": [
+            {
+                "go": "$inst$.Bool()",
+                "py": "np.asscalar($inst$.astype(np.bool))"
+            }
+        ]
+    },
+    {
+        "name": "Byte",
+        "rtyp": "byte",
+        "calls": [
+            {
+                "go": "$inst$.Byte()",
+                "py": "np.asscalar($inst$.astype(np.uint8))"
+            }
+        ]
+    },
+    {
+        "name": "Int",
+        "rtyp": "int",
+        "calls": [
+            {
+                "go": "$inst$.Int()",
+                "py": "np.asscalar($inst$.astype(np.int))"
+            }
+        ]
+    },
+    {
+        "name": "Float",
+        "rtyp": "float64",
+        "calls": [
+            {
+                "go": "$inst$.Float()",
+                "py": "np.asscalar($inst$.astype(np.float64))"
+            }
+        ]
+    },
+    {
+        "name": "Cmplx",
+        "rtyp": "complex128",
+        "calls": [
+            {
+                "go": "$inst$.Cmplx()",
+                "py": "np.asscalar($inst$.astype(np.complex128))"
+            }
+        ]
+    }
+]
