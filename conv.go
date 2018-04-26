@@ -44,9 +44,13 @@ func (t *Tensor) View() *Tensor {
 	}
 }
 
-// AsType TODO.
+// AsType sets or changes underlying tensor data type. This method panics if
+// called on views.
 func (t *Tensor) AsType(dt dtype.DType) *Tensor {
-	return nil
+	t.init()
+	t.buf.AsType(dt)
+
+	return t
 }
 
 // Bool TODO.
