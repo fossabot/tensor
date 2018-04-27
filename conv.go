@@ -81,9 +81,18 @@ func (t *Tensor) Byte() byte {
 	return *(*uint8)(core.Uint8.Convert(t.buf.DType(), t.buf.At()(t.idx.At()(nil))))
 }
 
-// Int TODO.
+// Int converts tensor scalar to integer value. This function panics if the
+// called tensor stores more than one element.
 func (t *Tensor) Int() int {
-	return 0
+	if t.idx == nil {
+		return 0
+	}
+
+	if t.idx.Size() != 1 {
+		panic(core.NewError("cannot convert shape %v to integer", t.Shape()))
+	}
+
+	return *(*int)(core.Int.Convert(t.buf.DType(), t.buf.At()(t.idx.At()(nil))))
 }
 
 // Float TODO.
