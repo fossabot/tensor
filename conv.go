@@ -61,7 +61,7 @@ func (t *Tensor) Bool() bool {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to boolean value", t.Shape()))
+		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*bool)(core.Bool.Convert(
@@ -77,7 +77,7 @@ func (t *Tensor) Byte() byte {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to byte value", t.Shape()))
+		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*uint8)(core.Uint8.Convert(
@@ -93,7 +93,7 @@ func (t *Tensor) Int() int {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to integer value", t.Shape()))
+		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*int)(core.Int.Convert(
@@ -109,7 +109,7 @@ func (t *Tensor) Float() float64 {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to floating point value", t.Shape()))
+		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*float64)(core.Float64.Convert(
@@ -117,9 +117,20 @@ func (t *Tensor) Float() float64 {
 	))
 }
 
-// Cmplx TODO.
+// Cmplx converts tensor scalar to complex value. This function panics if the
+// called tensor stores more than one element.
 func (t *Tensor) Cmplx() complex128 {
-	return 0
+	if t.idx == nil {
+		return 0
+	}
+
+	if t.idx.Size() != 1 {
+		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
+	}
+
+	return *(*complex128)(core.Complex128.Convert(
+		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
+	))
 }
 
 // Object TODO.

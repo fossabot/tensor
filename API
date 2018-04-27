@@ -41,14 +41,14 @@ API (tensor):
   [x] - (*Tensor) FillBuf(data interface{}) *Tensor
   [x] - (*Tensor) DType() dtype.DType
  "conv.go":
-  [ ] - (*Tensor) Copy() *Tensor
-  [ ] - (*Tensor) View() *Tensor
-  [ ] - (*Tensor) AsType(dt DType) *Tensor
-  [ ] - (*Tensor) Bool() bool
-  [ ] - (*Tensor) Byte() byte
-  [ ] - (*Tensor) Int() int
-  [ ] - (*Tensor) Float() float64
-  [ ] - (*Tensor) Cmplx() complex128
+  [x] - (*Tensor) Copy() *Tensor
+  [x] - (*Tensor) View() *Tensor
+  [x] - (*Tensor) AsType(dt DType) *Tensor
+  [x] - (*Tensor) Bool() bool
+  [x] - (*Tensor) Byte() byte
+  [x] - (*Tensor) Int() int
+  [x] - (*Tensor) Float() float64
+  [x] - (*Tensor) Cmplx() complex128
   [ ] - (*Tensor) Object() interface{} (test)
  "format.go":
   [ ] - var PrintElementsThreshold = 8
