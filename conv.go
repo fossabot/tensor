@@ -61,10 +61,12 @@ func (t *Tensor) Bool() bool {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to boolean", t.Shape()))
+		panic(core.NewError("cannot convert shape %v to boolean value", t.Shape()))
 	}
 
-	return *(*bool)(core.Bool.Convert(t.buf.DType(), t.buf.At()(t.idx.At()(nil))))
+	return *(*bool)(core.Bool.Convert(
+		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
+	))
 }
 
 // Byte converts tensor scalar to byte value. This function panics if the called
@@ -75,10 +77,12 @@ func (t *Tensor) Byte() byte {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to byte", t.Shape()))
+		panic(core.NewError("cannot convert shape %v to byte value", t.Shape()))
 	}
 
-	return *(*uint8)(core.Uint8.Convert(t.buf.DType(), t.buf.At()(t.idx.At()(nil))))
+	return *(*uint8)(core.Uint8.Convert(
+		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
+	))
 }
 
 // Int converts tensor scalar to integer value. This function panics if the
@@ -89,15 +93,28 @@ func (t *Tensor) Int() int {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to integer", t.Shape()))
+		panic(core.NewError("cannot convert shape %v to integer value", t.Shape()))
 	}
 
-	return *(*int)(core.Int.Convert(t.buf.DType(), t.buf.At()(t.idx.At()(nil))))
+	return *(*int)(core.Int.Convert(
+		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
+	))
 }
 
-// Float TODO.
+// Float converts tensor scalar to floating point value. This function panics
+// if the called tensor stores more than one element.
 func (t *Tensor) Float() float64 {
-	return 0
+	if t.idx == nil {
+		return 0
+	}
+
+	if t.idx.Size() != 1 {
+		panic(core.NewError("cannot convert shape %v to floating point value", t.Shape()))
+	}
+
+	return *(*float64)(core.Float64.Convert(
+		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
+	))
 }
 
 // Cmplx TODO.
