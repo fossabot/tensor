@@ -53,7 +53,7 @@ func (t *Tensor) AsType(dt dtype.DType) *Tensor {
 	return t
 }
 
-// Bool converts tensor scalar to a boolean value. This function panics if the
+// Bool converts tensor scalar to boolean value. This function panics if the
 // called tensor stores more than one element.
 func (t *Tensor) Bool() bool {
 	if t.idx == nil {
@@ -67,9 +67,18 @@ func (t *Tensor) Bool() bool {
 	return *(*bool)(core.Bool.Convert(t.buf.DType(), t.buf.At()(t.idx.At()(nil))))
 }
 
-// Byte TODO.
+// Byte converts tensor scalar to byte value. This function panics if the called
+// tensor stores more than one element.
 func (t *Tensor) Byte() byte {
-	return 0
+	if t.idx == nil {
+		return 0
+	}
+
+	if t.idx.Size() != 1 {
+		panic(core.NewError("cannot convert shape %v to byte", t.Shape()))
+	}
+
+	return *(*uint8)(core.Uint8.Convert(t.buf.DType(), t.buf.At()(t.idx.At()(nil))))
 }
 
 // Int TODO.
