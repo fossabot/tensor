@@ -53,9 +53,18 @@ func (t *Tensor) AsType(dt dtype.DType) *Tensor {
 	return t
 }
 
-// Bool TODO.
+// Bool converts tensor scalar to a boolean value. This function panics if the
+// called tensor stores more than one element.
 func (t *Tensor) Bool() bool {
-	return false
+	if t.idx == nil {
+		return false
+	}
+
+	if t.idx.Size() != 1 {
+		panic(core.NewError("cannot convert shape %v to boolean", t.Shape()))
+	}
+
+	return *(*bool)(core.Bool.Convert(t.buf.DType(), t.buf.At()(t.idx.At()(nil))))
 }
 
 // Byte TODO.
