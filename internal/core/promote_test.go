@@ -180,7 +180,7 @@ func TestPromote(t *testing.T) {
 		{A: core.Uint32, B: core.Int16, Pr: core.Int64},
 		{A: core.Uint32, B: core.Int32, Pr: core.Int64},
 		{A: core.Uint32, B: core.Int64, Pr: core.Int64},
-		{A: core.Uint32, B: core.Uint, Pr: core.Uint64},
+		{A: core.Uint32, B: core.Uint, Pr: core.Uint},
 		{A: core.Uint32, B: core.Uint8, Pr: core.Uint32},
 		{A: core.Uint32, B: core.Uint16, Pr: core.Uint32},
 		{A: core.Uint32, B: core.Uint32, Pr: core.Uint32},
