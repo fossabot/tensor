@@ -65,22 +65,30 @@ func Promote(at, bt DType) DType {
 	case Float32:
 		return Float64 // TODO
 	case Float64:
-		return Float64 // TODO
+		switch bt {
+		case Bool, Int, Int8, Int16, Int32, Int64, Uint, Uint8, Uint16, Uint32,
+			Uint64, Uintptr, Float32:
+			return at
+		case Complex64:
+			return Complex128
+		case Float64, Complex128, String:
+			return bt
+		}
 	case Complex64:
 		switch bt {
-		case Bool, Int8, Int16, Uint8, Uint16, Float32, Complex64:
+		case Bool, Int8, Int16, Uint8, Uint16, Float32:
 			return at
 		case Int, Int32, Int64, Uint, Uint32, Uint64, Float64, Uintptr:
 			return Complex128
-		case Complex128, String:
+		case Complex64, Complex128, String:
 			return bt
 		}
 	case Complex128:
 		switch bt {
 		case Bool, Int, Int8, Int16, Int32, Int64, Uint, Uint8, Uint16, Uint32,
-			Uint64, Uintptr, Float32, Float64, Complex64, Complex128:
+			Uint64, Uintptr, Float32, Float64, Complex64:
 			return at
-		case String:
+		case Complex128, String:
 			return bt
 		}
 	case String:
