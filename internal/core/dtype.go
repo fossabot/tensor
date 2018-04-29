@@ -51,6 +51,11 @@ func (dt DType) Name() string {
 	return fmt.Sprintf("unknown(%x)", uint64(dt))
 }
 
+// Num returns a unique number bound to each data type.
+func (dt DType) Num() int {
+	return int(dt & 0xFF)
+}
+
 // String satisfies fmt.Stringer interface. It behaves like Name method.
 func (dt DType) String() string {
 	return dt.Name()
