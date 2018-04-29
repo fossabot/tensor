@@ -30,7 +30,7 @@ func (d *Delegate) Add(a, b *Tensor) (dst *Tensor) {
 		panic(core.NewError("invalid dst shape %v for %v", ds, shape))
 	}
 
-	math.Binary(dst.idx, a.idx, b.idx, dst.buf, a.buf, b.buf, math.Add)
+	math.Binary(true, dst.idx, a.idx, b.idx, dst.buf, a.buf, b.buf, math.Add)
 
 	return dst
 }
