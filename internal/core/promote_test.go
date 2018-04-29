@@ -131,7 +131,7 @@ func TestPromote(t *testing.T) {
 		{A: core.Uint, B: core.Uint16, Pr: core.Uint},
 		{A: core.Uint, B: core.Uint32, Pr: core.Uint},
 		{A: core.Uint, B: core.Uint64, Pr: core.Uint64},
-		{A: core.Uint, B: core.Uintptr, Pr: core.Uint64},
+		{A: core.Uint, B: core.Uintptr, Pr: core.Uintptr},
 		{A: core.Uint, B: core.Float32, Pr: core.Float64},
 		{A: core.Uint, B: core.Float64, Pr: core.Float64},
 		{A: core.Uint, B: core.Complex64, Pr: core.Complex128},
@@ -327,5 +327,39 @@ func TestPromote(t *testing.T) {
 				t.Errorf("want promoted type=%v; got %v", test.Pr, pr)
 			}
 		})
+	}
+}
+
+func TestPromoteCommutativity(t *testing.T) {
+	ts := []core.DType{
+		core.Bool,
+		core.Int,
+		core.Int8,
+		core.Int16,
+		core.Int32,
+		core.Int64,
+		core.Uint,
+		core.Uint8,
+		core.Uint16,
+		core.Uint32,
+		core.Uint64,
+		core.Uintptr,
+		core.Float32,
+		core.Float64,
+		core.Complex64,
+		core.Complex128,
+		core.String,
+	}
+
+	for i, a := range ts {
+		for j := i + 1; j < len(ts); j++ {
+			var b = ts[j]
+			t.Run(fmt.Sprintf("%[1]v_%[2]v==%[2]v_%[1]v", a, b), func(t *testing.T) {
+				prA, prB := core.Promote(a, b), core.Promote(b, a)
+				if prA != prB {
+					t.Errorf("want a(%v)=b(%v)", prA, prB)
+				}
+			})
+		}
 	}
 }
