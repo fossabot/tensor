@@ -1,9 +1,15 @@
 package core
 
-// Promote selects the best type that could store both arguments.
+// Promote selects the best type that can safely store values of both arguments.
 func Promote(at, bt DType) DType {
+	// No type promotion for equal types.
 	if at == bt {
 		return at
+	}
+
+	// Reorder types if needed.
+	if at.Num() > bt.Num() {
+		at, bt = bt, at
 	}
 
 	switch at {
@@ -11,7 +17,7 @@ func Promote(at, bt DType) DType {
 		return bt
 	case Int:
 		switch bt {
-		case Bool, Int8, Int16, Int32, Uint8, Uint16:
+		case Int8, Int16, Int32, Uint8, Uint16:
 			return at
 		case Uint32:
 			return Int64
@@ -19,29 +25,25 @@ func Promote(at, bt DType) DType {
 			return Float64
 		case Complex64:
 			return Complex128
-		case Int, Int64, Float64, Complex128, String:
+		case Int64, Float64, Complex128, String:
 			return bt
 		}
 	case Int8:
 		switch bt {
-		case Bool, Int8:
-			return at
-		case Uint:
-			return Float64
 		case Uint8:
 			return Int16
 		case Uint16:
 			return Int32
 		case Uint32:
 			return Int64
-		case Uint64, Uintptr:
+		case Uint, Uint64, Uintptr:
 			return Float64
-		case Int, Int16, Int32, Int64, Float32, Float64, Complex64, Complex128, String:
+		case Int16, Int32, Int64, Float32, Float64, Complex64, Complex128, String:
 			return bt
 		}
 	case Int16:
 		switch bt {
-		case Bool, Int8, Int16, Uint8:
+		case Uint8:
 			return at
 		case Uint16:
 			return Int32
@@ -49,12 +51,12 @@ func Promote(at, bt DType) DType {
 			return Int64
 		case Uint, Uint64, Uintptr:
 			return Float64
-		case Int, Int32, Int64, Float32, Float64, Complex64, Complex128, String:
+		case Int32, Int64, Float32, Float64, Complex64, Complex128, String:
 			return bt
 		}
 	case Int32:
 		switch bt {
-		case Bool, Int8, Int16, Int32, Uint8, Uint16:
+		case Uint8, Uint16:
 			return at
 		case Uint32:
 			return Int64
@@ -62,12 +64,12 @@ func Promote(at, bt DType) DType {
 			return Float64
 		case Complex64:
 			return Complex128
-		case Int, Int64, Float64, Complex128, String:
+		case Int64, Float64, Complex128, String:
 			return bt
 		}
 	case Int64:
 		switch bt {
-		case Bool, Int, Int8, Int16, Int32, Int64, Uint8, Uint16, Uint32:
+		case Uint8, Uint16, Uint32:
 			return at
 		case Uint, Uint64, Uintptr, Float32:
 			return Float64
@@ -78,9 +80,9 @@ func Promote(at, bt DType) DType {
 		}
 	case Uint:
 		switch bt {
-		case Bool, Uint, Uint8, Uint16, Uint32:
+		case Uint8, Uint16, Uint32:
 			return at
-		case Int, Int8, Int16, Int32, Int64, Float32:
+		case Float32:
 			return Float64
 		case Complex64:
 			return Complex128
@@ -89,41 +91,28 @@ func Promote(at, bt DType) DType {
 		}
 	case Uint8:
 		switch bt {
-		case Bool, Uint8:
-			return at
-		case Int8:
-			return Int16
-		case Int, Int16, Int32, Int64, Uint, Uint16, Uint32, Uint64, Uintptr, Float32, Float64, Complex64, Complex128, String:
+		case Uint16, Uint32, Uint64, Uintptr, Float32, Float64, Complex64, Complex128, String:
 			return bt
 		}
 	case Uint16:
 		switch bt {
-		case Bool, Uint8, Uint16:
-			return at
-		case Int8, Int16:
-			return Int32
-		case Int, Int32, Int64, Uint, Uint32, Uint64, Uintptr, Float32,
-			Float64, Complex64, Complex128, String:
+		case Uint32, Uint64, Uintptr, Float32, Float64, Complex64, Complex128, String:
 			return bt
 		}
 	case Uint32:
 		switch bt {
-		case Bool, Uint8, Uint16, Uint32:
-			return at
-		case Int, Int8, Int16, Int32:
-			return Int64
 		case Float32:
 			return Float64
 		case Complex64:
 			return Complex128
-		case Int64, Uint, Uint64, Uintptr, Float64, Complex128, String:
+		case Uint64, Uintptr, Float64, Complex128, String:
 			return bt
 		}
 	case Uint64:
 		switch bt {
-		case Bool, Uint, Uint8, Uint16, Uint32, Uint64, Uintptr:
+		case Uintptr:
 			return at
-		case Int, Int8, Int16, Int32, Int64, Float32:
+		case Float32:
 			return Float64
 		case Complex64:
 			return Complex128
@@ -132,54 +121,35 @@ func Promote(at, bt DType) DType {
 		}
 	case Uintptr:
 		switch bt {
-		case Bool, Uint, Uint8, Uint16, Uint32, Uintptr:
-			return at
-		case Int, Int8, Int16, Int32, Int64, Float32:
+		case Float32:
 			return Float64
-		case Complex64:
-			return Complex128
-		case Uint64, Float64, Complex128, String:
-			return bt
-		}
-	case Float32:
-		switch bt {
-		case Bool, Int8, Int16, Uint8, Uint16:
-			return at
-		case Int, Int32, Int64, Uint, Uint32, Uint64, Uintptr:
-			return Float64
-		case Float32, Float64, Complex64, Complex128, String:
-			return bt
-		}
-	case Float64:
-		switch bt {
-		case Bool, Int, Int8, Int16, Int32, Int64, Uint, Uint8, Uint16, Uint32,
-			Uint64, Uintptr, Float32:
-			return at
 		case Complex64:
 			return Complex128
 		case Float64, Complex128, String:
 			return bt
 		}
-	case Complex64:
+	case Float32:
 		switch bt {
-		case Bool, Int8, Int16, Uint8, Uint16, Float32:
-			return at
-		case Int, Int32, Int64, Uint, Uint32, Uint64, Float64, Uintptr:
-			return Complex128
-		case Complex64, Complex128, String:
+		case Float64, Complex64, Complex128, String:
 			return bt
 		}
-	case Complex128:
+	case Float64:
 		switch bt {
-		case Bool, Int, Int8, Int16, Int32, Int64, Uint, Uint8, Uint16, Uint32,
-			Uint64, Uintptr, Float32, Float64, Complex64:
-			return at
+		case Complex64:
+			return Complex128
 		case Complex128, String:
 			return bt
 		}
-	case String:
-		return at
+	case Complex64:
+		switch bt {
+		case Complex128, String:
+			return bt
+		}
+	case Complex128:
+		if bt == String {
+			return bt
+		}
 	}
 
-	panic(NewError("unsupported type promotion: %q and %q", at, bt))
+	panic(NewError("unsupported type %q and %q", at, bt))
 }
