@@ -9,7 +9,7 @@ import (
 
 // BinaryFunc represents a mathematical operation that combines two operands and
 // produce another element of the field that should be saved in d pointer. Left
-// and right operands should not be modified.
+// and right operands must not be modified.
 type BinaryFunc func(pos []int, d, l, r unsafe.Pointer)
 
 // Binary choses and executes the best strategy to call binary operator on
