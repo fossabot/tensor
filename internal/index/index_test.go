@@ -17,7 +17,7 @@ func TestIndexDimensions(t *testing.T) {
 		IsView  bool
 	}{
 		"scalar": {
-			Index:   index.NewIndex(nil, index.IdxSchemeColMajor),
+			Index:   index.NewIndex(nil, index.DefaultIdxScheme),
 			NDim:    0,
 			Size:    1,
 			Strides: nil,
@@ -25,7 +25,7 @@ func TestIndexDimensions(t *testing.T) {
 			IsView:  false,
 		},
 		"vector": {
-			Index:   index.NewIndex([]int{5}, index.IdxSchemeColMajor),
+			Index:   index.NewIndex([]int{5}, index.DefaultIdxScheme),
 			NDim:    1,
 			Size:    5,
 			Strides: []int{1},
@@ -33,7 +33,7 @@ func TestIndexDimensions(t *testing.T) {
 			IsView:  false,
 		},
 		"vector zero": {
-			Index:   index.NewIndex([]int{0}, index.IdxSchemeColMajor),
+			Index:   index.NewIndex([]int{0}, index.DefaultIdxScheme),
 			NDim:    1,
 			Size:    0,
 			Strides: []int{1},
@@ -41,14 +41,22 @@ func TestIndexDimensions(t *testing.T) {
 			IsView:  false,
 		},
 		"vector slice": {
-			Index:   index.NewIndex([]int{6}, index.IdxSchemeColMajor).Slice(0, 4),
+			Index:   index.NewIndex([]int{6}, index.DefaultIdxScheme).Slice(0, 4),
 			NDim:    1,
 			Size:    2,
 			Strides: []int{1},
 			Shape:   []int{2},
 			IsView:  true,
 		},
-		"matrix": {
+		"matrix row": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeRowMajor),
+			NDim:    2,
+			Size:    9,
+			Strides: []int{1, 3},
+			Shape:   []int{3, 3},
+			IsView:  false,
+		},
+		"matrix column": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor),
 			NDim:    2,
 			Size:    9,
@@ -56,7 +64,15 @@ func TestIndexDimensions(t *testing.T) {
 			Shape:   []int{3, 3},
 			IsView:  false,
 		},
-		"matrix zero": {
+		"matrix zero row": {
+			Index:   index.NewIndex([]int{0, 0}, index.IdxSchemeRowMajor),
+			NDim:    2,
+			Size:    0,
+			Strides: []int{1, 1},
+			Shape:   []int{0, 0},
+			IsView:  false,
+		},
+		"matrix zero column": {
 			Index:   index.NewIndex([]int{0, 0}, index.IdxSchemeColMajor),
 			NDim:    2,
 			Size:    0,
@@ -64,7 +80,15 @@ func TestIndexDimensions(t *testing.T) {
 			Shape:   []int{0, 0},
 			IsView:  false,
 		},
-		"matrix slice": {
+		"matrix slice row": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeRowMajor).Slice(0, 1, 2),
+			NDim:    2,
+			Size:    3,
+			Strides: []int{1, 3},
+			Shape:   []int{1, 3},
+			IsView:  true,
+		},
+		"matrix slice column": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Slice(0, 1, 2),
 			NDim:    2,
 			Size:    3,
@@ -72,7 +96,15 @@ func TestIndexDimensions(t *testing.T) {
 			Shape:   []int{1, 3},
 			IsView:  true,
 		},
-		"matrix slice of slice": {
+		"matrix slice of slice row": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeRowMajor).Slice(1, 2).Slice(0, 1),
+			NDim:    2,
+			Size:    2,
+			Strides: []int{1, 3},
+			Shape:   []int{2, 1},
+			IsView:  true,
+		},
+		"matrix slice of slice column": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Slice(1, 2).Slice(0, 1),
 			NDim:    2,
 			Size:    2,
@@ -80,7 +112,15 @@ func TestIndexDimensions(t *testing.T) {
 			Shape:   []int{2, 1},
 			IsView:  true,
 		},
-		"tensor": {
+		"tensor row": {
+			Index:   index.NewIndex([]int{2, 2, 2}, index.IdxSchemeRowMajor),
+			NDim:    3,
+			Size:    8,
+			Strides: []int{1, 2, 4},
+			Shape:   []int{2, 2, 2},
+			IsView:  false,
+		},
+		"tensor column": {
 			Index:   index.NewIndex([]int{2, 2, 2}, index.IdxSchemeColMajor),
 			NDim:    3,
 			Size:    8,
@@ -88,7 +128,15 @@ func TestIndexDimensions(t *testing.T) {
 			Shape:   []int{2, 2, 2},
 			IsView:  false,
 		},
-		"tensor slice": {
+		"tensor slice row": {
+			Index:   index.NewIndex([]int{2, 2, 2}, index.IdxSchemeRowMajor).Slice(2, 1),
+			NDim:    3,
+			Size:    4,
+			Strides: []int{1, 2, 4},
+			Shape:   []int{2, 2, 1},
+			IsView:  true,
+		},
+		"tensor slice column": {
 			Index:   index.NewIndex([]int{2, 2, 2}, index.IdxSchemeColMajor).Slice(2, 1),
 			NDim:    3,
 			Size:    4,
@@ -96,7 +144,15 @@ func TestIndexDimensions(t *testing.T) {
 			Shape:   []int{2, 2, 1},
 			IsView:  true,
 		},
-		"scalar from matrix": {
+		"scalar from matrix row": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeRowMajor).Scalar([]int{1, 1}),
+			NDim:    0,
+			Size:    1,
+			Strides: nil,
+			Shape:   nil,
+			IsView:  true,
+		},
+		"scalar from matrix column": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Scalar([]int{1, 1}),
 			NDim:    0,
 			Size:    1,
@@ -104,7 +160,15 @@ func TestIndexDimensions(t *testing.T) {
 			Shape:   nil,
 			IsView:  true,
 		},
-		"matrix view": {
+		"matrix view row": {
+			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeRowMajor).View(),
+			NDim:    2,
+			Size:    9,
+			Strides: []int{1, 3},
+			Shape:   []int{3, 3},
+			IsView:  true,
+		},
+		"matrix view column": {
 			Index:   index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).View(),
 			NDim:    2,
 			Size:    9,
@@ -148,7 +212,7 @@ func TestIndexOffset(t *testing.T) {
 	}{
 		{
 			// 0 //
-			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeRowMajor),
 			Pos:    []int{0, 0},
 			Valid:  true,
 			Offset: 0,
@@ -156,96 +220,194 @@ func TestIndexOffset(t *testing.T) {
 		{
 			// 1 //
 			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{0, 0},
+			Valid:  true,
+			Offset: 0,
+		},
+		{
+			// 2 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeRowMajor),
 			Pos:    []int{3, 1},
 			Valid:  true,
 			Offset: 7,
 		},
 		{
-			// 2 //
-			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
-			Pos:    []int{3, 2},
-			Valid:  false,
-			Offset: -1,
-		},
-		{
 			// 3 //
 			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
-			Pos:    []int{4, 1},
-			Valid:  false,
-			Offset: -1,
+			Pos:    []int{3, 1},
+			Valid:  true,
+			Offset: 7,
 		},
 		{
 			// 4 //
-			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
-			Pos:    []int{1, 1, 1},
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeRowMajor),
+			Pos:    []int{3, 2},
 			Valid:  false,
 			Offset: -1,
 		},
 		{
 			// 5 //
 			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
-			Pos:    []int{1},
+			Pos:    []int{3, 2},
 			Valid:  false,
 			Offset: -1,
 		},
 		{
 			// 6 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeRowMajor),
+			Pos:    []int{4, 1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 7 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{4, 1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 8 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeRowMajor),
+			Pos:    []int{1, 1, 1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 9 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{1, 1, 1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 10 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeRowMajor),
+			Pos:    []int{1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 11 //
+			Index:  index.NewIndex([]int{4, 2}, index.IdxSchemeColMajor),
+			Pos:    []int{1},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 12 //
+			Index:  index.NewIndex([]int{4}, index.IdxSchemeRowMajor),
+			Pos:    []int{2},
+			Valid:  true,
+			Offset: 2,
+		},
+		{
+			// 13 //
 			Index:  index.NewIndex([]int{4}, index.IdxSchemeColMajor),
 			Pos:    []int{2},
 			Valid:  true,
 			Offset: 2,
 		},
 		{
-			// 7 //
+			// 14 //
+			Index:  index.NewIndex([]int{}, index.IdxSchemeRowMajor),
+			Pos:    []int{0},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 15 //
 			Index:  index.NewIndex([]int{}, index.IdxSchemeColMajor),
 			Pos:    []int{0},
 			Valid:  false,
 			Offset: -1,
 		},
 		{
-			// 8 //
+			// 16 //
+			Index:  index.NewIndex([]int{2, 3, 2}, index.IdxSchemeRowMajor),
+			Pos:    []int{1, 1, 1},
+			Valid:  true,
+			Offset: 9,
+		},
+		{
+			// 17 //
 			Index:  index.NewIndex([]int{2, 3, 2}, index.IdxSchemeColMajor),
 			Pos:    []int{1, 1, 1},
 			Valid:  true,
 			Offset: 9,
 		},
 		{
-			// 9 //
+			// 18 //
+			Index:  index.NewIndex([]int{5, 3}, index.IdxSchemeRowMajor).Slice(0, 2, 4),
+			Pos:    []int{0, 2},
+			Valid:  true,
+			Offset: 12,
+		},
+		{
+			// 19 //
 			Index:  index.NewIndex([]int{5, 3}, index.IdxSchemeColMajor).Slice(0, 2, 4),
 			Pos:    []int{0, 2},
 			Valid:  true,
 			Offset: 12,
 		},
 		{
-			// 10 //
+			// 20 //
+			Index:  index.NewIndex([]int{5, 3}, index.IdxSchemeRowMajor).Slice(0, 2, 4).Slice(1, 1),
+			Pos:    []int{0, 0},
+			Valid:  true,
+			Offset: 7,
+		},
+		{
+			// 21 //
 			Index:  index.NewIndex([]int{5, 3}, index.IdxSchemeColMajor).Slice(0, 2, 4).Slice(1, 1),
 			Pos:    []int{0, 0},
 			Valid:  true,
 			Offset: 7,
 		},
 		{
-			// 11 //
+			// 22 //
+			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeRowMajor).Scalar([]int{1, 1}),
+			Pos:    nil,
+			Valid:  true,
+			Offset: 4,
+		},
+		{
+			// 23 //
 			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Scalar([]int{1, 1}),
 			Pos:    nil,
 			Valid:  true,
 			Offset: 4,
 		},
 		{
-			// 12 //
+			// 24 //
+			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeRowMajor).Scalar([]int{1, 2}),
+			Pos:    []int{},
+			Valid:  true,
+			Offset: 7,
+		},
+		{
+			// 25 //
 			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor).Scalar([]int{1, 2}),
 			Pos:    []int{},
 			Valid:  true,
 			Offset: 7,
 		},
 		{
-			// 13 //
+			// 26 //
+			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeRowMajor),
+			Pos:    []int{0},
+			Valid:  false,
+			Offset: -1,
+		},
+		{
+			// 27 //
 			Index:  index.NewIndex([]int{3, 3}, index.IdxSchemeColMajor),
 			Pos:    []int{0},
 			Valid:  false,
 			Offset: -1,
 		},
 		{
-			// 14 //
+			// 28 //
 			Index:  nil,
 			Pos:    []int{0},
 			Valid:  false,
