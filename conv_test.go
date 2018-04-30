@@ -73,8 +73,8 @@ func TestTensorCopy(t *testing.T) {
 			if test.Want != nil && test.Got == nil {
 				t.Fatalf("want result to be not nil")
 			}
-			if ws, ts := test.Want.Shape(), test.Got.Shape(); !reflect.DeepEqual(ws, ts) {
-				t.Errorf("want shape=%v; got %v", ws, ts)
+			if err := checkTensor(test.Want, test.Got); err != nil {
+				t.Errorf("want err=nil; got %v", err)
 			}
 		})
 	}
@@ -138,8 +138,8 @@ func TestTensorView(t *testing.T) {
 			if test.Want != nil && test.Got == nil {
 				t.Fatalf("want result to be not nil")
 			}
-			if ws, ts := test.Want.Shape(), test.Got.Shape(); !reflect.DeepEqual(ws, ts) {
-				t.Errorf("want shape=%v; got %v", ws, ts)
+			if err := checkTensor(test.Want, test.Got); err != nil {
+				t.Errorf("want err=nil; got %v", err)
 			}
 		})
 	}
@@ -203,8 +203,8 @@ func TestTensorAsType(t *testing.T) {
 			if test.Want != nil && test.Got == nil {
 				t.Fatalf("want result to be not nil")
 			}
-			if ws, ts := test.Want.Shape(), test.Got.Shape(); !reflect.DeepEqual(ws, ts) {
-				t.Errorf("want shape=%v; got %v", ws, ts)
+			if err := checkTensor(test.Want, test.Got); err != nil {
+				t.Errorf("want err=nil; got %v", err)
 			}
 		})
 	}

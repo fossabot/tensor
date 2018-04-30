@@ -72,5 +72,5 @@ func newTestCas(typ string, inst *instance, call *call) (*cas, bool, error) {
 }
 
 func isNillable(typ string) bool {
-	return typ == "*tensor.Tensor" || strings.HasPrefix(typ, "[]")
+	return strings.HasPrefix(typ, "*") || strings.HasPrefix(typ, "[]")
 }

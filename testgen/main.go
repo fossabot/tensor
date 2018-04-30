@@ -33,7 +33,7 @@ func main() {
 
 	ins, err := loadInstances(*insPath)
 	if err != nil {
-		log.Fatalf("cannot loat test instances: %v", err)
+		log.Fatalf("cannot load test instances: %v", err)
 	}
 
 	match, err := filepath.Glob(*mtsPattern)
