@@ -19,12 +19,12 @@ API (tensor):
   [x] - tensor.NewScalar(v interface{}) *Tensor
   [ ] - tensor.NewVector(v interface{}) *Tensor
   [ ] - tensor.NewMatrix(v interface{}) *Tensor
-  [+] - (*Tensor) Delegate() *Delegate
+  [ ] - (*Tensor) Delegate() *Delegate
  "delegate.go":
-  [+] - type Delegate struct {...}
-  [+] - tensor.NewDelegate(dst *Tensor) *Delegate
+  [ ] - type Delegate struct {...}
+  [ ] - tensor.NewDelegate(dst *Tensor) *Delegate
   [ ] - (*Delegate) Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
-  [+] - (*Delegate) Add(a, b *Tensor) *Tensor
+  [ ] - (*Delegate) Add(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Subtract(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Multiply(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Divide(a, b *Tensor) *Tensor

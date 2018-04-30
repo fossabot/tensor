@@ -8,7 +8,7 @@ import (
 type IdxScheme Flags
 
 // DefaultIdxScheme defines the default indexing scheme when not set explicitly.
-const DefaultIdxScheme = IdxSchemeColMajor
+const DefaultIdxScheme = IdxSchemeRowMajor
 
 const (
 	// IdxSchemeRowMajor represents row major order where the horizontal values
@@ -41,7 +41,7 @@ func rowMajorShape(strides []int, size int) []int {
 	}
 
 	var shape = []int{size / strides[0]}
-	for i := 0; i < len(strides)-1; i-- {
+	for i := 0; i < len(strides)-1; i++ {
 		shape = append(shape, strides[i]/strides[i+1])
 	}
 

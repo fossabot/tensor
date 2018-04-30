@@ -28,35 +28,35 @@ func TestTensorCopy(t *testing.T) {
 			Want: tensor.New(),
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).Copy(),
+			Got:  enumerate(tensor.New(1)).Copy(),
 			Want: tensor.New(1),
 		},
 		"vector with 9 elements": {
-			Got:  tensor.New(9).Copy(),
+			Got:  enumerate(tensor.New(9)).Copy(),
 			Want: tensor.New(9),
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).Copy(),
+			Got:  enumerate(tensor.New(1, 1)).Copy(),
 			Want: tensor.New(1, 1),
 		},
 		"square matrix": {
-			Got:  tensor.New(3, 3).Copy(),
+			Got:  enumerate(tensor.New(3, 3)).Copy(),
 			Want: tensor.New(3, 3),
 		},
 		"square matrix view": {
-			Got:  tensor.New(3, 3).View().Copy(),
+			Got:  enumerate(tensor.New(3, 3).View()).Copy(),
 			Want: tensor.New(3, 3),
 		},
 		"matrix three rows two cols": {
-			Got:  tensor.New(3, 2).Copy(),
+			Got:  enumerate(tensor.New(3, 2)).Copy(),
 			Want: tensor.New(3, 2),
 		},
 		"three dim tensor": {
-			Got:  tensor.New(3, 2, 3).Copy(),
-			Want: tensor.New(3, 2, 3),
+			Got:  enumerate(tensor.New(4, 3, 2)).Copy(),
+			Want: tensor.New(4, 3, 2),
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).Copy(),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).Copy(),
 			Want: tensor.New(1, 1, 1, 1, 1, 1),
 		},
 	}
@@ -93,35 +93,35 @@ func TestTensorView(t *testing.T) {
 			Want: tensor.New(),
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).View(),
+			Got:  enumerate(tensor.New(1)).View(),
 			Want: tensor.New(1),
 		},
 		"vector with 9 elements": {
-			Got:  tensor.New(9).View(),
+			Got:  enumerate(tensor.New(9)).View(),
 			Want: tensor.New(9),
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).View(),
+			Got:  enumerate(tensor.New(1, 1)).View(),
 			Want: tensor.New(1, 1),
 		},
 		"square matrix": {
-			Got:  tensor.New(3, 3).View(),
+			Got:  enumerate(tensor.New(3, 3)).View(),
 			Want: tensor.New(3, 3),
 		},
 		"square matrix view": {
-			Got:  tensor.New(3, 3).View().View(),
+			Got:  enumerate(tensor.New(3, 3).View()).View(),
 			Want: tensor.New(3, 3),
 		},
 		"matrix three rows two cols": {
-			Got:  tensor.New(3, 2).View(),
+			Got:  enumerate(tensor.New(3, 2)).View(),
 			Want: tensor.New(3, 2),
 		},
 		"three dim tensor": {
-			Got:  tensor.New(3, 2, 3).View(),
-			Want: tensor.New(3, 2, 3),
+			Got:  enumerate(tensor.New(4, 3, 2)).View(),
+			Want: tensor.New(4, 3, 2),
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).View(),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).View(),
 			Want: tensor.New(1, 1, 1, 1, 1, 1),
 		},
 	}
@@ -158,35 +158,35 @@ func TestTensorAsType(t *testing.T) {
 			Want: tensor.New(),
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).AsType(dtype.String),
+			Got:  enumerate(tensor.New(1)).AsType(dtype.String),
 			Want: tensor.New(1),
 		},
 		"vector with 9 elements": {
-			Got:  tensor.New(9).AsType(dtype.String),
+			Got:  enumerate(tensor.New(9)).AsType(dtype.String),
 			Want: tensor.New(9),
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).AsType(dtype.String),
+			Got:  enumerate(tensor.New(1, 1)).AsType(dtype.String),
 			Want: tensor.New(1, 1),
 		},
 		"square matrix": {
-			Got:  tensor.New(3, 3).AsType(dtype.String),
+			Got:  enumerate(tensor.New(3, 3)).AsType(dtype.String),
 			Want: tensor.New(3, 3),
 		},
 		"square matrix view": {
-			Got:  tensor.New(3, 3).View().AsType(dtype.String),
+			Got:  enumerate(tensor.New(3, 3).View()).AsType(dtype.String),
 			Want: tensor.New(3, 3),
 		},
 		"matrix three rows two cols": {
-			Got:  tensor.New(3, 2).AsType(dtype.String),
+			Got:  enumerate(tensor.New(3, 2)).AsType(dtype.String),
 			Want: tensor.New(3, 2),
 		},
 		"three dim tensor": {
-			Got:  tensor.New(3, 2, 3).AsType(dtype.String),
-			Want: tensor.New(3, 2, 3),
+			Got:  enumerate(tensor.New(4, 3, 2)).AsType(dtype.String),
+			Want: tensor.New(4, 3, 2),
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).AsType(dtype.String),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).AsType(dtype.String),
 			Want: tensor.New(1, 1, 1, 1, 1, 1),
 		},
 	}
@@ -223,15 +223,15 @@ func TestTensorBool(t *testing.T) {
 			Want: false,
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).Bool(),
+			Got:  enumerate(tensor.New(1)).Bool(),
 			Want: false,
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).Bool(),
+			Got:  enumerate(tensor.New(1, 1)).Bool(),
 			Want: false,
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).Bool(),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).Bool(),
 			Want: false,
 		},
 	}
@@ -247,11 +247,11 @@ func TestTensorBool(t *testing.T) {
 
 func TestTensorPanicBool(t *testing.T) {
 	tests := map[string]func(){
-		"vector with 9 elements":     func() { _ = tensor.New(9).Bool() },
-		"square matrix":              func() { _ = tensor.New(3, 3).Bool() },
-		"square matrix view":         func() { _ = tensor.New(3, 3).View().Bool() },
-		"matrix three rows two cols": func() { _ = tensor.New(3, 2).Bool() },
-		"three dim tensor":           func() { _ = tensor.New(3, 2, 3).Bool() },
+		"vector with 9 elements":     func() { _ = enumerate(tensor.New(9)).Bool() },
+		"square matrix":              func() { _ = enumerate(tensor.New(3, 3)).Bool() },
+		"square matrix view":         func() { _ = enumerate(tensor.New(3, 3).View()).Bool() },
+		"matrix three rows two cols": func() { _ = enumerate(tensor.New(3, 2)).Bool() },
+		"three dim tensor":           func() { _ = enumerate(tensor.New(4, 3, 2)).Bool() },
 	}
 
 	for name, fn := range tests {
@@ -280,15 +280,15 @@ func TestTensorByte(t *testing.T) {
 			Want: 0,
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).Byte(),
+			Got:  enumerate(tensor.New(1)).Byte(),
 			Want: 0,
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).Byte(),
+			Got:  enumerate(tensor.New(1, 1)).Byte(),
 			Want: 0,
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).Byte(),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).Byte(),
 			Want: 0,
 		},
 	}
@@ -304,11 +304,11 @@ func TestTensorByte(t *testing.T) {
 
 func TestTensorPanicByte(t *testing.T) {
 	tests := map[string]func(){
-		"vector with 9 elements":     func() { _ = tensor.New(9).Byte() },
-		"square matrix":              func() { _ = tensor.New(3, 3).Byte() },
-		"square matrix view":         func() { _ = tensor.New(3, 3).View().Byte() },
-		"matrix three rows two cols": func() { _ = tensor.New(3, 2).Byte() },
-		"three dim tensor":           func() { _ = tensor.New(3, 2, 3).Byte() },
+		"vector with 9 elements":     func() { _ = enumerate(tensor.New(9)).Byte() },
+		"square matrix":              func() { _ = enumerate(tensor.New(3, 3)).Byte() },
+		"square matrix view":         func() { _ = enumerate(tensor.New(3, 3).View()).Byte() },
+		"matrix three rows two cols": func() { _ = enumerate(tensor.New(3, 2)).Byte() },
+		"three dim tensor":           func() { _ = enumerate(tensor.New(4, 3, 2)).Byte() },
 	}
 
 	for name, fn := range tests {
@@ -337,15 +337,15 @@ func TestTensorInt(t *testing.T) {
 			Want: 0,
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).Int(),
+			Got:  enumerate(tensor.New(1)).Int(),
 			Want: 0,
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).Int(),
+			Got:  enumerate(tensor.New(1, 1)).Int(),
 			Want: 0,
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).Int(),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).Int(),
 			Want: 0,
 		},
 	}
@@ -361,11 +361,11 @@ func TestTensorInt(t *testing.T) {
 
 func TestTensorPanicInt(t *testing.T) {
 	tests := map[string]func(){
-		"vector with 9 elements":     func() { _ = tensor.New(9).Int() },
-		"square matrix":              func() { _ = tensor.New(3, 3).Int() },
-		"square matrix view":         func() { _ = tensor.New(3, 3).View().Int() },
-		"matrix three rows two cols": func() { _ = tensor.New(3, 2).Int() },
-		"three dim tensor":           func() { _ = tensor.New(3, 2, 3).Int() },
+		"vector with 9 elements":     func() { _ = enumerate(tensor.New(9)).Int() },
+		"square matrix":              func() { _ = enumerate(tensor.New(3, 3)).Int() },
+		"square matrix view":         func() { _ = enumerate(tensor.New(3, 3).View()).Int() },
+		"matrix three rows two cols": func() { _ = enumerate(tensor.New(3, 2)).Int() },
+		"three dim tensor":           func() { _ = enumerate(tensor.New(4, 3, 2)).Int() },
 	}
 
 	for name, fn := range tests {
@@ -394,15 +394,15 @@ func TestTensorFloat(t *testing.T) {
 			Want: 0,
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).Float(),
+			Got:  enumerate(tensor.New(1)).Float(),
 			Want: 0,
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).Float(),
+			Got:  enumerate(tensor.New(1, 1)).Float(),
 			Want: 0,
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).Float(),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).Float(),
 			Want: 0,
 		},
 	}
@@ -418,11 +418,11 @@ func TestTensorFloat(t *testing.T) {
 
 func TestTensorPanicFloat(t *testing.T) {
 	tests := map[string]func(){
-		"vector with 9 elements":     func() { _ = tensor.New(9).Float() },
-		"square matrix":              func() { _ = tensor.New(3, 3).Float() },
-		"square matrix view":         func() { _ = tensor.New(3, 3).View().Float() },
-		"matrix three rows two cols": func() { _ = tensor.New(3, 2).Float() },
-		"three dim tensor":           func() { _ = tensor.New(3, 2, 3).Float() },
+		"vector with 9 elements":     func() { _ = enumerate(tensor.New(9)).Float() },
+		"square matrix":              func() { _ = enumerate(tensor.New(3, 3)).Float() },
+		"square matrix view":         func() { _ = enumerate(tensor.New(3, 3).View()).Float() },
+		"matrix three rows two cols": func() { _ = enumerate(tensor.New(3, 2)).Float() },
+		"three dim tensor":           func() { _ = enumerate(tensor.New(4, 3, 2)).Float() },
 	}
 
 	for name, fn := range tests {
@@ -451,15 +451,15 @@ func TestTensorCmplx(t *testing.T) {
 			Want: 0i,
 		},
 		"vector with one element": {
-			Got:  tensor.New(1).Cmplx(),
+			Got:  enumerate(tensor.New(1)).Cmplx(),
 			Want: 0i,
 		},
 		"matrix one element": {
-			Got:  tensor.New(1, 1).Cmplx(),
+			Got:  enumerate(tensor.New(1, 1)).Cmplx(),
 			Want: 0i,
 		},
 		"six dim tensor one element": {
-			Got:  tensor.New(1, 1, 1, 1, 1, 1).Cmplx(),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).Cmplx(),
 			Want: 0i,
 		},
 	}
@@ -475,11 +475,11 @@ func TestTensorCmplx(t *testing.T) {
 
 func TestTensorPanicCmplx(t *testing.T) {
 	tests := map[string]func(){
-		"vector with 9 elements":     func() { _ = tensor.New(9).Cmplx() },
-		"square matrix":              func() { _ = tensor.New(3, 3).Cmplx() },
-		"square matrix view":         func() { _ = tensor.New(3, 3).View().Cmplx() },
-		"matrix three rows two cols": func() { _ = tensor.New(3, 2).Cmplx() },
-		"three dim tensor":           func() { _ = tensor.New(3, 2, 3).Cmplx() },
+		"vector with 9 elements":     func() { _ = enumerate(tensor.New(9)).Cmplx() },
+		"square matrix":              func() { _ = enumerate(tensor.New(3, 3)).Cmplx() },
+		"square matrix view":         func() { _ = enumerate(tensor.New(3, 3).View()).Cmplx() },
+		"matrix three rows two cols": func() { _ = enumerate(tensor.New(3, 2)).Cmplx() },
+		"three dim tensor":           func() { _ = enumerate(tensor.New(4, 3, 2)).Cmplx() },
 	}
 
 	for name, fn := range tests {

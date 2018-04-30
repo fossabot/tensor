@@ -2,51 +2,51 @@
     {
         "name": "zero value",
         "tensor": "(&tensor.Tensor{})",
-        "ndarray": "np.zeros((), order='F')"
+        "ndarray": "np.zeros((), order='C')"
     },
     {
         "name": "new empty tensor aka scalar",
         "tensor": "tensor.New()",
-        "ndarray": "np.zeros((), order='F')"
+        "ndarray": "np.zeros((), order='C')"
     },
     {
         "name": "vector with one element",
-        "tensor": "tensor.New(1)",
-        "ndarray": "np.zeros((1), order='F')"
+        "tensor": "enumerate(tensor.New(1))",
+        "ndarray": "np.arange(1.).reshape((1), order='C').copy()"
     },
     {
         "name": "vector with 9 elements",
-        "tensor": "tensor.New(9)",
-        "ndarray": "np.zeros((9), order='F')"
+        "tensor": "enumerate(tensor.New(9))",
+        "ndarray": "np.arange(9.).reshape((9), order='C').copy()"
     },
     {
         "name": "matrix one element",
-        "tensor": "tensor.New(1, 1)",
-        "ndarray": "np.zeros((1, 1), order='F')"
+        "tensor": "enumerate(tensor.New(1, 1))",
+        "ndarray": "np.arange(1.).reshape((1, 1), order='C').copy()"
     },
     {
         "name": "square matrix",
-        "tensor": "tensor.New(3, 3)",
-        "ndarray": "np.zeros((3, 3), order='F')"
+        "tensor": "enumerate(tensor.New(3, 3))",
+        "ndarray": "np.arange(9.).reshape((3, 3), order='C').copy()"
     },
     {
         "name": "square matrix view",
-        "tensor": "tensor.New(3, 3).View()",
-        "ndarray": "np.zeros((3, 3), order='F').view()"
+        "tensor": "enumerate(tensor.New(3, 3).View())",
+        "ndarray": "np.arange(9.).reshape((3, 3), order='C').copy().view()"
     },
     {
         "name": "matrix three rows two cols",
-        "tensor": "tensor.New(3, 2)",
-        "ndarray": "np.zeros((3, 2), order='F')"
+        "tensor": "enumerate(tensor.New(3, 2))",
+        "ndarray": "np.arange(6.).reshape((3, 2), order='C').copy()"
     },
     {
         "name": "three dim tensor",
-        "tensor": "tensor.New(3, 2, 3)",
-        "ndarray": "np.zeros((3, 2, 3), order='F')"
+        "tensor": "enumerate(tensor.New(4, 3, 2))",
+        "ndarray": "np.arange(24.).reshape((4, 3, 2), order='C').copy()"
     },
     {
         "name": "six dim tensor one element",
-        "tensor": "tensor.New(1, 1, 1, 1, 1, 1)",
-        "ndarray": "np.zeros((1, 1, 1, 1, 1, 1), order='F')"
+        "tensor": "enumerate(tensor.New(1, 1, 1, 1, 1, 1))",
+        "ndarray": "np.arange(1.).reshape((1, 1, 1, 1, 1, 1), order='C').copy()"
     }
 ]
