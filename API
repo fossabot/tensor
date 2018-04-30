@@ -17,6 +17,9 @@ API (tensor):
   [x] - type Tensor struct {...}
   [x] - tensor.New(shape ...int) *Tensor
   [x] - tensor.NewScalar(v interface{}) *Tensor
+  [ ] - tensor.NewVector(v interface{}) *Tensor
+  [ ] - tensor.NewMatrix(v interface{}) *Tensor
+  [+] - (*Tensor) Delegate() *Delegate
  "delegate.go":
   [+] - type Delegate struct {...}
   [+] - tensor.NewDelegate(dst *Tensor) *Delegate
@@ -28,7 +31,6 @@ API (tensor):
   [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor
   [ ] - (*Delegate) Maximum(TODO) *Tensor
   [ ] - (*Delegate) Minimum(TODO) *Tensor
-  [+] - (*Tensor) Delegate() *Delegate
  "layout.go":
   [x] - (*Tensor) NDim() int
   [x] - (*Tensor) Shape() []int
