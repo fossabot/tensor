@@ -31,7 +31,21 @@ func (s IdxScheme) Shape(strides []int, size int) []int {
 }
 
 var schemeShapeFuncs = map[IdxScheme]func([]int, int) []int{
+	IdxSchemeRowMajor: rowMajorShape,
 	IdxSchemeColMajor: colMajorShape,
+}
+
+func rowMajorShape(strides []int, size int) []int {
+	if len(strides) == 0 {
+		return nil
+	}
+
+	var shape = []int{size / strides[0]}
+	for i := 0; i < len(strides)-1; i-- {
+		shape = append(shape, strides[i]/strides[i+1])
+	}
+
+	return shape
 }
 
 func colMajorShape(strides []int, size int) []int {
@@ -57,7 +71,25 @@ func (s IdxScheme) Strides(shape []int) []int {
 }
 
 var schemeStridesFuncs = map[IdxScheme]func([]int) []int{
+	IdxSchemeRowMajor: rowMajorStrides,
 	IdxSchemeColMajor: colMajorStrides,
+}
+
+func rowMajorStrides(shape []int) []int {
+	if len(shape) == 0 {
+		return nil
+	}
+
+	strides := make([]int, len(shape))
+	for i := len(shape) - 1; i >= 0; i-- {
+		if j := i + 1; j < len(shape) && shape[j] != 0 {
+			strides[i] = strides[j] * shape[j]
+		} else {
+			strides[i] = 1
+		}
+	}
+
+	return strides
 }
 
 func colMajorStrides(shape []int) []int {
