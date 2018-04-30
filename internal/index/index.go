@@ -19,7 +19,7 @@ type Index struct {
 // scheme will be used.
 func NewIndex(shape []int, scheme IdxScheme) *Index {
 	if scheme == 0 {
-		scheme = IdxSchemeColMajor
+		scheme = DefaultIdxScheme
 	}
 
 	// Shape with no length is treated as scalar.

@@ -7,11 +7,18 @@ import (
 // IdxScheme defines the order of dimmensions in continuos memory.
 type IdxScheme Flags
 
+// DefaultIdxScheme defines the default indexing scheme when not set explicitly.
+const DefaultIdxScheme = IdxSchemeColMajor
+
 const (
+	// IdxSchemeRowMajor represents row major order where the horizontal values
+	// of a matrix lie side by side in continuos 1D array. It is also known as
+	// C element order.
+	IdxSchemeRowMajor IdxScheme = 1 << iota
 	// IdxSchemeColMajor represents column-major order where the vertical values
 	// of a matrix lie side by side in continuos 1D array. This is also known as
 	// Fortran order and is used in MatLab data indexing.
-	IdxSchemeColMajor IdxScheme = 0
+	IdxSchemeColMajor
 )
 
 // Shape creates a shape array from provided strides.
@@ -80,5 +87,6 @@ func (s IdxScheme) String() string {
 }
 
 var schemeNames = map[IdxScheme]string{
+	IdxSchemeRowMajor: "row-major (C)",
 	IdxSchemeColMajor: "column-major (F)",
 }

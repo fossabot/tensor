@@ -28,7 +28,7 @@ func BenchmarkIterateRaw_3D_100E(b *testing.B) { bckIterateRaw(b, []int{100, 100
 func BenchmarkIterateAt_3D_100E(b *testing.B)  { bckIterateAt(b, []int{100, 100, 100}) }
 
 func bckIterateRaw(b *testing.B, shape []int) {
-	idx, sum := index.NewIndex(shape, index.IdxSchemeColMajor), 0
+	idx, sum := index.NewIndex(shape, index.DefaultIdxScheme), 0
 	for n := 0; n < b.N; n++ {
 		idx.Iterate(func(pos []int) {
 			sum = len(pos)
@@ -39,7 +39,7 @@ func bckIterateRaw(b *testing.B, shape []int) {
 }
 
 func bckIterateAt(b *testing.B, shape []int) {
-	idx, sum := index.NewIndex(shape, index.IdxSchemeColMajor), 0
+	idx, sum := index.NewIndex(shape, index.DefaultIdxScheme), 0
 
 	at := idx.At()
 	for n := 0; n < b.N; n++ {

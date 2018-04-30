@@ -13,7 +13,7 @@ type Tensor struct {
 
 // New creates a new tensor with a given shape. Empty shape creates a scalar.
 func New(shape ...int) *Tensor {
-	var idx = index.NewIndex(shape, 0)
+	var idx = index.NewIndex(shape, index.DefaultIdxScheme)
 
 	return &Tensor{
 		idx: idx,
@@ -25,7 +25,7 @@ func New(shape ...int) *Tensor {
 // object's data type will be inherited from a given argument.
 func NewScalar(scalar interface{}) *Tensor {
 	t := &Tensor{
-		idx: index.NewIndex(nil, 0),
+		idx: index.NewIndex(nil, index.DefaultIdxScheme),
 		buf: core.NewBuffer(1),
 	}
 

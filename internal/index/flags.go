@@ -9,7 +9,7 @@ func (f Flags) IdxScheme() IdxScheme {
 		return scheme
 	}
 
-	return IdxSchemeColMajor
+	return DefaultIdxScheme
 }
 
 // IsView indicates whether the index represents a view over the data.
