@@ -10,6 +10,8 @@ type instance struct {
 	Name    string `json:"name"`    // Tensor name.
 	Tensor  string `json:"tensor"`  // Go tensor initialization.
 	NDArray string `json:"ndarray"` // Python's ndarray initialization.
+	Shape   []int  `json:"shape"`   // Shape.
+	Size    int    `json:"size"`    // Number of elements.
 }
 
 func loadInstances(path string) (instances []*instance, err error) {

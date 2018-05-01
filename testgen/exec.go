@@ -7,10 +7,7 @@ import (
 )
 
 func execPythonCmd(typ, op string) (string, error) {
-	op, err := prepareOp(typ, op)
-	if err != nil {
-		return "", err
-	}
+	op = prepareOp(typ, op)
 
 	cmd := exec.Command("python3", "-c", "import numpy as np\n"+op)
 
@@ -27,12 +24,12 @@ func execPythonCmd(typ, op string) (string, error) {
 	return "", fmt.Errorf("cannot run %q: %v (output %q)", op, err, out)
 }
 
-func prepareOp(typ, op string) (string, error) {
+func prepareOp(typ, op string) string {
 	switch typ {
 	case "*tensor.Tensor":
-		return "tmp = " + op + "; print('nil') if tmp is None else print(tmp.shape)", nil
+		return "tmp = " + op + "; print('nil') if tmp is None else print(tmp.shape)"
 	default:
 		// If op does not print anything, print the whole statement result.
-		return "print(" + op + ")", nil
+		return "print(" + op + ")"
 	}
 }

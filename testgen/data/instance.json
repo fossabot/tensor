@@ -2,51 +2,71 @@
     {
         "name": "zero value",
         "tensor": "(&tensor.Tensor{})",
-        "ndarray": "np.zeros((), order='C')"
+        "ndarray": "np.zeros((), order='C')",
+        "shape": null,
+        "size": 1
     },
     {
         "name": "new empty tensor aka scalar",
         "tensor": "tensor.New()",
-        "ndarray": "np.zeros((), order='C')"
+        "ndarray": "np.zeros((), order='C')",
+        "shape": null,
+        "size": 1
     },
     {
         "name": "vector with one element",
         "tensor": "enumerate(tensor.New(1))",
-        "ndarray": "np.arange(1.).reshape((1), order='C').copy()"
+        "ndarray": "np.arange(1.).reshape((1), order='C').copy()",
+        "shape": [ 1 ],
+        "size": 1
     },
     {
         "name": "vector with 9 elements",
         "tensor": "enumerate(tensor.New(9))",
-        "ndarray": "np.arange(9.).reshape((9), order='C').copy()"
+        "ndarray": "np.arange(9.).reshape((9), order='C').copy()",
+        "shape": [ 9 ],
+        "size": 9
     },
     {
         "name": "matrix one element",
         "tensor": "enumerate(tensor.New(1, 1))",
-        "ndarray": "np.arange(1.).reshape((1, 1), order='C').copy()"
+        "ndarray": "np.arange(1.).reshape((1, 1), order='C').copy()",
+        "shape": [ 1, 1 ],
+        "size": 1
     },
     {
         "name": "square matrix",
         "tensor": "enumerate(tensor.New(3, 3))",
-        "ndarray": "np.arange(9.).reshape((3, 3), order='C').copy()"
+        "ndarray": "np.arange(9.).reshape((3, 3), order='C').copy()",
+        "shape": [ 3, 3 ],
+        "size": 9
     },
     {
         "name": "square matrix view",
         "tensor": "enumerate(tensor.New(3, 3).View())",
-        "ndarray": "np.arange(9.).reshape((3, 3), order='C').copy().view()"
+        "ndarray": "np.arange(9.).reshape((3, 3), order='C').copy().view()",
+        "shape": [ 3, 3 ],
+        "size": 9
     },
     {
         "name": "matrix three rows two cols",
         "tensor": "enumerate(tensor.New(3, 2))",
-        "ndarray": "np.arange(6.).reshape((3, 2), order='C').copy()"
+        "ndarray": "np.arange(6.).reshape((3, 2), order='C').copy()",
+        "shape": [ 3, 2 ],
+        "size": 6
     },
     {
         "name": "three dim tensor",
         "tensor": "enumerate(tensor.New(4, 3, 2))",
-        "ndarray": "np.arange(24.).reshape((4, 3, 2), order='C').copy()"
+        "ndarray": "np.arange(24.).reshape((4, 3, 2), order='C').copy()",
+        "shape": [ 4, 3, 2 ],
+        "size": 24
     },
     {
         "name": "six dim tensor one element",
         "tensor": "enumerate(tensor.New(1, 1, 1, 1, 1, 1))",
-        "ndarray": "np.arange(1.).reshape((1, 1, 1, 1, 1, 1), order='C').copy()"
+        "ndarray": "np.arange(1.).reshape((1, 1, 1, 1, 1, 1), order='C').copy()",
+        "shape": [ 1, 1, 1, 1, 1, 1 ],
+        "size": 1
     }
 ]

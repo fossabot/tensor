@@ -53,7 +53,11 @@ type cas struct {
 }
 
 func newTestCas(typ string, inst *instance, call *call) (*cas, bool, error) {
-	var expr = strings.Replace(call.Py, "$inst$", inst.NDArray, -1)
+	expr := replace(call.Py, map[string]string{
+		"$inst$":  inst.NDArray,
+		"$shape$": fmt.Sprintf("%#v", inst.Shape),
+		"$size$":  fmt.Sprintf("%d", inst.Size),
+	})
 
 	output, err := execPythonCmd(typ, expr)
 	if err != nil {
@@ -64,11 +68,25 @@ func newTestCas(typ string, inst *instance, call *call) (*cas, bool, error) {
 		log.Fatalf("unknown type: " + typ)
 	}
 
+	expr = replace(call.Py, map[string]string{
+		"$inst$":  inst.Tensor,
+		"$shape$": intSliceToTuple(inst.Shape),
+		"$size$":  fmt.Sprintf("%d", inst.Size),
+	})
+
 	return &cas{
 		Name: strings.TrimSpace(inst.Name + " " + call.Dsc),
-		Expr: strings.Replace(call.Go, "$inst$", inst.Tensor, -1),
+		Expr: expr,
 		Want: typeToExpr[typ](output),
 	}, output == "", nil
+}
+
+func replace(expr string, vars map[string]string) string {
+	for k, v := range vars {
+		expr = strings.Replace(expr, k, v, -1)
+	}
+
+	return expr
 }
 
 func isNillable(typ string) bool {

@@ -69,6 +69,16 @@ func tupleToIntSlice(output string) string {
 	return "[]int{" + strings.Join(toks, ", ") + "}"
 }
 
+// intSliceToTuple converts Go int slice to Python's tuple.
+func intSliceToTuple(s []int) string {
+	var res []string
+	for i := range s {
+		res = append(res, strconv.Itoa(s[i]))
+	}
+
+	return "(" + strings.Join(res, ",") + ")"
+}
+
 // dtypeToDType takes numpy's dtype name and converts it to coresponding DType
 // object expression.
 func dtypeToDType(output string) string {
