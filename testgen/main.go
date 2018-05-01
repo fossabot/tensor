@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func init() {
@@ -31,6 +32,8 @@ func main() {
 
 	flag.Parse()
 
+	now := time.Now()
+
 	ins, err := loadInstances(*insPath)
 	if err != nil {
 		log.Fatalf("cannot load test instances: %v", err)
@@ -41,6 +44,7 @@ func main() {
 		log.Fatalf("cannot get methods directory: %v", err)
 	}
 
+	var nAllPass, nAllPanic int
 	for _, m := range match {
 		name := strings.TrimSuffix(filepath.Base(m), ".json")
 		outFilepath := filepath.Join(*outPath, name+"_test.go")
@@ -50,17 +54,23 @@ func main() {
 			log.Fatalf("cannot load methods from %q: %v", m, err)
 		}
 
-		if err := generate(outFilepath, mts, ins); err != nil {
+		nPass, nPanic, err := generate(outFilepath, mts, ins)
+		if err != nil {
 			log.Fatalf("cannot generate tests from %v: %v", m, err)
 		}
+
+		nAllPass += nPass
+		nAllPanic += nPanic
 
 		log.Printf("generated tests from %v were saved in %v", m, outFilepath)
 	}
 
 	log.Println("done!")
+	log.Printf("generated %d tests in %v, %d of them are panic handlers",
+		nAllPass+nAllPanic, time.Since(now), nAllPanic)
 }
 
-func generate(outFilepath string, mts []*method, ins []*instance) error {
+func generate(outFilepath string, mts []*method, ins []*instance) (nPass, nPanic int, err error) {
 	type idxTest struct {
 		i int
 		t *test
@@ -81,15 +91,17 @@ func generate(outFilepath string, mts []*method, ins []*instance) error {
 	for i := 0; i < len(mts); i++ {
 		test := <-testC
 		tests[test.i] = test.t
+		nPass += len(test.t.Pass)
+		nPanic += len(test.t.Panic)
 	}
 
 	close(testC)
 
 	f, err := os.Create(outFilepath)
 	if err != nil {
-		return err
+		return 0, 0, err
 	}
 	defer f.Close()
 
-	return tmpl.Execute(f, tests)
+	return nPass, nPanic, tmpl.Execute(f, tests)
 }
