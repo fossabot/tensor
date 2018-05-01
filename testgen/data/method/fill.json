@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Zeros",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Zeros()",
+                "py": "$inst$; tmp.fill(0)"
+            }
+        ]
+    },
+    {
+        "name": "Ones",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Ones()",
+                "py": "$inst$; tmp.fill(1)"
+            }
+        ]
+    },
+    {
+        "name": "Fill",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Fill(tensor.NewScalar(5))",
+                "py": "$inst$; tmp.fill(1)"
+            }
+        ]
+    },
+    {
+        "name": "Arange",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Arange(tensor.NewScalar(10), tensor.NewScalar(4))",
+                "py": "$inst$; tmp.fill(1); tmp *= np.arange(10,10+$size$*4,4).reshape($shape$, order='C')"
+            }
+        ]
+    },
+    {
+        "name": "Linspace",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Linspace(tensor.NewScalar(10), tensor.NewScalar(20))",
+                "py": "$inst$; tmp.fill(1); tmp *= np.linspace(10,20,num=$size$).reshape($shape$, order='C')"
+            }
+        ]
+    },
+    {
+        "name": "Eye",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Eye()",
+                "py": "$inst$; tmp.fill(0); np.fill_diagonal(tmp, 1) if tmp.ndim > 1 else tmp.itemset(0, 1)"
+            }
+        ]
+    }
+]
