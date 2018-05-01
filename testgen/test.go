@@ -55,7 +55,7 @@ type cas struct {
 func newTestCas(typ string, inst *instance, call *call) (*cas, bool, error) {
 	expr := replace(call.Py, map[string]string{
 		"$inst$":  inst.NDArray,
-		"$shape$": fmt.Sprintf("%#v", inst.Shape),
+		"$shape$": intSliceToTuple(inst.Shape),
 		"$size$":  fmt.Sprintf("%d", inst.Size),
 	})
 
@@ -68,9 +68,9 @@ func newTestCas(typ string, inst *instance, call *call) (*cas, bool, error) {
 		log.Fatalf("unknown type: " + typ)
 	}
 
-	expr = replace(call.Py, map[string]string{
+	expr = replace(call.Go, map[string]string{
 		"$inst$":  inst.Tensor,
-		"$shape$": intSliceToTuple(inst.Shape),
+		"$shape$": fmt.Sprintf("%#v", inst.Shape),
 		"$size$":  fmt.Sprintf("%d", inst.Size),
 	})
 
