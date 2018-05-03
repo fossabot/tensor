@@ -46,7 +46,7 @@ func unaryRawEach(db, sb *core.Buffer, fn UnaryFunc) {
 }
 
 // unaryIdxEach walks over elements in destination buffer pointed by all of its
-// index's indices. It calls produced unary function with source elements. Each
+// index's indices. It calls given unary function with source elements. Each
 // element is found by their indexes using destination index indices.
 func unaryIdxEach(di, si *index.Index, db, sb *core.Buffer, fn UnaryFunc) {
 	var (

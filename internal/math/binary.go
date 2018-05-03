@@ -47,9 +47,9 @@ func binaryRawEach(db, lb, rb *core.Buffer, fn BinaryFunc) {
 }
 
 // binaryIdxEach walks over elements in destination buffer pointed by all of its
-// index's indices. It calls produced binary function with elements from left
-// and right buffers. Each element is found by their indexes using destination
-// index indices.
+// index's indices. It calls given binary function with elements from left and
+// right buffers. Each element is found by their indexes using destination index
+// indices.
 func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *core.Buffer, fn BinaryFunc) {
 	var (
 		diAt, liAt, riAt = di.At(), li.At(), ri.At()

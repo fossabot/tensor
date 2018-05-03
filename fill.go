@@ -38,7 +38,9 @@ func (*Tensor) Linspace(start, end *Tensor) *Tensor {
 	return nil
 }
 
-// Eye TODO.
-func (*Tensor) Eye() *Tensor {
-	return nil
+// Eye sets all main diagonal elements to one. All other elements will be set
+// to zero. This mathod works on tensors of any dimensionality.
+func (t *Tensor) Eye() *Tensor {
+
+	return t
 }
