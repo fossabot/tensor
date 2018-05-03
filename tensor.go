@@ -36,7 +36,7 @@ func NewScalar(scalar interface{}) *Tensor {
 }
 
 func (t *Tensor) init() {
-	if t.idx == nil || t.buf == nil {
+	if t.idx == nil && t.buf == nil {
 		*t = *New()
 	}
 }

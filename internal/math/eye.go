@@ -18,7 +18,7 @@ func Eye(dt core.DType) NullaryFunc {
 			return pos[0] == 0
 		}
 
-		for i := 1; i < len(pos); {
+		for i := 1; i < len(pos); i++ {
 			if pos[i-1] != pos[i] {
 				return false
 			}
