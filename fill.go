@@ -1,18 +1,31 @@
 package tensor
 
-// Zeros TODO.
-func (*Tensor) Zeros() *Tensor {
-	return nil
+import (
+	"github.com/ppknap/tensor/internal/math"
+)
+
+// Zeros fills all elements of called tensor with zeroes.
+func (t *Tensor) Zeros() *Tensor {
+	return t.Fill(NewScalar(0.))
 }
 
-// Ones TODO.
-func (*Tensor) Ones() *Tensor {
-	return nil
+// Ones fills all elements of called tensor with ones.
+func (t *Tensor) Ones() *Tensor {
+	return t.Fill(NewScalar(1.))
 }
 
-// Fill TODO.
-func (*Tensor) Fill(v *Tensor) *Tensor {
-	return nil
+// Fill sets all elements of called tensor with provided value. This function
+// panics if a given argument is not a scalar or the shapes of two tensors do
+// not equal.
+func (t *Tensor) Fill(v *Tensor) *Tensor {
+	t.init()
+
+	// Check if v is assignable to t.
+	_ = math.EWArgShape(t.idx, v.idx, false)
+
+	math.Unary(t.idx, v.idx, t.buf, v.buf, false, math.Fill)
+
+	return t
 }
 
 // Arange TODO.

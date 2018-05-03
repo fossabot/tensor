@@ -7,7 +7,10 @@ import (
 
 // EWArgShape returns the required destination shape for element-wise operation
 // to succeed. It panics when such operation is not possible.
-func EWArgShape(li, ri *index.Index) (shape []int) {
+//
+// If commutativity argument is true, the indexes are indicated as commutative
+// that is: li (+) ri <==> ri (+) li.
+func EWArgShape(li, ri *index.Index, commutativity bool) (shape []int) {
 	switch lsz, rsz := li.Size(), ri.Size(); {
 	case lsz > 1 && rsz > 1 && li.EqShape(ri):
 		// Higher rank tensors operation. Only equal shapes are allowed.
@@ -15,7 +18,7 @@ func EWArgShape(li, ri *index.Index) (shape []int) {
 	case lsz == 1 && rsz == 1:
 		// Scalar operation.
 		return nil
-	case lsz == 1:
+	case lsz == 1 && commutativity:
 		// Scalar to higher rank tensor operation. Scalar as left argument.
 		return ri.Shape()
 	case rsz == 1:

@@ -14,10 +14,10 @@ type UnaryFunc func(pos []int, d, s unsafe.Pointer)
 
 // Unary choses and executes the best strategy to call unary operator on
 // provided buffers with respect to their indexes.
-func Unary(canRaw bool, di, si *index.Index, db, sb *core.Buffer, op func(core.DType) UnaryFunc) {
+func Unary(di, si *index.Index, db, sb *core.Buffer, needsPos bool, op func(core.DType) UnaryFunc) {
 	var fn = unaryConvert(db.DType(), sb.DType(), op)
 
-	if !canRaw {
+	if needsPos {
 		unaryIdxEach(di, si, db, sb, fn)
 	}
 

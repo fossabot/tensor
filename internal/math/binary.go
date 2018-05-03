@@ -14,10 +14,10 @@ type BinaryFunc func(pos []int, d, l, r unsafe.Pointer)
 
 // Binary choses and executes the best strategy to call binary operator on
 // provided buffers with respect to their indexes.
-func Binary(canRaw bool, di, li, ri *index.Index, db, lb, rb *core.Buffer, op func(core.DType) BinaryFunc) {
+func Binary(di, li, ri *index.Index, db, lb, rb *core.Buffer, needsPos bool, op func(core.DType) BinaryFunc) {
 	var fn = binaryConvert(db.DType(), lb.DType(), rb.DType(), op)
 
-	if !canRaw {
+	if needsPos {
 		binaryIdxEach(di, li, ri, db, lb, rb, fn)
 	}
 

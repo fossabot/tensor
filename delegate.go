@@ -22,7 +22,7 @@ func (d *Delegate) Add(a, b *Tensor) (dst *Tensor) {
 		panic(core.NewError("nil argument provided"))
 	}
 
-	var shape = math.EWArgShape(a.idx, b.idx)
+	var shape = math.EWArgShape(a.idx, b.idx, true)
 
 	if dst = d.dst; dst == nil {
 		//dst = New(shape...).AsType(core.Promote(a.DType(), b.DType()))
@@ -30,7 +30,7 @@ func (d *Delegate) Add(a, b *Tensor) (dst *Tensor) {
 		panic(core.NewError("invalid dst shape %v for %v", ds, shape))
 	}
 
-	math.Binary(true, dst.idx, a.idx, b.idx, dst.buf, a.buf, b.buf, math.Add)
+	math.Binary(dst.idx, a.idx, b.idx, dst.buf, a.buf, b.buf, false, math.Add)
 
 	return dst
 }
