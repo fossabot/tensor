@@ -56,12 +56,12 @@ API (tensor):
   [ ] - var PrintElementsThreshold = 8
   [ ] - (*Tensor) String() string
  "fill.go":
-  [ ] - (*Tensor) Zeros() *Tensor
-  [ ] - (*Tensor) Ones() *Tensor
-  [ ] - (*Tensor) Fill(v *Tensor) *Tensor
+  [x] - (*Tensor) Zeros() *Tensor
+  [x] - (*Tensor) Ones() *Tensor
+  [x] - (*Tensor) Fill(v *Tensor) *Tensor
   [ ] - (*Tensor) Arange(start, step *Tensor) *Tensor
   [ ] - (*Tensor) Linspace(start, end *Tensor) *Tensor
-  [ ] - (*Tensor) Eye() *Tensor
+  [x] - (*Tensor) Eye() *Tensor
  "shape.go":
   [ ] - (*Tensor) T() *Tensor
   [ ] - (*Tensor) Transpose() *Tensor
@@ -147,7 +147,6 @@ API (dtype):
   [x] - const Complex64 = core.Complex64
   [x] - const Complex128 = core.Complex128
   [x] - const String = core.String
-  [ ] - const Object = core.Object
 
 Planed features:
 [ ] - txtfmt package: custom display options for I/O formatting.
@@ -155,3 +154,4 @@ Planed features:
 [ ] - masks.
 [ ] - custom fields.
 [ ] - more flexible dtype.
+[ ] - object dtype.

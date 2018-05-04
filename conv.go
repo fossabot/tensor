@@ -132,8 +132,3 @@ func (t *Tensor) Cmplx() complex128 {
 		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
 	))
 }
-
-// Object TODO.
-func (t *Tensor) Object() interface{} {
-	return nil
-}
