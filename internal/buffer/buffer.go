@@ -1,16 +1,17 @@
-package core
+package buffer
 
 import (
 	"reflect"
 	"strings"
 	"unsafe"
 
+	"github.com/ppknap/tensor/internal/core"
 	"github.com/ppknap/tensor/internal/errorc"
 )
 
-// DefaultBufferDType is a default type used by buffer type when its data type
+// DefaultDType is a default type used by buffer type when its data type
 // was not set explicitly.
-const DefaultBufferDType = Float64
+const DefaultDType = core.Float64
 
 // Buffer stores a set of data elements. Its size is predefined thus, it is like
 // constant size array that can store objects of different type. The ones that
@@ -24,11 +25,11 @@ type Buffer struct {
 	n    int
 	data []byte
 	pts  []unsafe.Pointer
-	typ  DType
+	typ  core.DType
 }
 
-// NewBuffer creates a new Buffer instance with provided number of elements.
-func NewBuffer(n int) *Buffer {
+// New creates a new Buffer instance with provided number of elements.
+func New(n int) *Buffer {
 	return &Buffer{
 		n: n,
 	}
@@ -61,23 +62,23 @@ func (b *Buffer) Size() int { return b.n }
 // types only the object pointer size is counted.
 func (b *Buffer) NBytes() int {
 	if b == nil {
-		return int(DefaultBufferDType.Size())
+		return int(DefaultDType.Size())
 	}
 
 	if b.typ == 0 {
-		return b.Size() * int(DefaultBufferDType.Size())
+		return b.Size() * int(DefaultDType.Size())
 	}
 
 	return b.Size() * int(b.typ.Size())
 }
 
 // DType returns the underlying buffer's data type.
-func (b *Buffer) DType() DType {
+func (b *Buffer) DType() core.DType {
 	if b.typ != 0 {
 		return b.typ
 	}
 
-	return DefaultBufferDType
+	return DefaultDType
 }
 
 // Setval sets interface value to a given position in the buffer. Conversion
@@ -86,7 +87,7 @@ func (b *Buffer) Setval() func(int, interface{}) {
 	setptr := b.Setptr()
 
 	return func(i int, v interface{}) {
-		typ, p := Destruct(v)
+		typ, p := core.Destruct(v)
 		setptr(i, typ, p)
 	}
 }
@@ -125,17 +126,17 @@ func (b *Buffer) Fill(data interface{}) {
 
 // Setptr sets value under p to a given position in a buffer. Conversion might
 // happen when types differ.
-func (b *Buffer) Setptr() func(int, DType, unsafe.Pointer) {
+func (b *Buffer) Setptr() func(int, core.DType, unsafe.Pointer) {
 	b.init()
 
 	if !b.typ.IsDynamic() {
 		atFunc := b.At()
-		return func(i int, typ DType, p unsafe.Pointer) {
+		return func(i int, typ core.DType, p unsafe.Pointer) {
 			b.typ.Setraw(atFunc(i), b.typ.Convert(typ, p))
 		}
 	}
 
-	return func(i int, typ DType, p unsafe.Pointer) {
+	return func(i int, typ core.DType, p unsafe.Pointer) {
 		b.pts[i] = b.typ.Convert(typ, p)
 	}
 }
@@ -199,7 +200,7 @@ func (b *Buffer) String() string {
 // AsType transforms buffer's underlying type to provided one. This function
 // reallocates the internal data buffer when the size of provided type is
 // greater than the currently stored by called object.
-func (b *Buffer) AsType(typ DType) *Buffer {
+func (b *Buffer) AsType(typ core.DType) *Buffer {
 	// Type is already set so this function is no-op.
 	if b.typ == typ {
 		return b
@@ -296,6 +297,6 @@ func (b *Buffer) AsType(typ DType) *Buffer {
 
 func (b *Buffer) init() {
 	if b.typ == 0 {
-		b.AsType(DefaultBufferDType)
+		b.AsType(DefaultDType)
 	}
 }

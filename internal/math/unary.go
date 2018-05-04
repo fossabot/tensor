@@ -3,6 +3,7 @@ package math
 import (
 	"unsafe"
 
+	"github.com/ppknap/tensor/internal/buffer"
 	"github.com/ppknap/tensor/internal/core"
 	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
@@ -15,7 +16,7 @@ type UnaryFunc func(pos []int, d, s unsafe.Pointer)
 
 // Unary choses and executes the best strategy to call unary operator on
 // provided buffers with respect to their indexes.
-func Unary(di, si *index.Index, db, sb *core.Buffer, needsPos bool, op func(core.DType) UnaryFunc) {
+func Unary(di, si *index.Index, db, sb *buffer.Buffer, needsPos bool, op func(core.DType) UnaryFunc) {
 	var fn = unaryConvert(db.DType(), sb.DType(), op)
 
 	if needsPos {
@@ -39,7 +40,7 @@ func Unary(di, si *index.Index, db, sb *core.Buffer, needsPos bool, op func(core
 // unaryRawEach is the simplest unary iterator. It walks over all elements in
 // destination buffer and calls unary function giving corresponding from source
 // buffer.
-func unaryRawEach(db, sb *core.Buffer, fn UnaryFunc) {
+func unaryRawEach(db, sb *buffer.Buffer, fn UnaryFunc) {
 	srcAt := sb.At()
 	db.Iterate(func(i int, dst unsafe.Pointer) {
 		fn(nil, dst, srcAt(i))
@@ -49,7 +50,7 @@ func unaryRawEach(db, sb *core.Buffer, fn UnaryFunc) {
 // unaryIdxEach walks over elements in destination buffer pointed by all of its
 // index's indices. It calls given unary function with source elements. Each
 // element is found by their indexes using destination index indices.
-func unaryIdxEach(di, si *index.Index, db, sb *core.Buffer, fn UnaryFunc) {
+func unaryIdxEach(di, si *index.Index, db, sb *buffer.Buffer, fn UnaryFunc) {
 	var (
 		diAt, siAt = di.At(), si.At()
 		dbAt, sbAt = db.At(), sb.At()

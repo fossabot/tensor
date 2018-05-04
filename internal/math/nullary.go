@@ -3,6 +3,7 @@ package math
 import (
 	"unsafe"
 
+	"github.com/ppknap/tensor/internal/buffer"
 	"github.com/ppknap/tensor/internal/core"
 	"github.com/ppknap/tensor/internal/index"
 )
@@ -12,7 +13,7 @@ type NullaryFunc func(pos []int, d unsafe.Pointer)
 
 // Nullary choses and executes the best strategy to call nullary operation on
 // provided buffer with respect to its indexes.
-func Nullary(di *index.Index, db *core.Buffer, needsPos bool, op func(core.DType) NullaryFunc) {
+func Nullary(di *index.Index, db *buffer.Buffer, needsPos bool, op func(core.DType) NullaryFunc) {
 	var fn = op(db.DType())
 
 	if needsPos {
@@ -30,7 +31,7 @@ func Nullary(di *index.Index, db *core.Buffer, needsPos bool, op func(core.DType
 
 // nullaryRawEach is the simplest nullary iterator. It walks over all elements
 // in destination buffer and calls nullary function on all its elements.
-func nullaryRawEach(db *core.Buffer, fn NullaryFunc) {
+func nullaryRawEach(db *buffer.Buffer, fn NullaryFunc) {
 	db.Iterate(func(_ int, dst unsafe.Pointer) {
 		fn(nil, dst)
 	})
@@ -38,7 +39,7 @@ func nullaryRawEach(db *core.Buffer, fn NullaryFunc) {
 
 // nullaryIdxEach walks over elements in destination buffer pointed by all of
 // its index's indices. It calls given nullary function on each visited element.
-func nullaryIdxEach(di *index.Index, db *core.Buffer, fn NullaryFunc) {
+func nullaryIdxEach(di *index.Index, db *buffer.Buffer, fn NullaryFunc) {
 	diAt, dbAt := di.At(), db.At()
 
 	di.Iterate(func(pos []int) {

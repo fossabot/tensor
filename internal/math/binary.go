@@ -3,6 +3,7 @@ package math
 import (
 	"unsafe"
 
+	"github.com/ppknap/tensor/internal/buffer"
 	"github.com/ppknap/tensor/internal/core"
 	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
@@ -15,7 +16,7 @@ type BinaryFunc func(pos []int, d, l, r unsafe.Pointer)
 
 // Binary choses and executes the best strategy to call binary operator on
 // provided buffers with respect to their indexes.
-func Binary(di, li, ri *index.Index, db, lb, rb *core.Buffer, needsPos bool, op func(core.DType) BinaryFunc) {
+func Binary(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, needsPos bool, op func(core.DType) BinaryFunc) {
 	var fn = binaryConvert(db.DType(), lb.DType(), rb.DType(), op)
 
 	if needsPos {
@@ -40,7 +41,7 @@ func Binary(di, li, ri *index.Index, db, lb, rb *core.Buffer, needsPos bool, op 
 // binaryRawEach is the simplest binary iterator. It walks over all elements in
 // destination buffer and calls binary function giving corresponding elements
 // from left and right buffers.
-func binaryRawEach(db, lb, rb *core.Buffer, fn BinaryFunc) {
+func binaryRawEach(db, lb, rb *buffer.Buffer, fn BinaryFunc) {
 	leftAt, rightAt := lb.At(), rb.At()
 	db.Iterate(func(i int, dst unsafe.Pointer) {
 		fn(nil, dst, leftAt(i), rightAt(i))
@@ -51,7 +52,7 @@ func binaryRawEach(db, lb, rb *core.Buffer, fn BinaryFunc) {
 // index's indices. It calls given binary function with elements from left and
 // right buffers. Each element is found by their indexes using destination index
 // indices.
-func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *core.Buffer, fn BinaryFunc) {
+func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, fn BinaryFunc) {
 	var (
 		diAt, liAt, riAt = di.At(), li.At(), ri.At()
 		dbAt, lbAt, rbAt = db.At(), lb.At(), rb.At()

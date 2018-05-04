@@ -1,6 +1,7 @@
 package tensor
 
 import (
+	"github.com/ppknap/tensor/internal/buffer"
 	"github.com/ppknap/tensor/internal/core"
 	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
@@ -38,7 +39,7 @@ type Error = errorc.Error
 // Tensor represents an organized multidimensional array of fixed-size elements.
 type Tensor struct {
 	idx *index.Index
-	buf *core.Buffer
+	buf *buffer.Buffer
 }
 
 // New creates a new tensor with a given shape. Empty shape creates a scalar.
@@ -47,7 +48,7 @@ func New(shape ...int) *Tensor {
 
 	return &Tensor{
 		idx: idx,
-		buf: core.NewBuffer(idx.Size()),
+		buf: buffer.New(idx.Size()),
 	}
 }
 
@@ -56,7 +57,7 @@ func New(shape ...int) *Tensor {
 func NewScalar(scalar interface{}) *Tensor {
 	t := &Tensor{
 		idx: index.NewIndex(nil, index.DefaultIdxScheme),
-		buf: core.NewBuffer(1),
+		buf: buffer.New(1),
 	}
 
 	typ, p := core.Destruct(scalar)

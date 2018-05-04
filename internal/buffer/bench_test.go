@@ -1,25 +1,26 @@
-package core_test
+package buffer_test
 
 import (
 	"reflect"
 	"testing"
 	"unsafe"
 
+	"github.com/ppknap/tensor/internal/buffer"
 	"github.com/ppknap/tensor/internal/core"
 )
 
 func BenchmarkRawInt_1(b *testing.B)       { bckRawInt(b, 1) }
-func BenchmarkDTypeInt_1(b *testing.B)     { bckDTypeInt(b, 1) }
+func BenchmarkBufferInt_1(b *testing.B)    { bckBufferInt(b, 1) }
 func BenchmarkReflectInt_1(b *testing.B)   { bckReflectInt(b, 1) }
 func BenchmarkInterfaceInt_1(b *testing.B) { bckInterfaceInt(b, 1) }
 
 func BenchmarkRawInt_1k(b *testing.B)       { bckRawInt(b, 1000) }
-func BenchmarkDTypeInt_1k(b *testing.B)     { bckDTypeInt(b, 1000) }
+func BenchmarkBufferInt_1k(b *testing.B)    { bckBufferInt(b, 1000) }
 func BenchmarkReflectInt_1k(b *testing.B)   { bckReflectInt(b, 1000) }
 func BenchmarkInterfaceInt_1k(b *testing.B) { bckInterfaceInt(b, 1000) }
 
 func BenchmarkRawInt_1M(b *testing.B)       { bckRawInt(b, 1000000) }
-func BenchmarkDTypeInt_1M(b *testing.B)     { bckDTypeInt(b, 1000000) }
+func BenchmarkBufferInt_1M(b *testing.B)    { bckBufferInt(b, 1000000) }
 func BenchmarkReflectInt_1M(b *testing.B)   { bckReflectInt(b, 1000000) }
 func BenchmarkInterfaceInt_1M(b *testing.B) { bckInterfaceInt(b, 1000000) }
 
@@ -34,9 +35,9 @@ func bckRawInt(b *testing.B, size int) {
 	}
 }
 
-func bckDTypeInt(b *testing.B, size int) { bckDType(b, core.NewBuffer(size).AsType(core.Int), size) }
+func bckBufferInt(b *testing.B, size int) { bckBuffer(b, buffer.New(size).AsType(core.Int), size) }
 
-func bckDType(b *testing.B, buf *core.Buffer, v interface{}) {
+func bckBuffer(b *testing.B, buf *buffer.Buffer, v interface{}) {
 	dt, src := core.Destruct(v)
 	if dt != buf.DType() {
 		panic("invalid benchmark argument types")

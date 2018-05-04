@@ -1,6 +1,7 @@
 package tensor
 
 import (
+	"github.com/ppknap/tensor/internal/buffer"
 	"github.com/ppknap/tensor/internal/core"
 	"github.com/ppknap/tensor/internal/errorc"
 )
@@ -19,7 +20,7 @@ func (t *Tensor) Copy() *Tensor {
 		return cp
 	}
 	typ := t.buf.DType()
-	cp.buf = core.NewBuffer(cp.idx.Size()).AsType(typ)
+	cp.buf = buffer.New(cp.idx.Size()).AsType(typ)
 
 	cpSetptr, cpAt := cp.buf.Setptr(), cp.idx.At()
 	tBufAt, tIdxAt := t.buf.At(), t.idx.At()
