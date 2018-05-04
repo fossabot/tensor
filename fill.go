@@ -2,6 +2,7 @@ package tensor
 
 import (
 	"github.com/ppknap/tensor/internal/math"
+	"github.com/ppknap/tensor/internal/routine"
 )
 
 // Zeros fills all elements of called tensor with zeroes.
@@ -23,7 +24,7 @@ func (t *Tensor) Fill(v *Tensor) *Tensor {
 	// Check if v is assignable to t.
 	_ = math.EWArgShape(t.idx, v.idx, false)
 
-	math.Unary(t.idx, v.idx, t.buf, v.buf, false, math.Fill)
+	math.Unary(t.idx, v.idx, t.buf, v.buf, false, routine.Fill)
 
 	return t
 }
@@ -43,7 +44,7 @@ func (*Tensor) Linspace(start, end *Tensor) *Tensor {
 func (t *Tensor) Eye() *Tensor {
 	t.init()
 
-	math.Nullary(t.idx, t.buf, true, math.Eye)
+	math.Nullary(t.idx, t.buf, true, routine.Eye)
 
 	return t
 }

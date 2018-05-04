@@ -1,15 +1,16 @@
-package math
+package routine
 
 import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/errorc"
+	"github.com/ppknap/tensor/internal/math"
 )
 
 // Eye is a nullary function responsible for creating a tensor which has ones
 // on its main diagonal and zeroes elsewere.
-func Eye(dt dtype.DType) NullaryFunc {
+func Eye(dt dtype.DType) math.NullaryFunc {
 	isDiag := func(pos []int) bool {
 		if len(pos) == 0 {
 			return true

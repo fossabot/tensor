@@ -4,6 +4,7 @@ import (
 	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
 	"github.com/ppknap/tensor/internal/math"
+	"github.com/ppknap/tensor/internal/routine"
 )
 
 // Delegate TODO.
@@ -30,7 +31,7 @@ func (d *Delegate) Add(a, b *Tensor) (dst *Tensor) {
 		panic(errorc.New("invalid dst shape %v for %v", ds, shape))
 	}
 
-	math.Binary(dst.idx, a.idx, b.idx, dst.buf, a.buf, b.buf, false, math.Add)
+	math.Binary(dst.idx, a.idx, b.idx, dst.buf, a.buf, b.buf, false, routine.Add)
 
 	return dst
 }

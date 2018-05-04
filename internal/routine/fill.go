@@ -1,14 +1,15 @@
-package math
+package routine
 
 import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/errorc"
+	"github.com/ppknap/tensor/internal/math"
 )
 
 // Fill is a unary function responsible for value assignment.
-func Fill(dt dtype.DType) UnaryFunc {
+func Fill(dt dtype.DType) math.UnaryFunc {
 	switch dt {
 	case dtype.Bool:
 		return func(_ []int, d, s unsafe.Pointer) {
