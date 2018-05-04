@@ -3,13 +3,13 @@ package math
 import (
 	"unsafe"
 
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Eye is a nullary function responsible for creating a tensor which has ones
 // on its main diagonal and zeroes elsewere.
-func Eye(dt core.DType) NullaryFunc {
+func Eye(dt dtype.DType) NullaryFunc {
 	isDiag := func(pos []int) bool {
 		if len(pos) == 0 {
 			return true
@@ -29,7 +29,7 @@ func Eye(dt core.DType) NullaryFunc {
 	}
 
 	switch dt {
-	case core.Bool:
+	case dtype.Bool:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*bool)(d) = true
@@ -37,7 +37,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*bool)(d) = false
 		}
-	case core.Int:
+	case dtype.Int:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*int)(d) = 1
@@ -45,7 +45,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*int)(d) = 0
 		}
-	case core.Int8:
+	case dtype.Int8:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*int8)(d) = 1
@@ -53,7 +53,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*int8)(d) = 0
 		}
-	case core.Int16:
+	case dtype.Int16:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*int16)(d) = 1
@@ -61,7 +61,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*int16)(d) = 0
 		}
-	case core.Int32:
+	case dtype.Int32:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*int32)(d) = 1
@@ -69,7 +69,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*int32)(d) = 0
 		}
-	case core.Int64:
+	case dtype.Int64:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*int64)(d) = 1
@@ -77,7 +77,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*int64)(d) = 0
 		}
-	case core.Uint:
+	case dtype.Uint:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*uint)(d) = 1
@@ -85,7 +85,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*uint)(d) = 0
 		}
-	case core.Uint8:
+	case dtype.Uint8:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*uint8)(d) = 1
@@ -93,7 +93,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*uint8)(d) = 0
 		}
-	case core.Uint16:
+	case dtype.Uint16:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*uint16)(d) = 1
@@ -101,7 +101,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*uint16)(d) = 0
 		}
-	case core.Uint32:
+	case dtype.Uint32:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*uint32)(d) = 1
@@ -109,7 +109,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*uint32)(d) = 0
 		}
-	case core.Uint64:
+	case dtype.Uint64:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*uint64)(d) = 1
@@ -117,7 +117,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*uint64)(d) = 0
 		}
-	case core.Uintptr:
+	case dtype.Uintptr:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*uintptr)(d) = 1
@@ -125,7 +125,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*uintptr)(d) = 0
 		}
-	case core.Float32:
+	case dtype.Float32:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*float32)(d) = 1.
@@ -133,7 +133,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*float32)(d) = 0.
 		}
-	case core.Float64:
+	case dtype.Float64:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*float64)(d) = 1.
@@ -141,7 +141,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*float64)(d) = 0.
 		}
-	case core.Complex64:
+	case dtype.Complex64:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*complex64)(d) = 1.
@@ -149,7 +149,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*complex64)(d) = 0.
 		}
-	case core.Complex128:
+	case dtype.Complex128:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*complex128)(d) = 1.
@@ -157,7 +157,7 @@ func Eye(dt core.DType) NullaryFunc {
 			}
 			*(*complex128)(d) = 0.
 		}
-	case core.String:
+	case dtype.String:
 		return func(pos []int, d unsafe.Pointer) {
 			if isDiag(pos) {
 				*(*string)(d) = "1"

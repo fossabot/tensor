@@ -1,7 +1,7 @@
 General:
 [x] - `Tensor` - immutable size.
 [x] - `Tensor` - all values of the same type.
-[x] - (n, m, o) shape: n - rows, m - columns, o - depth.
+[x] - (o, n, m) shape: o - depth, n - rows, m - columns
 [x] - (n) vector is represented as a column: (n) shape.
 [x] - () shape: scalar, rank = 0.
 [x] - Tensor axis 0 is vertical, 1 - horizontal.
@@ -51,7 +51,6 @@ API (tensor):
   [x] - (*Tensor) Int() int
   [x] - (*Tensor) Float() float64
   [x] - (*Tensor) Cmplx() complex128
-  [ ] - (*Tensor) Object() interface{} (test)
  "format.go":
   [ ] - var PrintElementsThreshold = 8
   [ ] - (*Tensor) String() string
@@ -129,24 +128,24 @@ API (tensor):
 
 API (dtype):
  "dtype.go":
-  [x] - type DType = core.DType
-  [x] - const Bool = core.Bool
-  [x] - const Int = core.Int
-  [x] - const Int8 = core.Int8
-  [x] - const Int16 = core.Int16
-  [x] - const Int32 = core.Int32
-  [x] - const Int64 = core.Int64
-  [x] - const Uint = core.Uint
-  [x] - const Uint8 = core.Uint8
-  [x] - const Uint16 = core.Uint16
-  [x] - const Uint32 = core.Uint32
-  [x] - const Uint64 = core.Uint64
-  [x] - const Uintptr = core.Uintptr
-  [x] - const Float32 = core.Float32
-  [x] - const Float64 = core.Float64
-  [x] - const Complex64 = core.Complex64
-  [x] - const Complex128 = core.Complex128
-  [x] - const String = core.String
+  [x] - type DType = dtype.DType
+  [x] - const Bool = dtype.Bool
+  [x] - const Int = dtype.Int
+  [x] - const Int8 = dtype.Int8
+  [x] - const Int16 = dtype.Int16
+  [x] - const Int32 = dtype.Int32
+  [x] - const Int64 = dtype.Int64
+  [x] - const Uint = dtype.Uint
+  [x] - const Uint8 = dtype.Uint8
+  [x] - const Uint16 = dtype.Uint16
+  [x] - const Uint32 = dtype.Uint32
+  [x] - const Uint64 = dtype.Uint64
+  [x] - const Uintptr = dtype.Uintptr
+  [x] - const Float32 = dtype.Float32
+  [x] - const Float64 = dtype.Float64
+  [x] - const Complex64 = dtype.Complex64
+  [x] - const Complex128 = dtype.Complex128
+  [x] - const String = dtype.String
 
 Planed features:
 [ ] - txtfmt package: custom display options for I/O formatting.

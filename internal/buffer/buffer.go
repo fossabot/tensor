@@ -5,13 +5,13 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // DefaultDType is a default type used by buffer type when its data type
 // was not set explicitly.
-const DefaultDType = core.Float64
+const DefaultDType = dtype.Float64
 
 // Buffer stores a set of data elements. Its size is predefined thus, it is like
 // constant size array that can store objects of different type. The ones that
@@ -25,7 +25,7 @@ type Buffer struct {
 	n    int
 	data []byte
 	pts  []unsafe.Pointer
-	typ  core.DType
+	typ  dtype.DType
 }
 
 // New creates a new Buffer instance with provided number of elements.
@@ -73,7 +73,7 @@ func (b *Buffer) NBytes() int {
 }
 
 // DType returns the underlying buffer's data type.
-func (b *Buffer) DType() core.DType {
+func (b *Buffer) DType() dtype.DType {
 	if b.typ != 0 {
 		return b.typ
 	}
@@ -87,7 +87,7 @@ func (b *Buffer) Setval() func(int, interface{}) {
 	setptr := b.Setptr()
 
 	return func(i int, v interface{}) {
-		typ, p := core.Destruct(v)
+		typ, p := dtype.Destruct(v)
 		setptr(i, typ, p)
 	}
 }
@@ -126,17 +126,17 @@ func (b *Buffer) Fill(data interface{}) {
 
 // Setptr sets value under p to a given position in a buffer. Conversion might
 // happen when types differ.
-func (b *Buffer) Setptr() func(int, core.DType, unsafe.Pointer) {
+func (b *Buffer) Setptr() func(int, dtype.DType, unsafe.Pointer) {
 	b.init()
 
 	if !b.typ.IsDynamic() {
 		atFunc := b.At()
-		return func(i int, typ core.DType, p unsafe.Pointer) {
+		return func(i int, typ dtype.DType, p unsafe.Pointer) {
 			b.typ.Setraw(atFunc(i), b.typ.Convert(typ, p))
 		}
 	}
 
-	return func(i int, typ core.DType, p unsafe.Pointer) {
+	return func(i int, typ dtype.DType, p unsafe.Pointer) {
 		b.pts[i] = b.typ.Convert(typ, p)
 	}
 }
@@ -200,7 +200,7 @@ func (b *Buffer) String() string {
 // AsType transforms buffer's underlying type to provided one. This function
 // reallocates the internal data buffer when the size of provided type is
 // greater than the currently stored by called object.
-func (b *Buffer) AsType(typ core.DType) *Buffer {
+func (b *Buffer) AsType(typ dtype.DType) *Buffer {
 	// Type is already set so this function is no-op.
 	if b.typ == typ {
 		return b

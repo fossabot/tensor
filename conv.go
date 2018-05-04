@@ -2,7 +2,7 @@ package tensor
 
 import (
 	"github.com/ppknap/tensor/internal/buffer"
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/errorc"
 )
 
@@ -65,7 +65,7 @@ func (t *Tensor) Bool() bool {
 		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
-	return *(*bool)(core.Bool.Convert(
+	return *(*bool)(dtype.Bool.Convert(
 		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
 	))
 }
@@ -81,7 +81,7 @@ func (t *Tensor) Byte() byte {
 		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
-	return *(*uint8)(core.Uint8.Convert(
+	return *(*uint8)(dtype.Uint8.Convert(
 		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
 	))
 }
@@ -97,7 +97,7 @@ func (t *Tensor) Int() int {
 		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
-	return *(*int)(core.Int.Convert(
+	return *(*int)(dtype.Int.Convert(
 		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
 	))
 }
@@ -113,7 +113,7 @@ func (t *Tensor) Float() float64 {
 		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
-	return *(*float64)(core.Float64.Convert(
+	return *(*float64)(dtype.Float64.Convert(
 		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
 	))
 }
@@ -129,7 +129,7 @@ func (t *Tensor) Cmplx() complex128 {
 		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
-	return *(*complex128)(core.Complex128.Convert(
+	return *(*complex128)(dtype.Complex128.Convert(
 		t.buf.DType(), t.buf.At()(t.idx.At()(nil)),
 	))
 }

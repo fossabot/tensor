@@ -4,7 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/buffer"
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/index"
 )
 
@@ -13,7 +13,7 @@ type NullaryFunc func(pos []int, d unsafe.Pointer)
 
 // Nullary choses and executes the best strategy to call nullary operation on
 // provided buffer with respect to its indexes.
-func Nullary(di *index.Index, db *buffer.Buffer, needsPos bool, op func(core.DType) NullaryFunc) {
+func Nullary(di *index.Index, db *buffer.Buffer, needsPos bool, op func(dtype.DType) NullaryFunc) {
 	var fn = op(db.DType())
 
 	if needsPos {

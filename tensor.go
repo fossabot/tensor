@@ -2,33 +2,33 @@ package tensor
 
 import (
 	"github.com/ppknap/tensor/internal/buffer"
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
 )
 
 // DType describes the internal byte representation of tensor's elements. One
 // should not create instances of this type. The zero DType is not a valid type.
-type DType = core.DType
+type DType = dtype.DType
 
 const (
-	Bool       = core.Bool       // bool type.
-	Int        = core.Int        // int type.
-	Int8       = core.Int8       // int8 type.
-	Int16      = core.Int16      // int16 type.
-	Int32      = core.Int32      // int32 type.
-	Int64      = core.Int64      // int64 type.
-	Uint       = core.Uint       // uint type.
-	Uint8      = core.Uint8      // uint8 type.
-	Uint16     = core.Uint16     // uint16 type.
-	Uint32     = core.Uint32     // uint32 type.
-	Uint64     = core.Uint64     // uint64 type.
-	Uintptr    = core.Uintptr    // uintptr type.
-	Float32    = core.Float32    // float32 type.
-	Float64    = core.Float64    // float64 type.
-	Complex64  = core.Complex64  // complex64 type.
-	Complex128 = core.Complex128 // complex128 type.
-	String     = core.String     // string type.
+	Bool       = dtype.Bool       // bool type.
+	Int        = dtype.Int        // int type.
+	Int8       = dtype.Int8       // int8 type.
+	Int16      = dtype.Int16      // int16 type.
+	Int32      = dtype.Int32      // int32 type.
+	Int64      = dtype.Int64      // int64 type.
+	Uint       = dtype.Uint       // uint type.
+	Uint8      = dtype.Uint8      // uint8 type.
+	Uint16     = dtype.Uint16     // uint16 type.
+	Uint32     = dtype.Uint32     // uint32 type.
+	Uint64     = dtype.Uint64     // uint64 type.
+	Uintptr    = dtype.Uintptr    // uintptr type.
+	Float32    = dtype.Float32    // float32 type.
+	Float64    = dtype.Float64    // float64 type.
+	Complex64  = dtype.Complex64  // complex64 type.
+	Complex128 = dtype.Complex128 // complex128 type.
+	String     = dtype.String     // string type.
 )
 
 // Error satisfies error interface. If any invalid operation in tensor occurs,
@@ -60,7 +60,7 @@ func NewScalar(scalar interface{}) *Tensor {
 		buf: buffer.New(1),
 	}
 
-	typ, p := core.Destruct(scalar)
+	typ, p := dtype.Destruct(scalar)
 	t.buf.AsType(typ).Setptr()(0, typ, p)
 
 	return t

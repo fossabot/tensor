@@ -4,7 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/buffer"
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
 )
@@ -16,7 +16,7 @@ type BinaryFunc func(pos []int, d, l, r unsafe.Pointer)
 
 // Binary choses and executes the best strategy to call binary operator on
 // provided buffers with respect to their indexes.
-func Binary(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, needsPos bool, op func(core.DType) BinaryFunc) {
+func Binary(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, needsPos bool, op func(dtype.DType) BinaryFunc) {
 	var fn = binaryConvert(db.DType(), lb.DType(), rb.DType(), op)
 
 	if needsPos {
@@ -65,196 +65,196 @@ func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, fn Binary
 
 // binaryConvert ensures that binary operation function will have all its
 // arguments in the exact same type.
-func binaryConvert(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) BinaryFunc {
+func binaryConvert(ddt, ldt, rdt dtype.DType, op func(dtype.DType) BinaryFunc) BinaryFunc {
 	var fn = op(ddt)
 	if (ddt == ldt) && (ddt == rdt) {
 		return fn
 	}
 
 	switch ddt {
-	case core.Bool:
+	case dtype.Bool:
 		switch {
-		case ldt == core.Bool && rdt != core.Bool:
+		case ldt == dtype.Bool && rdt != dtype.Bool:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsBoolPtr(r)) }
-		case ldt != core.Bool && rdt == core.Bool:
+		case ldt != dtype.Bool && rdt == dtype.Bool:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsBoolPtr(l), r) }
-		case ldt != core.Bool && rdt != core.Bool:
+		case ldt != dtype.Bool && rdt != dtype.Bool:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsBoolPtr(l), rdt.AsBoolPtr(r))
 			}
 		}
-	case core.Int:
+	case dtype.Int:
 		switch {
-		case ldt == core.Int && rdt != core.Int:
+		case ldt == dtype.Int && rdt != dtype.Int:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsIntPtr(r)) }
-		case ldt != core.Int && rdt == core.Int:
+		case ldt != dtype.Int && rdt == dtype.Int:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsIntPtr(l), r) }
-		case ldt != core.Int && rdt != core.Int:
+		case ldt != dtype.Int && rdt != dtype.Int:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsIntPtr(l), rdt.AsIntPtr(r))
 			}
 		}
-	case core.Int8:
+	case dtype.Int8:
 		switch {
-		case ldt == core.Int8 && rdt != core.Int8:
+		case ldt == dtype.Int8 && rdt != dtype.Int8:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsInt8Ptr(r)) }
-		case ldt != core.Int8 && rdt == core.Int8:
+		case ldt != dtype.Int8 && rdt == dtype.Int8:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsInt8Ptr(l), r) }
-		case ldt != core.Int8 && rdt != core.Int8:
+		case ldt != dtype.Int8 && rdt != dtype.Int8:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsInt8Ptr(l), rdt.AsInt8Ptr(r))
 			}
 		}
-	case core.Int16:
+	case dtype.Int16:
 		switch {
-		case ldt == core.Int16 && rdt != core.Int16:
+		case ldt == dtype.Int16 && rdt != dtype.Int16:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsInt16Ptr(r)) }
-		case ldt != core.Int16 && rdt == core.Int16:
+		case ldt != dtype.Int16 && rdt == dtype.Int16:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsInt16Ptr(l), r) }
-		case ldt != core.Int16 && rdt != core.Int16:
+		case ldt != dtype.Int16 && rdt != dtype.Int16:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsInt16Ptr(l), rdt.AsInt16Ptr(r))
 			}
 		}
-	case core.Int32:
+	case dtype.Int32:
 		switch {
-		case ldt == core.Int32 && rdt != core.Int32:
+		case ldt == dtype.Int32 && rdt != dtype.Int32:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsInt32Ptr(r)) }
-		case ldt != core.Int32 && rdt == core.Int32:
+		case ldt != dtype.Int32 && rdt == dtype.Int32:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsInt32Ptr(l), r) }
-		case ldt != core.Int32 && rdt != core.Int32:
+		case ldt != dtype.Int32 && rdt != dtype.Int32:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsInt32Ptr(l), rdt.AsInt32Ptr(r))
 			}
 		}
-	case core.Int64:
+	case dtype.Int64:
 		switch {
-		case ldt == core.Int64 && rdt != core.Int64:
+		case ldt == dtype.Int64 && rdt != dtype.Int64:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsInt64Ptr(r)) }
-		case ldt != core.Int64 && rdt == core.Int64:
+		case ldt != dtype.Int64 && rdt == dtype.Int64:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsInt64Ptr(l), r) }
-		case ldt != core.Int64 && rdt != core.Int64:
+		case ldt != dtype.Int64 && rdt != dtype.Int64:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsInt64Ptr(l), rdt.AsInt64Ptr(r))
 			}
 		}
-	case core.Uint:
+	case dtype.Uint:
 		switch {
-		case ldt == core.Uint && rdt != core.Uint:
+		case ldt == dtype.Uint && rdt != dtype.Uint:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsUintPtr(r)) }
-		case ldt != core.Uint && rdt == core.Uint:
+		case ldt != dtype.Uint && rdt == dtype.Uint:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsUintPtr(l), r) }
-		case ldt != core.Uint && rdt != core.Uint:
+		case ldt != dtype.Uint && rdt != dtype.Uint:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsUintPtr(l), rdt.AsUintPtr(r))
 			}
 		}
-	case core.Uint8:
+	case dtype.Uint8:
 		switch {
-		case ldt == core.Uint8 && rdt != core.Uint8:
+		case ldt == dtype.Uint8 && rdt != dtype.Uint8:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsUint8Ptr(r)) }
-		case ldt != core.Uint8 && rdt == core.Uint8:
+		case ldt != dtype.Uint8 && rdt == dtype.Uint8:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsUint8Ptr(l), r) }
-		case ldt != core.Uint8 && rdt != core.Uint8:
+		case ldt != dtype.Uint8 && rdt != dtype.Uint8:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsUint8Ptr(l), rdt.AsUint8Ptr(r))
 			}
 		}
-	case core.Uint16:
+	case dtype.Uint16:
 		switch {
-		case ldt == core.Uint16 && rdt != core.Uint16:
+		case ldt == dtype.Uint16 && rdt != dtype.Uint16:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsUint16Ptr(r)) }
-		case ldt != core.Uint16 && rdt == core.Uint16:
+		case ldt != dtype.Uint16 && rdt == dtype.Uint16:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsUint16Ptr(l), r) }
-		case ldt != core.Uint16 && rdt != core.Uint16:
+		case ldt != dtype.Uint16 && rdt != dtype.Uint16:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsUint16Ptr(l), rdt.AsUint16Ptr(r))
 			}
 		}
-	case core.Uint32:
+	case dtype.Uint32:
 		switch {
-		case ldt == core.Uint32 && rdt != core.Uint32:
+		case ldt == dtype.Uint32 && rdt != dtype.Uint32:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsUint32Ptr(r)) }
-		case ldt != core.Uint32 && rdt == core.Uint32:
+		case ldt != dtype.Uint32 && rdt == dtype.Uint32:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsUint32Ptr(l), r) }
-		case ldt != core.Uint32 && rdt != core.Uint32:
+		case ldt != dtype.Uint32 && rdt != dtype.Uint32:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsUint32Ptr(l), rdt.AsUint32Ptr(r))
 			}
 		}
-	case core.Uint64:
+	case dtype.Uint64:
 		switch {
-		case ldt == core.Uint64 && rdt != core.Uint64:
+		case ldt == dtype.Uint64 && rdt != dtype.Uint64:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsUint64Ptr(r)) }
-		case ldt != core.Uint64 && rdt == core.Uint64:
+		case ldt != dtype.Uint64 && rdt == dtype.Uint64:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsUint64Ptr(l), r) }
-		case ldt != core.Uint64 && rdt != core.Uint64:
+		case ldt != dtype.Uint64 && rdt != dtype.Uint64:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsUint64Ptr(l), rdt.AsUint64Ptr(r))
 			}
 		}
-	case core.Uintptr:
+	case dtype.Uintptr:
 		switch {
-		case ldt == core.Uintptr && rdt != core.Uintptr:
+		case ldt == dtype.Uintptr && rdt != dtype.Uintptr:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsUintptrPtr(r)) }
-		case ldt != core.Uintptr && rdt == core.Uintptr:
+		case ldt != dtype.Uintptr && rdt == dtype.Uintptr:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsUintptrPtr(l), r) }
-		case ldt != core.Uintptr && rdt != core.Uintptr:
+		case ldt != dtype.Uintptr && rdt != dtype.Uintptr:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsUintptrPtr(l), rdt.AsUintptrPtr(r))
 			}
 		}
-	case core.Float32:
+	case dtype.Float32:
 		switch {
-		case ldt == core.Float32 && rdt != core.Float32:
+		case ldt == dtype.Float32 && rdt != dtype.Float32:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsFloat32Ptr(r)) }
-		case ldt != core.Float32 && rdt == core.Float32:
+		case ldt != dtype.Float32 && rdt == dtype.Float32:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsFloat32Ptr(l), r) }
-		case ldt != core.Float32 && rdt != core.Float32:
+		case ldt != dtype.Float32 && rdt != dtype.Float32:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsFloat32Ptr(l), rdt.AsFloat32Ptr(r))
 			}
 		}
-	case core.Float64:
+	case dtype.Float64:
 		switch {
-		case ldt == core.Float64 && rdt != core.Float64:
+		case ldt == dtype.Float64 && rdt != dtype.Float64:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsFloat64Ptr(r)) }
-		case ldt != core.Float64 && rdt == core.Float64:
+		case ldt != dtype.Float64 && rdt == dtype.Float64:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsFloat64Ptr(l), r) }
-		case ldt != core.Float64 && rdt != core.Float64:
+		case ldt != dtype.Float64 && rdt != dtype.Float64:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsFloat64Ptr(l), rdt.AsFloat64Ptr(r))
 			}
 		}
-	case core.Complex64:
+	case dtype.Complex64:
 		switch {
-		case ldt == core.Complex64 && rdt != core.Complex64:
+		case ldt == dtype.Complex64 && rdt != dtype.Complex64:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsComplex64Ptr(r)) }
-		case ldt != core.Complex64 && rdt == core.Complex64:
+		case ldt != dtype.Complex64 && rdt == dtype.Complex64:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsComplex64Ptr(l), r) }
-		case ldt != core.Complex64 && rdt != core.Complex64:
+		case ldt != dtype.Complex64 && rdt != dtype.Complex64:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsComplex64Ptr(l), rdt.AsComplex64Ptr(r))
 			}
 		}
-	case core.Complex128:
+	case dtype.Complex128:
 		switch {
-		case ldt == core.Complex128 && rdt != core.Complex128:
+		case ldt == dtype.Complex128 && rdt != dtype.Complex128:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsComplex128Ptr(r)) }
-		case ldt != core.Complex128 && rdt == core.Complex128:
+		case ldt != dtype.Complex128 && rdt == dtype.Complex128:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsComplex128Ptr(l), r) }
-		case ldt != core.Complex128 && rdt != core.Complex128:
+		case ldt != dtype.Complex128 && rdt != dtype.Complex128:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsComplex128Ptr(l), rdt.AsComplex128Ptr(r))
 			}
 		}
-	case core.String:
+	case dtype.String:
 		switch {
-		case ldt == core.String && rdt != core.String:
+		case ldt == dtype.String && rdt != dtype.String:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, l, rdt.AsStringPtr(r)) }
-		case ldt != core.String && rdt == core.String:
+		case ldt != dtype.String && rdt == dtype.String:
 			return func(pos []int, d, l, r unsafe.Pointer) { fn(pos, d, ldt.AsStringPtr(l), r) }
-		case ldt != core.String && rdt != core.String:
+		case ldt != dtype.String && rdt != dtype.String:
 			return func(pos []int, d, l, r unsafe.Pointer) {
 				fn(pos, d, ldt.AsStringPtr(l), rdt.AsStringPtr(r))
 			}

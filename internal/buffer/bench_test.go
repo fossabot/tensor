@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/buffer"
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/dtype"
 )
 
 func BenchmarkRawInt_1(b *testing.B)       { bckRawInt(b, 1) }
@@ -35,17 +35,17 @@ func bckRawInt(b *testing.B, size int) {
 	}
 }
 
-func bckBufferInt(b *testing.B, size int) { bckBuffer(b, buffer.New(size).AsType(core.Int), size) }
+func bckBufferInt(b *testing.B, size int) { bckBuffer(b, buffer.New(size).AsType(dtype.Int), size) }
 
 func bckBuffer(b *testing.B, buf *buffer.Buffer, v interface{}) {
-	dt, src := core.Destruct(v)
+	dt, src := dtype.Destruct(v)
 	if dt != buf.DType() {
 		panic("invalid benchmark argument types")
 	}
 
 	var setter func(i int, src, dst unsafe.Pointer)
 	switch dt {
-	case core.Int:
+	case dtype.Int:
 		setter = func(i int, dst, src unsafe.Pointer) {
 			*(*int)(dst) = (*(*int)(src) + i) % *(*int)(src) / 2
 		}
