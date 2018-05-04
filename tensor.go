@@ -2,6 +2,7 @@ package tensor
 
 import (
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
 )
 
@@ -32,7 +33,7 @@ const (
 // Error satisfies error interface. If any invalid operation in tensor occurs,
 // the object of this type will be panicked. Thus, one can revover it and
 // examine what went wrong.
-type Error = core.Error
+type Error = errorc.Error
 
 // Tensor represents an organized multidimensional array of fixed-size elements.
 type Tensor struct {

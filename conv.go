@@ -2,6 +2,7 @@ package tensor
 
 import (
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Copy creates a copy of called tensor. If this function is called on views, a
@@ -60,7 +61,7 @@ func (t *Tensor) Bool() bool {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
+		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*bool)(core.Bool.Convert(
@@ -76,7 +77,7 @@ func (t *Tensor) Byte() byte {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
+		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*uint8)(core.Uint8.Convert(
@@ -92,7 +93,7 @@ func (t *Tensor) Int() int {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
+		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*int)(core.Int.Convert(
@@ -108,7 +109,7 @@ func (t *Tensor) Float() float64 {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
+		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*float64)(core.Float64.Convert(
@@ -124,7 +125,7 @@ func (t *Tensor) Cmplx() complex128 {
 	}
 
 	if t.idx.Size() != 1 {
-		panic(core.NewError("cannot convert shape %v to scalar", t.Shape()))
+		panic(errorc.New("cannot convert shape %v to scalar", t.Shape()))
 	}
 
 	return *(*complex128)(core.Complex128.Convert(

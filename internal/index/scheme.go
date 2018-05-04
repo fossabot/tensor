@@ -1,7 +1,7 @@
 package index
 
 import (
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // IdxScheme defines the order of dimmensions in continuos memory.
@@ -27,7 +27,7 @@ func (s IdxScheme) Shape(strides []int, size int) []int {
 		return f(strides, size)
 	}
 
-	panic(core.NewError("invalid strided indexing scheme"))
+	panic(errorc.New("invalid strided indexing scheme"))
 }
 
 var schemeShapeFuncs = map[IdxScheme]func([]int, int) []int{
@@ -67,7 +67,7 @@ func (s IdxScheme) Strides(shape []int) []int {
 		return f(shape)
 	}
 
-	panic(core.NewError("invalid strided indexing scheme"))
+	panic(errorc.New("invalid strided indexing scheme"))
 }
 
 var schemeStridesFuncs = map[IdxScheme]func([]int) []int{

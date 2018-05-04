@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
 )
 
@@ -104,5 +105,5 @@ func unaryConvert(ddt, sdt core.DType, op func(core.DType) UnaryFunc) UnaryFunc 
 		return func(pos []int, d, s unsafe.Pointer) { fn(pos, d, sdt.AsStringPtr(s)) }
 	}
 
-	panic(core.NewError("unsupported destination type: %q", ddt))
+	panic(errorc.New("unsupported destination type: %q", ddt))
 }

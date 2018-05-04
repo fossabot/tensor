@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
 )
 
@@ -259,5 +260,5 @@ func binaryConvert(ddt, ldt, rdt core.DType, op func(core.DType) BinaryFunc) Bin
 		}
 	}
 
-	panic(core.NewError("unsupported destination type: %q", ddt))
+	panic(errorc.New("unsupported destination type: %q", ddt))
 }

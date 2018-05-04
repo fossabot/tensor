@@ -1,6 +1,8 @@
 package tensor
 
-import "github.com/ppknap/tensor/internal/core"
+import (
+	"github.com/ppknap/tensor/internal/errorc"
+)
 
 // Each calls f on each element of the tensor. The current iteration position
 // and a scalar view of underlying element will be passed to f. These arguments
@@ -20,7 +22,7 @@ func (t *Tensor) Each(f func(pos []int, t *Tensor)) *Tensor {
 // mutable scalar view over called object.
 func (t *Tensor) ItemAt(pos ...int) *Tensor {
 	if !t.idx.Validate(pos) {
-		panic(core.NewError("invalid position %v for %v", pos, t.idx))
+		panic(errorc.New("invalid position %v for %v", pos, t.idx))
 	}
 
 	return &Tensor{
@@ -33,11 +35,11 @@ func (t *Tensor) ItemAt(pos ...int) *Tensor {
 // tensor. This function panics if provided tensor size is not equal to one.
 func (t *Tensor) ItemSet(v *Tensor, pos ...int) *Tensor {
 	if !t.idx.Validate(pos) {
-		panic(core.NewError("invalid position %v for %v", pos, t.idx))
+		panic(errorc.New("invalid position %v for %v", pos, t.idx))
 	}
 
 	if v.Size() != 1 {
-		panic(core.NewError("invalid non scalar argument (shape:%v)", v.Shape()))
+		panic(errorc.New("invalid non scalar argument (shape:%v)", v.Shape()))
 	}
 
 	t.buf.Setptr()(t.idx.At()(pos), v.buf.DType(), v.buf.At()(0))

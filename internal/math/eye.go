@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Eye is a nullary function responsible for creating a tensor which has ones
@@ -166,5 +167,5 @@ func Eye(dt core.DType) NullaryFunc {
 		}
 	}
 
-	panic(core.NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }

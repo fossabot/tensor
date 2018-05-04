@@ -2,6 +2,8 @@ package core
 
 import (
 	"unsafe"
+
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Zero returns an unsafe pointer to a zero value of the given type.
@@ -60,5 +62,5 @@ func (dt DType) Zero() unsafe.Pointer {
 		return unsafe.Pointer(&v)
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }

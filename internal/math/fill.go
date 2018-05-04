@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Fill is a unary function responsible for value assignment.
@@ -79,5 +80,5 @@ func Fill(dt core.DType) UnaryFunc {
 		}
 	}
 
-	panic(core.NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }

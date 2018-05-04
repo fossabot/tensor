@@ -49,7 +49,7 @@ func bckDType(b *testing.B, buf *core.Buffer, v interface{}) {
 			*(*int)(dst) = (*(*int)(src) + i) % *(*int)(src) / 2
 		}
 	default:
-		panic("core: unsupported type: " + dt.String())
+		panic("unsupported type: " + dt.String())
 	}
 
 	b.ResetTimer()

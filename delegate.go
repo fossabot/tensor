@@ -1,7 +1,7 @@
 package tensor
 
 import (
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
 	"github.com/ppknap/tensor/internal/math"
 )
@@ -19,7 +19,7 @@ func NewDelegate(dst *Tensor) *Delegate {
 // Add TODO.
 func (d *Delegate) Add(a, b *Tensor) (dst *Tensor) {
 	if a == nil || b == nil {
-		panic(core.NewError("nil argument provided"))
+		panic(errorc.New("nil argument provided"))
 	}
 
 	var shape = math.EWArgShape(a.idx, b.idx, true)
@@ -27,7 +27,7 @@ func (d *Delegate) Add(a, b *Tensor) (dst *Tensor) {
 	if dst = d.dst; dst == nil {
 		//dst = New(shape...).AsType(core.Promote(a.DType(), b.DType()))
 	} else if ds := dst.Shape(); !index.EqShape(ds, shape) {
-		panic(core.NewError("invalid dst shape %v for %v", ds, shape))
+		panic(errorc.New("invalid dst shape %v for %v", ds, shape))
 	}
 
 	math.Binary(dst.idx, a.idx, b.idx, dst.buf, a.buf, b.buf, false, math.Add)

@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"strings"
 	"unsafe"
+
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // DefaultBufferDType is a default type used by buffer type when its data type
@@ -105,7 +107,7 @@ func (b *Buffer) Fill(data interface{}) {
 	setval := b.Setval()
 	if k := v.Kind(); k != reflect.Slice && k != reflect.Array {
 		if b.Size() != 1 {
-			panic(NewError("cannot set %v to a non scalar object", data))
+			panic(errorc.New("cannot set %v to a non scalar object", data))
 		}
 
 		setval(0, data)
@@ -113,7 +115,7 @@ func (b *Buffer) Fill(data interface{}) {
 	}
 
 	if v.Len() != b.Size() {
-		panic(NewError("invalid data size (%d!=%d)", v.Len(), b.Size()))
+		panic(errorc.New("invalid data size (%d!=%d)", v.Len(), b.Size()))
 	}
 
 	for i := 0; i < v.Len(); i++ {

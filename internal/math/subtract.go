@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Subtract is a binary function responsible for subtraction.
@@ -74,8 +75,8 @@ func Subtract(dt core.DType) BinaryFunc {
 			*(*complex128)(d) = *(*complex128)(l) - *(*complex128)(r)
 		}
 	case core.String:
-		panic(core.NewError("invalid subtraction of strings"))
+		panic(errorc.New("invalid subtraction of strings"))
 	}
 
-	panic(core.NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }

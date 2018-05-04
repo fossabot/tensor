@@ -2,6 +2,8 @@ package core
 
 import (
 	"unsafe"
+
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Setraw sets underlying pointer value from src to dst based on provided data
@@ -29,5 +31,5 @@ func (dt DType) Setraw(dst, src unsafe.Pointer) {
 		return
 	}
 
-	panic(NewError("core: unsupported data size: %q(%d)", dt, dt.Size()))
+	panic(errorc.New("core: unsupported data size: %q(%d)", dt, dt.Size()))
 }

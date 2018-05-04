@@ -2,6 +2,8 @@ package core
 
 import (
 	"unsafe"
+
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Destruct finds data type of provided value. The returned pointer should be
@@ -44,5 +46,5 @@ func Destruct(v interface{}) (DType, unsafe.Pointer) {
 		return String, unsafe.Pointer(&v)
 	}
 
-	panic(NewError("core: unsupported type: %T", v))
+	panic(errorc.New("core: unsupported type: %T", v))
 }

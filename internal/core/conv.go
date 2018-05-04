@@ -3,6 +3,8 @@ package core
 import (
 	"fmt"
 	"unsafe"
+
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // AsBool converts value under provided pointer to bool type. Conversion depends
@@ -45,7 +47,7 @@ func (dt DType) AsBool(p unsafe.Pointer) bool {
 		return strAsBool(*(*string)(p))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsBoolPtr converts value under provided pointer to bool type and returns
@@ -102,7 +104,7 @@ func (dt DType) AsInt(p unsafe.Pointer) int {
 		return (int)(strAsInt(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsIntPtr converts value under provided pointer to int type and returns
@@ -159,7 +161,7 @@ func (dt DType) AsInt8(p unsafe.Pointer) int8 {
 		return (int8)(strAsInt(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsInt8Ptr converts value under provided pointer to int8 type and returns
@@ -216,7 +218,7 @@ func (dt DType) AsInt16(p unsafe.Pointer) int16 {
 		return (int16)(strAsInt(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsInt16Ptr converts value under provided pointer to int16 type and returns
@@ -273,7 +275,7 @@ func (dt DType) AsInt32(p unsafe.Pointer) int32 {
 		return (int32)(strAsInt(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsInt32Ptr converts value under provided pointer to int32 type and returns
@@ -330,7 +332,7 @@ func (dt DType) AsInt64(p unsafe.Pointer) int64 {
 		return strAsInt(*(*string)(p))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsInt64Ptr converts value under provided pointer to int64 type and returns
@@ -387,7 +389,7 @@ func (dt DType) AsUint(p unsafe.Pointer) uint {
 		return (uint)(strAsUint(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsUintPtr converts value under provided pointer to uint type and returns
@@ -444,7 +446,7 @@ func (dt DType) AsUint8(p unsafe.Pointer) uint8 {
 		return (uint8)(strAsUint(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsUint8Ptr converts value under provided pointer to uint8 type and returns
@@ -501,7 +503,7 @@ func (dt DType) AsUint16(p unsafe.Pointer) uint16 {
 		return (uint16)(strAsUint(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsUint16Ptr converts value under provided pointer to uint16 type and returns
@@ -558,7 +560,7 @@ func (dt DType) AsUint32(p unsafe.Pointer) uint32 {
 		return (uint32)(strAsUint(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsUint32Ptr converts value under provided pointer to uint32 type and returns
@@ -615,7 +617,7 @@ func (dt DType) AsUint64(p unsafe.Pointer) uint64 {
 		return (uint64)(strAsUint(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsUint64Ptr converts value under provided pointer to uint64 type and returns
@@ -672,7 +674,7 @@ func (dt DType) AsUintptr(p unsafe.Pointer) uintptr {
 		return (uintptr)(strAsUint(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsUintptrPtr converts value under provided pointer to uintptr type and
@@ -729,7 +731,7 @@ func (dt DType) AsFloat32(p unsafe.Pointer) float32 {
 		return (float32)(strAsFloat(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsFloat32Ptr converts value under provided pointer to float32 type and
@@ -786,7 +788,7 @@ func (dt DType) AsFloat64(p unsafe.Pointer) float64 {
 		return strAsFloat(*(*string)(p))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsFloat64Ptr converts value under provided pointer to float64 type and returns
@@ -843,7 +845,7 @@ func (dt DType) AsComplex64(p unsafe.Pointer) complex64 {
 		return (complex64)(strAsComplex(*(*string)(p)))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsComplex64Ptr converts value under provided pointer to complex64 type and
@@ -900,7 +902,7 @@ func (dt DType) AsComplex128(p unsafe.Pointer) complex128 {
 		return strAsComplex(*(*string)(p))
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsComplex128Ptr converts value under provided pointer to complex128 type and
@@ -954,7 +956,7 @@ func (dt DType) AsString(p unsafe.Pointer) string {
 		return *(*string)(p)
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // AsStringPtr converts value under provided pointer to string type and returns
@@ -1008,7 +1010,7 @@ func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
 		return func(p unsafe.Pointer) string { return *(*string)(p) }
 	}
 
-	panic(NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }
 
 // Convert takes provided pointer and its data type and converts pointer's value
@@ -1052,5 +1054,5 @@ func (dt DType) Convert(st DType, p unsafe.Pointer) unsafe.Pointer {
 		return st.AsStringPtr(p)
 	}
 
-	panic(NewError("unsupported convert destination type: %q", dt))
+	panic(errorc.New("unsupported convert destination type: %q", dt))
 }

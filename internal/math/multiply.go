@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Multiply is a binary function responsible for multiplication.
@@ -74,8 +75,8 @@ func Multiply(dt core.DType) BinaryFunc {
 			*(*complex128)(d) = *(*complex128)(l) * *(*complex128)(r)
 		}
 	case core.String:
-		panic(core.NewError("invalid multiplication of strings"))
+		panic(errorc.New("invalid multiplication of strings"))
 	}
 
-	panic(core.NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }

@@ -1,5 +1,7 @@
 package core
 
+import "github.com/ppknap/tensor/internal/errorc"
+
 // Promote selects the best type that can safely store values of both arguments.
 func Promote(at, bt DType) DType {
 	// No type promotion for equal types.
@@ -151,5 +153,5 @@ func Promote(at, bt DType) DType {
 		}
 	}
 
-	panic(NewError("unsupported type %q and %q", at, bt))
+	panic(errorc.New("unsupported type %q and %q", at, bt))
 }

@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Add is a binary function responsible for addition.
@@ -79,5 +80,5 @@ func Add(dt core.DType) BinaryFunc {
 		}
 	}
 
-	panic(core.NewError("unsupported type: %q", dt))
+	panic(errorc.New("unsupported type: %q", dt))
 }

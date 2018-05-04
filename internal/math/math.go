@@ -1,7 +1,7 @@
 package math
 
 import (
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 	"github.com/ppknap/tensor/internal/index"
 )
 
@@ -26,5 +26,5 @@ func EWArgShape(li, ri *index.Index, commutativity bool) (shape []int) {
 		return li.Shape()
 	}
 
-	panic(core.NewError("invalid element-wise op. on %v and %v", li.Shape(), ri.Shape()))
+	panic(errorc.New("invalid element-wise op. on %v and %v", li.Shape(), ri.Shape()))
 }

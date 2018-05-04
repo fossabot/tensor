@@ -3,6 +3,8 @@ package core
 import (
 	"strconv"
 	"strings"
+
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // strAsBool converts provided string to boolean type.
@@ -19,7 +21,7 @@ func strAsBool(s string) bool {
 		return f != 0.0
 	}
 
-	panic(NewError("cannot convert %q to a boolean value", s))
+	panic(errorc.New("cannot convert %q to a boolean value", s))
 }
 
 // strAsInt converts provided string to integer type.
@@ -43,7 +45,7 @@ func strAsInt(s string) int64 {
 		return 0
 	}
 
-	panic(NewError("cannot convert %q to integer value", s))
+	panic(errorc.New("cannot convert %q to integer value", s))
 }
 
 // strAsUint converts provided string to unsigned integer type.
@@ -67,7 +69,7 @@ func strAsUint(s string) uint64 {
 		return 0
 	}
 
-	panic(NewError("cannot convert %q to unsigned integer value", s))
+	panic(errorc.New("cannot convert %q to unsigned integer value", s))
 }
 
 // strAsFloat converts provided string to floating point number type.
@@ -87,7 +89,7 @@ func strAsFloat(s string) float64 {
 		return 0.0
 	}
 
-	panic(NewError("cannot convert %q to a float value", s))
+	panic(errorc.New("cannot convert %q to a float value", s))
 }
 
 // strAsComplex converts provided string to complex number type.

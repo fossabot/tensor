@@ -3,7 +3,7 @@ package index
 import (
 	"fmt"
 
-	"github.com/ppknap/tensor/internal/core"
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // Index represents an N-dimensional view on one dimensional array. It does not
@@ -30,7 +30,7 @@ func NewIndex(shape []int, scheme IdxScheme) *Index {
 	// Negative axes are not allowed.
 	for i := range shape {
 		if shape[i] < 0 {
-			panic(core.NewError("invalid shape %v", shape))
+			panic(errorc.New("invalid shape %v", shape))
 		}
 	}
 
