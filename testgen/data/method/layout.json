@@ -81,7 +81,7 @@
     },
     {
         "name": "DType",
-        "rtyp": "dtype.DType",
+        "rtyp": "tensor.DType",
         "calls": [
             {
                 "go": "$inst$.DType()",

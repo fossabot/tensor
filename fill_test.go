@@ -7,13 +7,10 @@ import (
 	"testing"
 
 	"github.com/ppknap/tensor"
-	"github.com/ppknap/tensor/dtype"
-
-	"github.com/ppknap/tensor/internal/core"
 )
 
-// Use reflect, core, and dtype packages in case they aren't used in tests.
-var _ = reflect.TypeOf(dtype.DType(0) == core.DType(0))
+// Use reflect package in case it isn't used in tests.
+var _ = reflect.TypeOf(tensor.DType(0))
 
 func TestTensorZeros(t *testing.T) {
 	tests := map[string]struct {
@@ -409,7 +406,7 @@ func TestTensorPanicEye(t *testing.T) {
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
-				if e, ok := recover().(*core.Error); !ok || e == nil {
+				if e, ok := recover().(*tensor.Error); !ok || e == nil {
 					t.Fatalf("test should have panicked with Error, but it did not")
 				}
 			}()

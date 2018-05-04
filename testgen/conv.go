@@ -14,7 +14,7 @@ var typeToExpr = map[string]func(string) string{
 	"complex128":     skipEmpty(numToCmplx),
 	"string":         skipEmpty(nil),
 	"[]int":          skipEmpty(tupleToIntSlice),
-	"dtype.DType":    skipEmpty(dtypeToDType),
+	"tensor.DType":   skipEmpty(dtypeToDType),
 	"*tensor.Tensor": skipEmpty(ndarrayToTensor),
 }
 
@@ -85,10 +85,10 @@ func dtypeToDType(output string) string {
 	typ := strings.Trim(output, "<>=")
 
 	if strings.HasPrefix(typ, "U") {
-		return "dtype.String"
+		return "tensor.String"
 	}
 
-	return "dtype." + strings.Title(typ)
+	return "tensor." + strings.Title(typ)
 }
 
 // ndarrayToTensor takes info about Python's ndarray and creates corresponding

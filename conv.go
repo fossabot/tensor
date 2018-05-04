@@ -1,7 +1,6 @@
 package tensor
 
 import (
-	"github.com/ppknap/tensor/dtype"
 	"github.com/ppknap/tensor/internal/core"
 )
 
@@ -46,7 +45,7 @@ func (t *Tensor) View() *Tensor {
 
 // AsType sets or changes underlying tensor data type. This method panics if
 // called on views.
-func (t *Tensor) AsType(dt dtype.DType) *Tensor {
+func (t *Tensor) AsType(dt DType) *Tensor {
 	t.init()
 	t.buf.AsType(dt)
 

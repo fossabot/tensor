@@ -24,7 +24,7 @@
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
-                "go": "$inst$.AsType(dtype.String)",
+                "go": "$inst$.AsType(tensor.String)",
                 "py": "$inst$.astype(np.unicode_)"
             }
         ]

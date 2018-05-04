@@ -1,7 +1,5 @@
 package tensor
 
-import "github.com/ppknap/tensor/dtype"
-
 // NDim returns the number of dimensions of the tensor.
 func (t *Tensor) NDim() int {
 	if t.idx != nil {
@@ -94,7 +92,7 @@ func (t *Tensor) FillBuf(data interface{}) *Tensor {
 }
 
 // DType returns the data type of tensor's elements.
-func (t *Tensor) DType() dtype.DType {
+func (t *Tensor) DType() DType {
 	t.init()
 
 	return t.buf.DType()

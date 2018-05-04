@@ -11,13 +11,10 @@ import (
 	"testing"
 
 	"github.com/ppknap/tensor"
-	"github.com/ppknap/tensor/dtype"
-
-	"github.com/ppknap/tensor/internal/core"
 )
 
-// Use reflect, core, and dtype packages in case they aren't used in tests.
-var _ = reflect.TypeOf(dtype.DType(0) == core.DType(0)){{ range . }}{{ if .Pass }}
+// Use reflect package in case it isn't used in tests.
+var _ = reflect.TypeOf(tensor.DType(0)){{ range . }}{{ if .Pass }}
 
 func TestTensor{{ .Name }}(t *testing.T) { {{- if .Func }}
 {{ .Func }}
@@ -60,7 +57,7 @@ func TestTensorPanic{{ .Name }}(t *testing.T) {
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
-				if e, ok := recover().(*core.Error); !ok || e == nil {
+				if e, ok := recover().(*tensor.Error); !ok || e == nil {
 					t.Fatalf("test should have panicked with Error, but it did not")
 				}
 			}()
@@ -75,7 +72,7 @@ var funcMap = template.FuncMap{
 	// makeComparators creates a testing expressions based on tested type.
 	"makeComparators": func(t string) map[string]string {
 		switch t {
-		case "bool", "byte", "int", "float64", "complex128", "string", "dtype.DType":
+		case "bool", "byte", "int", "float64", "complex128", "string", "tensor.DType":
 			return map[string]string{
 				"test.Want != test.Got": `"want %v; got %v", test.Want, test.Got`,
 			}

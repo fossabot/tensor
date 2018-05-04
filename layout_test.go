@@ -7,13 +7,10 @@ import (
 	"testing"
 
 	"github.com/ppknap/tensor"
-	"github.com/ppknap/tensor/dtype"
-
-	"github.com/ppknap/tensor/internal/core"
 )
 
-// Use reflect, core, and dtype packages in case they aren't used in tests.
-var _ = reflect.TypeOf(dtype.DType(0) == core.DType(0))
+// Use reflect package in case it isn't used in tests.
+var _ = reflect.TypeOf(tensor.DType(0))
 
 func TestTensorNDim(t *testing.T) {
 	tests := map[string]struct {
@@ -481,7 +478,7 @@ func TestTensorPanicFillBuf(t *testing.T) {
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
-				if e, ok := recover().(*core.Error); !ok || e == nil {
+				if e, ok := recover().(*tensor.Error); !ok || e == nil {
 					t.Fatalf("test should have panicked with Error, but it did not")
 				}
 			}()
@@ -493,47 +490,47 @@ func TestTensorPanicFillBuf(t *testing.T) {
 
 func TestTensorDType(t *testing.T) {
 	tests := map[string]struct {
-		Got, Want dtype.DType
+		Got, Want tensor.DType
 	}{
 		"zero value": {
 			Got:  (&tensor.Tensor{}).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"new empty tensor aka scalar": {
 			Got:  tensor.New().DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"vector with one element": {
 			Got:  enumerate(tensor.New(1)).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"vector with 9 elements": {
 			Got:  enumerate(tensor.New(9)).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"matrix one element": {
 			Got:  enumerate(tensor.New(1, 1)).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"square matrix": {
 			Got:  enumerate(tensor.New(3, 3)).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"square matrix view": {
 			Got:  enumerate(tensor.New(3, 3).View()).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"matrix three rows two cols": {
 			Got:  enumerate(tensor.New(3, 2)).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"three dim tensor": {
 			Got:  enumerate(tensor.New(4, 3, 2)).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 		"six dim tensor one element": {
 			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).DType(),
-			Want: dtype.Float64,
+			Want: tensor.Float64,
 		},
 	}
 

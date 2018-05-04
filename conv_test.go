@@ -7,13 +7,10 @@ import (
 	"testing"
 
 	"github.com/ppknap/tensor"
-	"github.com/ppknap/tensor/dtype"
-
-	"github.com/ppknap/tensor/internal/core"
 )
 
-// Use reflect, core, and dtype packages in case they aren't used in tests.
-var _ = reflect.TypeOf(dtype.DType(0) == core.DType(0))
+// Use reflect package in case it isn't used in tests.
+var _ = reflect.TypeOf(tensor.DType(0))
 
 func TestTensorCopy(t *testing.T) {
 	tests := map[string]struct {
@@ -150,43 +147,43 @@ func TestTensorAsType(t *testing.T) {
 		Got, Want *tensor.Tensor
 	}{
 		"zero value": {
-			Got:  (&tensor.Tensor{}).AsType(dtype.String),
+			Got:  (&tensor.Tensor{}).AsType(tensor.String),
 			Want: tensor.New(),
 		},
 		"new empty tensor aka scalar": {
-			Got:  tensor.New().AsType(dtype.String),
+			Got:  tensor.New().AsType(tensor.String),
 			Want: tensor.New(),
 		},
 		"vector with one element": {
-			Got:  enumerate(tensor.New(1)).AsType(dtype.String),
+			Got:  enumerate(tensor.New(1)).AsType(tensor.String),
 			Want: tensor.New(1),
 		},
 		"vector with 9 elements": {
-			Got:  enumerate(tensor.New(9)).AsType(dtype.String),
+			Got:  enumerate(tensor.New(9)).AsType(tensor.String),
 			Want: tensor.New(9),
 		},
 		"matrix one element": {
-			Got:  enumerate(tensor.New(1, 1)).AsType(dtype.String),
+			Got:  enumerate(tensor.New(1, 1)).AsType(tensor.String),
 			Want: tensor.New(1, 1),
 		},
 		"square matrix": {
-			Got:  enumerate(tensor.New(3, 3)).AsType(dtype.String),
+			Got:  enumerate(tensor.New(3, 3)).AsType(tensor.String),
 			Want: tensor.New(3, 3),
 		},
 		"square matrix view": {
-			Got:  enumerate(tensor.New(3, 3).View()).AsType(dtype.String),
+			Got:  enumerate(tensor.New(3, 3).View()).AsType(tensor.String),
 			Want: tensor.New(3, 3),
 		},
 		"matrix three rows two cols": {
-			Got:  enumerate(tensor.New(3, 2)).AsType(dtype.String),
+			Got:  enumerate(tensor.New(3, 2)).AsType(tensor.String),
 			Want: tensor.New(3, 2),
 		},
 		"three dim tensor": {
-			Got:  enumerate(tensor.New(4, 3, 2)).AsType(dtype.String),
+			Got:  enumerate(tensor.New(4, 3, 2)).AsType(tensor.String),
 			Want: tensor.New(4, 3, 2),
 		},
 		"six dim tensor one element": {
-			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).AsType(dtype.String),
+			Got:  enumerate(tensor.New(1, 1, 1, 1, 1, 1)).AsType(tensor.String),
 			Want: tensor.New(1, 1, 1, 1, 1, 1),
 		},
 	}
@@ -257,7 +254,7 @@ func TestTensorPanicBool(t *testing.T) {
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
-				if e, ok := recover().(*core.Error); !ok || e == nil {
+				if e, ok := recover().(*tensor.Error); !ok || e == nil {
 					t.Fatalf("test should have panicked with Error, but it did not")
 				}
 			}()
@@ -314,7 +311,7 @@ func TestTensorPanicByte(t *testing.T) {
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
-				if e, ok := recover().(*core.Error); !ok || e == nil {
+				if e, ok := recover().(*tensor.Error); !ok || e == nil {
 					t.Fatalf("test should have panicked with Error, but it did not")
 				}
 			}()
@@ -371,7 +368,7 @@ func TestTensorPanicInt(t *testing.T) {
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
-				if e, ok := recover().(*core.Error); !ok || e == nil {
+				if e, ok := recover().(*tensor.Error); !ok || e == nil {
 					t.Fatalf("test should have panicked with Error, but it did not")
 				}
 			}()
@@ -428,7 +425,7 @@ func TestTensorPanicFloat(t *testing.T) {
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
-				if e, ok := recover().(*core.Error); !ok || e == nil {
+				if e, ok := recover().(*tensor.Error); !ok || e == nil {
 					t.Fatalf("test should have panicked with Error, but it did not")
 				}
 			}()
@@ -485,7 +482,7 @@ func TestTensorPanicCmplx(t *testing.T) {
 	for name, fn := range tests {
 		t.Run(name, func(t *testing.T) {
 			defer func() {
-				if e, ok := recover().(*core.Error); !ok || e == nil {
+				if e, ok := recover().(*tensor.Error); !ok || e == nil {
 					t.Fatalf("test should have panicked with Error, but it did not")
 				}
 			}()
