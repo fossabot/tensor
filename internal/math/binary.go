@@ -17,7 +17,7 @@ type BinaryFunc func(pos []int, d, l, r unsafe.Pointer)
 // Binary choses and executes the best strategy to call binary operator on
 // provided buffers with respect to their indexes.
 func Binary(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, needsPos bool, op func(dtype.DType) BinaryFunc) {
-	var fn = binaryConvert(db.DType(), lb.DType(), rb.DType(), op)
+	var fn = binaryPromote(db.DType(), lb.DType(), rb.DType(), op)
 
 	if needsPos {
 		binaryIdxEach(di, li, ri, db, lb, rb, fn)
@@ -63,14 +63,114 @@ func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, fn Binary
 	})
 }
 
-// binaryConvert ensures that binary operation function will have all its
-// arguments in the exact same type.
-func binaryConvert(ddt, ldt, rdt dtype.DType, op func(dtype.DType) BinaryFunc) BinaryFunc {
-	var fn = op(ddt)
+// binaryPromote ensures that the binary operation will be done on the type
+// which can safety store both right and left arguments. Then, the result will
+// be converted to destination type.
+func binaryPromote(ddt, ldt, rdt dtype.DType, op func(dtype.DType) BinaryFunc) BinaryFunc {
 	if (ddt == ldt) && (ddt == rdt) {
-		return fn
+		return op(ddt)
 	}
 
+	pdt := dtype.Promote(rdt, ldt)
+	if pdt == ddt {
+		return binaryConvert(ddt, ldt, rdt, op(ddt))
+	}
+
+	fn := binaryConvert(pdt, ldt, rdt, op(pdt))
+	switch p := pdt.Zero(); ddt {
+	case dtype.Bool:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*bool)(d) = *(*bool)(pdt.AsBoolPtr(p))
+		}
+	case dtype.Int:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*int)(d) = *(*int)(pdt.AsIntPtr(p))
+		}
+	case dtype.Int8:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*int8)(d) = *(*int8)(pdt.AsInt8Ptr(p))
+		}
+	case dtype.Int16:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*int16)(d) = *(*int16)(pdt.AsInt16Ptr(p))
+		}
+	case dtype.Int32:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*int32)(d) = *(*int32)(pdt.AsInt32Ptr(p))
+		}
+	case dtype.Int64:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*int64)(d) = *(*int64)(pdt.AsInt64Ptr(p))
+		}
+	case dtype.Uint:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*uint)(d) = *(*uint)(pdt.AsUintPtr(p))
+		}
+	case dtype.Uint8:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*uint8)(d) = *(*uint8)(pdt.AsUint8Ptr(p))
+		}
+	case dtype.Uint16:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*uint16)(d) = *(*uint16)(pdt.AsUint16Ptr(p))
+		}
+	case dtype.Uint32:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*uint32)(d) = *(*uint32)(pdt.AsUint32Ptr(p))
+		}
+	case dtype.Uint64:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*uint64)(d) = *(*uint64)(pdt.AsUint64Ptr(p))
+		}
+	case dtype.Uintptr:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*uintptr)(d) = *(*uintptr)(pdt.AsUintptrPtr(p))
+		}
+	case dtype.Float32:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*float32)(d) = *(*float32)(pdt.AsFloat32Ptr(p))
+		}
+	case dtype.Float64:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*float64)(d) = *(*float64)(pdt.AsFloat64Ptr(p))
+		}
+	case dtype.Complex64:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*complex64)(d) = *(*complex64)(pdt.AsComplex64Ptr(p))
+		}
+	case dtype.Complex128:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*complex128)(d) = *(*complex128)(pdt.AsComplex128Ptr(p))
+		}
+	case dtype.String:
+		return func(pos []int, d, l, r unsafe.Pointer) {
+			fn(pos, p, l, r)
+			*(*string)(d) = *(*string)(pdt.AsStringPtr(p))
+		}
+	}
+
+	panic(errorc.New("unsupported destination type: %q", ddt))
+}
+
+// binaryConvert ensures that binary operation function will have all its
+// arguments in the exact same type.
+func binaryConvert(ddt, ldt, rdt dtype.DType, fn BinaryFunc) BinaryFunc {
 	switch ddt {
 	case dtype.Bool:
 		switch {
