@@ -64,14 +64,14 @@ func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, fn Binary
 }
 
 // binaryPromote ensures that the binary operation will be done on the type
-// which can safety store both right and left arguments. Then, the result will
-// be converted to destination type.
+// which can safety store provided arguments. Then, the result will be converted
+// to a destination type.
 func binaryPromote(ddt, ldt, rdt dtype.DType, op func(dtype.DType) BinaryFunc) BinaryFunc {
 	if (ddt == ldt) && (ddt == rdt) {
 		return op(ddt)
 	}
 
-	pdt := dtype.Promote(rdt, ldt)
+	pdt := dtype.Promote(ddt, dtype.Promote(rdt, ldt))
 	if pdt == ddt {
 		return binaryConvert(ddt, ldt, rdt, op(ddt))
 	}

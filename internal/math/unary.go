@@ -61,14 +61,114 @@ func unaryIdxEach(di, si *index.Index, db, sb *buffer.Buffer, fn UnaryFunc) {
 	})
 }
 
-// unaryConvert ensures that unary operation function will have all its
-// arguments in the exact same type.
-func unaryConvert(ddt, sdt dtype.DType, op func(dtype.DType) UnaryFunc) UnaryFunc {
-	var fn = op(ddt)
+// unaryPromote ensures that the unary operation will be done on the type which
+// can safety store provided arguments. Then, the result will be converted to
+// a destination type.
+func unaryPromote(ddt, sdt dtype.DType, op func(dtype.DType) UnaryFunc) UnaryFunc {
 	if ddt == sdt {
-		return fn
+		return op(ddt)
 	}
 
+	pdt := dtype.Promote(ddt, sdt)
+	if pdt == ddt {
+		return unaryConvert(ddt, sdt, op(ddt))
+	}
+
+	fn := unaryConvert(pdt, sdt, op(pdt))
+	switch p := pdt.Zero(); ddt {
+	case dtype.Bool:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*bool)(d) = *(*bool)(pdt.AsBoolPtr(p))
+		}
+	case dtype.Int:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*int)(d) = *(*int)(pdt.AsIntPtr(p))
+		}
+	case dtype.Int8:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*int8)(d) = *(*int8)(pdt.AsInt8Ptr(p))
+		}
+	case dtype.Int16:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*int16)(d) = *(*int16)(pdt.AsInt16Ptr(p))
+		}
+	case dtype.Int32:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*int32)(d) = *(*int32)(pdt.AsInt32Ptr(p))
+		}
+	case dtype.Int64:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*int64)(d) = *(*int64)(pdt.AsInt64Ptr(p))
+		}
+	case dtype.Uint:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*uint)(d) = *(*uint)(pdt.AsUintPtr(p))
+		}
+	case dtype.Uint8:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*uint8)(d) = *(*uint8)(pdt.AsUint8Ptr(p))
+		}
+	case dtype.Uint16:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*uint16)(d) = *(*uint16)(pdt.AsUint16Ptr(p))
+		}
+	case dtype.Uint32:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*uint32)(d) = *(*uint32)(pdt.AsUint32Ptr(p))
+		}
+	case dtype.Uint64:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*uint64)(d) = *(*uint64)(pdt.AsUint64Ptr(p))
+		}
+	case dtype.Uintptr:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*uintptr)(d) = *(*uintptr)(pdt.AsUintptrPtr(p))
+		}
+	case dtype.Float32:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*float32)(d) = *(*float32)(pdt.AsFloat32Ptr(p))
+		}
+	case dtype.Float64:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*float64)(d) = *(*float64)(pdt.AsFloat64Ptr(p))
+		}
+	case dtype.Complex64:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*complex64)(d) = *(*complex64)(pdt.AsComplex64Ptr(p))
+		}
+	case dtype.Complex128:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*complex128)(d) = *(*complex128)(pdt.AsComplex128Ptr(p))
+		}
+	case dtype.String:
+		return func(pos []int, d, s unsafe.Pointer) {
+			fn(pos, p, s)
+			*(*string)(d) = *(*string)(pdt.AsStringPtr(p))
+		}
+	}
+
+	panic(errorc.New("unsupported destination type: %q", ddt))
+}
+
+// unaryConvert ensures that unary operation function will have all its
+// arguments in the exact same type.
+func unaryConvert(ddt, sdt dtype.DType, fn UnaryFunc) UnaryFunc {
 	switch ddt {
 	case dtype.Bool:
 		return func(pos []int, d, s unsafe.Pointer) { fn(pos, d, sdt.AsBoolPtr(s)) }
