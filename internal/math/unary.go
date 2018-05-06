@@ -17,7 +17,7 @@ type UnaryFunc func(pos []int, d, s unsafe.Pointer)
 // Unary choses and executes the best strategy to call unary operator on
 // provided buffers with respect to their indexes.
 func Unary(di, si *index.Index, db, sb *buffer.Buffer, needsPos bool, op func(dtype.DType) UnaryFunc) {
-	var fn = unaryConvert(db.DType(), sb.DType(), op)
+	var fn = unaryPromote(db.DType(), sb.DType(), op)
 
 	if needsPos {
 		unaryIdxEach(di, si, db, sb, fn)
