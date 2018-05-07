@@ -24,10 +24,10 @@ API (tensor):
   [ ] - type Delegate struct {...}
   [ ] - tensor.NewDelegate(dst *Tensor) *Delegate
   [ ] - (*Delegate) Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
-  [ ] - (*Delegate) Add(a, b *Tensor) *Tensor
-  [ ] - (*Delegate) Subtract(a, b *Tensor) *Tensor
-  [ ] - (*Delegate) Multiply(a, b *Tensor) *Tensor
-  [ ] - (*Delegate) Divide(a, b *Tensor) *Tensor
+  [.] - (*Delegate) Add(a, b *Tensor) *Tensor
+  [.] - (*Delegate) Subtract(a, b *Tensor) *Tensor
+  [.] - (*Delegate) Multiply(a, b *Tensor) *Tensor
+  [.] - (*Delegate) Divide(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor
   [ ] - (*Delegate) Maximum(TODO) *Tensor
   [ ] - (*Delegate) Minimum(TODO) *Tensor
@@ -58,8 +58,8 @@ API (tensor):
   [x] - (*Tensor) Zeros() *Tensor
   [x] - (*Tensor) Ones() *Tensor
   [x] - (*Tensor) Fill(v *Tensor) *Tensor
-  [ ] - (*Tensor) Arange(start, step *Tensor) *Tensor
-  [ ] - (*Tensor) Linspace(start, end *Tensor) *Tensor
+  [.] - (*Tensor) Arange(start, step *Tensor) *Tensor
+  [.] - (*Tensor) Linspace(start, end *Tensor) *Tensor
   [x] - (*Tensor) Eye() *Tensor
  "shape.go":
   [ ] - (*Tensor) T() *Tensor
@@ -114,8 +114,8 @@ API (tensor):
   [ ] - (*Tensor) Log() *Tensor
   [ ] - (*Tensor) Log10() *Tensor
  "cmplx.go":
-  [ ] - (*Tensor) Real() *Tensor
-  [ ] - (*Tensor) Imag() *Tensor
+  [.] - (*Tensor) Real() *Tensor
+  [.] - (*Tensor) Imag() *Tensor
  linalg.go":
   [ ] - (*Tensor) Dot(u *Tensor) *Tensor
   [ ] - (*Tensor) Diag() *Tensor
