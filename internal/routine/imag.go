@@ -12,59 +12,59 @@ import (
 func Imag(dt dtype.DType) math.NullaryFunc {
 	switch dt {
 	case dtype.Bool:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*bool)(d) = false
 		}
 	case dtype.Int:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*int)(d) = 0
 		}
 	case dtype.Int8:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*int8)(d) = 0
 		}
 	case dtype.Int16:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*int16)(d) = 0
 		}
 	case dtype.Int32:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*int32)(d) = 0
 		}
 	case dtype.Int64:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*int64)(d) = 0
 		}
 	case dtype.Uint:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*uint)(d) = 0
 		}
 	case dtype.Uint8:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*uint8)(d) = 0
 		}
 	case dtype.Uint16:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*uint16)(d) = 0
 		}
 	case dtype.Uint32:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*uint32)(d) = 0
 		}
 	case dtype.Uint64:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*uint64)(d) = 0
 		}
 	case dtype.Uintptr:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*uintptr)(d) = 0
 		}
 	case dtype.Float32:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*float32)(d) = 0.
 		}
 	case dtype.Float64:
-		return func(pos []int, d unsafe.Pointer) {
+		return func(_ []int, d unsafe.Pointer) {
 			*(*float64)(d) = 0.
 		}
 	case dtype.Complex64:

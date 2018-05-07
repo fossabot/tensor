@@ -88,7 +88,7 @@ API (tensor):
   [ ] - (*Tensor) Subtract(u *Tensor) *Tensor
   [ ] - (*Tensor) Multiply(u *Tensor) *Tensor
   [ ] - (*Tensor) Divide(u *Tensor) *Tensor
-  [ ] - (*Tensor) Negative() *Tensor
+  [.] - (*Tensor) Negative() *Tensor
   [ ] - (*Tensor) Mod(TODO) *Tensor
   [ ] - (*Tensor) FMod(TODO) *Tensor
  "logic.go":
