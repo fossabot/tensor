@@ -8,8 +8,8 @@ import (
 	"github.com/ppknap/tensor/internal/math"
 )
 
-// Re is a nullary function that removes imaginary part from called object.
-func Re(dt dtype.DType) math.NullaryFunc {
+// Real is a nullary function that removes imaginary part from a called object.
+func Real(dt dtype.DType) math.NullaryFunc {
 	switch dt {
 	case dtype.Bool, dtype.Int, dtype.Int8, dtype.Int16, dtype.Int32, dtype.Int64,
 		dtype.Uint, dtype.Uint8, dtype.Uint16, dtype.Uint32, dtype.Uint64,

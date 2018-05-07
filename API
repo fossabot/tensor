@@ -98,7 +98,7 @@ API (tensor):
   [ ] - (*Tensor) Min() *Tensor
   [ ] - (*Tensor) Minimum() *Tensor
   [ ] - (*Tensor) Max() *Tensor
-  [ ] - (*Tensor) Maximum *Tensor
+  [ ] - (*Tensor) Maximum() *Tensor
   [ ] - (*Tensor) Mean() TODO
   [ ] - (*Tensor) Median() TODO
   [ ] - (*Tensor) Std() TODO
@@ -114,8 +114,8 @@ API (tensor):
   [ ] - (*Tensor) Log() *Tensor
   [ ] - (*Tensor) Log10() *Tensor
  "cmplx.go":
-  [ ] - (*Tensor) Re() *Tensor
-  [ ] - (*Tensor) Im() *Tensor
+  [ ] - (*Tensor) Real() *Tensor
+  [ ] - (*Tensor) Imag() *Tensor
  linalg.go":
   [ ] - (*Tensor) Dot(u *Tensor) *Tensor
   [ ] - (*Tensor) Diag() *Tensor
