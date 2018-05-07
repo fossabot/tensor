@@ -19,6 +19,14 @@ API (tensor):
   [x] - tensor.NewScalar(v interface{}) *Tensor
   [ ] - tensor.NewVector(v interface{}) *Tensor
   [ ] - tensor.NewMatrix(v interface{}) *Tensor
+  [ ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
+  [ ] - tensor.Add(a, b *Tensor) *Tensor
+  [ ] - tensor.Subtract(a, b *Tensor) *Tensor
+  [ ] - tensor.Multiply(a, b *Tensor) *Tensor
+  [ ] - tensor.Divide(a, b *Tensor) *Tensor
+  [ ] - tensor.Resize(t *Tensor, shape ...int) *Tensor
+  [ ] - tensor.Maximum(TODO) *Tensor
+  [ ] - tensor.Minimum(TODO) *Tensor
   [ ] - (*Tensor) Delegate() *Delegate
  "delegate.go":
   [ ] - type Delegate struct {...}

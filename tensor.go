@@ -76,3 +76,25 @@ func (t *Tensor) init() {
 		*t = *New()
 	}
 }
+
+var defaultDelegate = NewDelegate(nil)
+
+// Add adds elements from tensors 'a' and 'b' element-wise. A new tensor with
+// the computed result will be returned. This function allows to use either
+// tensors with scalars or tensors that have equal shapes.
+func Add(a, b *Tensor) *Tensor { return defaultDelegate.Add(a, b) }
+
+// Subtract substracts elements 'b' from tensor 'a' element-wise. A new tensor
+// with the computed result will be returned. This function allows to use either
+// tensors with scalars or tensors that have equal shapes.
+func Subtract(a, b *Tensor) *Tensor { return defaultDelegate.Subtract(a, b) }
+
+// Multiply multiplies elements from tensors 'a' and 'b' element-wise. A new
+// tensor with the computed result will be returned. This function allows to use
+// either tensors with scalars or tensors that have equal shapes.
+func Multiply(a, b *Tensor) *Tensor { return defaultDelegate.Multiply(a, b) }
+
+// Divide divides elements 'a' by elements from tensor 'b' element-wise. A new
+// tensor with the computed result will be returned. This function allows to use
+// either tensors with scalars or tensors that have equal shapes.
+func Divide(a, b *Tensor) *Tensor { return defaultDelegate.Divide(a, b) }
