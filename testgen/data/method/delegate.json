@@ -1,0 +1,66 @@
+[
+    {
+        "name": "Add",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "tensor.Add($inst$, $inst$)",
+                "py": "np.add($inst$, $inst$)"
+            },
+            {
+                "dsc": "scalar",
+                "go": "tensor.Add($inst$, tensor.NewScalar(1))",
+                "py": "np.add($inst$, 1)"
+            }
+        ]
+    },
+    {
+        "name": "Subtract",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "tensor.Subtract($inst$, $inst$)",
+                "py": "np.subtract($inst$, $inst$)"
+            },
+            {
+                "dsc": "scalar",
+                "go": "tensor.Subtract($inst$, tensor.NewScalar(1))",
+                "py": "np.subtract($inst$, 1)"
+            }
+        ]
+    },
+    {
+        "name": "Multiply",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "tensor.Multiply($inst$, $inst$)",
+                "py": "np.multiply($inst$, $inst$)"
+            },
+            {
+                "dsc": "scalar",
+                "go": "tensor.Multiply($inst$, tensor.NewScalar(2))",
+                "py": "np.multiply($inst$, 2)"
+            }
+        ]
+    },
+    {
+        "name": "Divide",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "tensor.Divide($inst$, $inst$)",
+                "py": "np.divide($inst$, $inst$)"
+            },
+            {
+                "dsc": "scalar",
+                "go": "tensor.Divide($inst$, tensor.NewScalar(2))",
+                "py": "np.divide($inst$, 2)"
+            }
+        ]
+    }
+]
