@@ -20,13 +20,11 @@ API (tensor):
   [ ] - tensor.NewVector(v interface{}) *Tensor
   [ ] - tensor.NewMatrix(v interface{}) *Tensor
   [ ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
-  [ ] - tensor.Add(a, b *Tensor) *Tensor
-  [ ] - tensor.Subtract(a, b *Tensor) *Tensor
-  [ ] - tensor.Multiply(a, b *Tensor) *Tensor
-  [ ] - tensor.Divide(a, b *Tensor) *Tensor
+  [.] - tensor.Add(a, b *Tensor) *Tensor
+  [.] - tensor.Subtract(a, b *Tensor) *Tensor
+  [.] - tensor.Multiply(a, b *Tensor) *Tensor
+  [.] - tensor.Divide(a, b *Tensor) *Tensor
   [ ] - tensor.Resize(t *Tensor, shape ...int) *Tensor
-  [ ] - tensor.Maximum(TODO) *Tensor
-  [ ] - tensor.Minimum(TODO) *Tensor
   [ ] - (*Tensor) Delegate() *Delegate
  "delegate.go":
   [ ] - type Delegate struct {...}
@@ -36,9 +34,9 @@ API (tensor):
   [.] - (*Delegate) Subtract(a, b *Tensor) *Tensor
   [.] - (*Delegate) Multiply(a, b *Tensor) *Tensor
   [.] - (*Delegate) Divide(a, b *Tensor) *Tensor
+  [ ] - (*Delegate) Maximum(a, b *Tensor) *Tensor
+  [ ] - (*Delegate) Minimum(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor
-  [ ] - (*Delegate) Maximum(TODO) *Tensor
-  [ ] - (*Delegate) Minimum(TODO) *Tensor
  "layout.go":
   [x] - (*Tensor) NDim() int
   [x] - (*Tensor) Shape() []int
@@ -84,10 +82,10 @@ API (tensor):
   [x] - (*Tensor) ItemAt(idx ...int) *Tensor
   [x] - (*Tensor) ItemSet(v *Tensor, idx ...int) *Tensor
  "arith.go":
-  [ ] - (*Tensor) Add(u *Tensor) *Tensor
-  [ ] - (*Tensor) Subtract(u *Tensor) *Tensor
-  [ ] - (*Tensor) Multiply(u *Tensor) *Tensor
-  [ ] - (*Tensor) Divide(u *Tensor) *Tensor
+  [.] - (*Tensor) Add(u *Tensor) *Tensor
+  [.] - (*Tensor) Subtract(u *Tensor) *Tensor
+  [.] - (*Tensor) Multiply(u *Tensor) *Tensor
+  [.] - (*Tensor) Divide(u *Tensor) *Tensor
   [.] - (*Tensor) Negative() *Tensor
   [ ] - (*Tensor) Mod(TODO) *Tensor
   [ ] - (*Tensor) FMod(TODO) *Tensor
@@ -104,9 +102,9 @@ API (tensor):
   [ ] - (*Tensor) Tan() *Tensor
  "stat.go":
   [ ] - (*Tensor) Min() *Tensor
-  [ ] - (*Tensor) Minimum() *Tensor
+  [ ] - (*Tensor) Minimum(u *Tensor) *Tensor
   [ ] - (*Tensor) Max() *Tensor
-  [ ] - (*Tensor) Maximum() *Tensor
+  [ ] - (*Tensor) Maximum(u *Tensor) *Tensor
   [ ] - (*Tensor) Mean() TODO
   [ ] - (*Tensor) Median() TODO
   [ ] - (*Tensor) Std() TODO
