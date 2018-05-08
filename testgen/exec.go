@@ -9,7 +9,7 @@ import (
 func execPythonCmd(typ, op string) (string, error) {
 	op = prepareOp(typ, op)
 
-	cmd := exec.Command("python3", "-c", "import numpy as np\n"+op)
+	cmd := exec.Command("python3", "-c", "import numpy as np\nnp.seterr(divide='ignore', invalid='ignore')\n"+op)
 
 	out, err := cmd.CombinedOutput()
 	if err == nil {
