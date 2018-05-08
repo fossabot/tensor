@@ -117,6 +117,30 @@ func (idx *Index) EqShape(b *Index) bool {
 	return EqShape(idx.shape, b.shape)
 }
 
+// MergeShape creates a shape that can fit shapes from both indexes.
+func (idx *Index) MergeShape(b *Index) []int {
+	if idx.shape == nil && b.shape == nil {
+		return nil
+	}
+
+	long, short := idx.shape, b.shape
+	if len(long) < len(short) {
+		long, short = short, long
+	}
+	offset := len(long) - len(short)
+
+	ms := make([]int, len(long))
+	for i := len(long) - 1; i >= 0; i-- {
+		if j := i - offset; j >= 0 && short[j] > long[i] {
+			ms[i] = short[j]
+		} else {
+			ms[i] = long[i]
+		}
+	}
+
+	return ms
+}
+
 // Iterate walks over N-dimensional index calling f with every possible indices.
 // Slice given as function argument is reused by iterator logic and must not be
 // modified. The last dimmension is iterated over first.
