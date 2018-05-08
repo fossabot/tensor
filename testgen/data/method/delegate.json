@@ -62,5 +62,37 @@
                 "py": "np.divide($inst$, 2)"
             }
         ]
+    },
+    {
+        "name": "Maximum",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "tensor.NewDelegate(nil).Maximum($inst$, tensor.NewDelegate(nil).Add($inst$, tensor.NewScalar(1)))",
+                "py": "np.maximum($inst$, np.add($inst$, 1))"
+            },
+            {
+                "dsc": "scalar",
+                "go": "tensor.NewDelegate(nil).Maximum($inst$, tensor.NewScalar(2))",
+                "py": "np.maximum($inst$, 2)"
+            }
+        ]
+    },
+    {
+        "name": "Minimum",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "tensor.NewDelegate(nil).Minimum($inst$, tensor.NewDelegate(nil).Add($inst$, tensor.NewScalar(1)))",
+                "py": "np.minimum($inst$, np.add($inst$, 1))"
+            },
+            {
+                "dsc": "scalar",
+                "go": "tensor.NewDelegate(nil).Minimum($inst$, tensor.NewScalar(2))",
+                "py": "np.minimum($inst$, 2)"
+            }
+        ]
     }
 ]
