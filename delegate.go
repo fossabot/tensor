@@ -8,7 +8,9 @@ import (
 	"github.com/ppknap/tensor/internal/routine"
 )
 
-// Delegate TODO.
+// Delegate allows to optimize memory usage. A delegated tensor can store
+// results of operations performed on its delegate. Thus, the system does not
+// need to allocate a new tensor for each mathematical operation.
 type Delegate struct {
 	dst *Tensor
 }
@@ -62,5 +64,21 @@ func (d *Delegate) Multiply(a, b *Tensor) (res *Tensor) {
 // a new tensor will be created. This method allows to use either tensors with
 // scalars or tensors that have equal shapes.
 func (d *Delegate) Divide(a, b *Tensor) (res *Tensor) {
+	return nil
+}
+
+// Maximum is a element-wise maximum of tensor elements. It propagates NaN
+// values. The result will be saved to delegate's destination. If the
+// destination is nil, a new tensor will be created. This method allows to use
+// either tensors with scalars or tensors that have equal shapes.
+func (d *Delegate) Maximum(a, b *Tensor) (res *Tensor) {
+	return nil
+}
+
+// Minimum is a element-wise minimum of tensor elements. It propagates NaN
+// values. The result will be saved to delegate's destination. If the
+// destination is nil, a new tensor will be created. This method allows to use
+// either tensors with scalars or tensors that have equal shapes.
+func (d *Delegate) Minimum(a, b *Tensor) (res *Tensor) {
 	return nil
 }

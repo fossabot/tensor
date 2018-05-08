@@ -27,15 +27,15 @@ API (tensor):
   [ ] - tensor.Resize(t *Tensor, shape ...int) *Tensor
   [ ] - (*Tensor) Delegate() *Delegate
  "delegate.go":
-  [ ] - type Delegate struct {...}
-  [ ] - tensor.NewDelegate(dst *Tensor) *Delegate
+  [x] - type Delegate struct {...}
+  [x] - tensor.NewDelegate(dst *Tensor) *Delegate
   [ ] - (*Delegate) Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
   [.] - (*Delegate) Add(a, b *Tensor) *Tensor
   [.] - (*Delegate) Subtract(a, b *Tensor) *Tensor
   [.] - (*Delegate) Multiply(a, b *Tensor) *Tensor
   [.] - (*Delegate) Divide(a, b *Tensor) *Tensor
-  [ ] - (*Delegate) Maximum(a, b *Tensor) *Tensor
-  [ ] - (*Delegate) Minimum(a, b *Tensor) *Tensor
+  [.] - (*Delegate) Maximum(a, b *Tensor) *Tensor
+  [.] - (*Delegate) Minimum(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor
  "layout.go":
   [x] - (*Tensor) NDim() int
@@ -102,9 +102,9 @@ API (tensor):
   [ ] - (*Tensor) Tan() *Tensor
  "stat.go":
   [ ] - (*Tensor) Min() *Tensor
-  [ ] - (*Tensor) Minimum(u *Tensor) *Tensor
+  [.] - (*Tensor) Minimum(u *Tensor) *Tensor
   [ ] - (*Tensor) Max() *Tensor
-  [ ] - (*Tensor) Maximum(u *Tensor) *Tensor
+  [.] - (*Tensor) Maximum(u *Tensor) *Tensor
   [ ] - (*Tensor) Mean() TODO
   [ ] - (*Tensor) Median() TODO
   [ ] - (*Tensor) Std() TODO
