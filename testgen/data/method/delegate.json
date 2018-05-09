@@ -1,6 +1,6 @@
 [
     {
-        "name": "Add",
+        "name": "DelegateAdd",
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
@@ -16,7 +16,7 @@
         ]
     },
     {
-        "name": "Subtract",
+        "name": "DelegateSubtract",
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
@@ -32,7 +32,7 @@
         ]
     },
     {
-        "name": "Multiply",
+        "name": "DelegateMultiply",
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
@@ -48,7 +48,7 @@
         ]
     },
     {
-        "name": "Divide",
+        "name": "DelegateDivide",
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
@@ -64,7 +64,7 @@
         ]
     },
     {
-        "name": "Mod",
+        "name": "DelegateMod",
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
@@ -80,7 +80,7 @@
         ]
     },
     {
-        "name": "Maximum",
+        "name": "DelegateMaximum",
         "rtyp": "*tensor.Tensor",
         "calls": [
             {
@@ -96,7 +96,7 @@
         ]
     },
     {
-        "name": "Minimum",
+        "name": "DelegateMinimum",
         "rtyp": "*tensor.Tensor",
         "calls": [
             {

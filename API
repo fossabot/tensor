@@ -84,12 +84,12 @@ API (tensor):
   [x] - (*Tensor) ItemAt(idx ...int) *Tensor
   [x] - (*Tensor) ItemSet(v *Tensor, idx ...int) *Tensor
  "arith.go":
-  [.] - (*Tensor) Add(u *Tensor) *Tensor
-  [.] - (*Tensor) Subtract(u *Tensor) *Tensor
-  [.] - (*Tensor) Multiply(u *Tensor) *Tensor
-  [.] - (*Tensor) Divide(u *Tensor) *Tensor
-  [.] - (*Tensor) Mod(u *Tensor) *Tensor
-  [.] - (*Tensor) Negative() *Tensor
+  [x] - (*Tensor) Add(u *Tensor) *Tensor
+  [x] - (*Tensor) Subtract(u *Tensor) *Tensor
+  [x] - (*Tensor) Multiply(u *Tensor) *Tensor
+  [x] - (*Tensor) Divide(u *Tensor) *Tensor
+  [x] - (*Tensor) Mod(u *Tensor) *Tensor
+  [x] - (*Tensor) Negative() *Tensor
  "logic.go":
   [ ] - (*Tensor) Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor
   [ ] - (*Tensor) SameAs(u *Tensor) bool

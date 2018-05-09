@@ -12,7 +12,7 @@ import (
 // Use reflect package in case it isn't used in tests.
 var _ = reflect.TypeOf(tensor.DType(0))
 
-func TestTensorAdd(t *testing.T) {
+func TestTensorDelegateAdd(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want *tensor.Tensor
 	}{
@@ -117,7 +117,7 @@ func TestTensorAdd(t *testing.T) {
 	}
 }
 
-func TestTensorSubtract(t *testing.T) {
+func TestTensorDelegateSubtract(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want *tensor.Tensor
 	}{
@@ -222,7 +222,7 @@ func TestTensorSubtract(t *testing.T) {
 	}
 }
 
-func TestTensorMultiply(t *testing.T) {
+func TestTensorDelegateMultiply(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want *tensor.Tensor
 	}{
@@ -327,7 +327,7 @@ func TestTensorMultiply(t *testing.T) {
 	}
 }
 
-func TestTensorDivide(t *testing.T) {
+func TestTensorDelegateDivide(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want *tensor.Tensor
 	}{
@@ -432,7 +432,7 @@ func TestTensorDivide(t *testing.T) {
 	}
 }
 
-func TestTensorMod(t *testing.T) {
+func TestTensorDelegateMod(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want *tensor.Tensor
 	}{
@@ -537,7 +537,7 @@ func TestTensorMod(t *testing.T) {
 	}
 }
 
-func TestTensorMaximum(t *testing.T) {
+func TestTensorDelegateMaximum(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want *tensor.Tensor
 	}{
@@ -642,7 +642,7 @@ func TestTensorMaximum(t *testing.T) {
 	}
 }
 
-func TestTensorMinimum(t *testing.T) {
+func TestTensorDelegateMinimum(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want *tensor.Tensor
 	}{
