@@ -74,8 +74,8 @@
             },
             {
                 "dsc": "scalar",
-                "go": "tensor.NewDelegate(nil).Divide($inst$, tensor.NewScalar(2))",
-                "py": "np.divide($inst$, 2)"
+                "go": "tensor.NewDelegate(nil).Mod($inst$, tensor.NewScalar(2))",
+                "py": "np.mod($inst$, 2)"
             }
         ]
     },

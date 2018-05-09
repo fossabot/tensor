@@ -1,0 +1,92 @@
+[
+    {
+        "name": "Add",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "$inst$.Add($inst$)",
+                "py": "$inst$ + $inst$"
+            },
+            {
+                "dsc": "scalar",
+                "go": "$inst$.Add(tensor.NewScalar(1))",
+                "py": "$inst$ + 1"
+            }
+        ]
+    },
+    {
+        "name": "Subtract",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "$inst$.Subtract($inst$)",
+                "py": "$inst$ - $inst$"
+            },
+            {
+                "dsc": "scalar",
+                "go": "$inst$.Subtract(tensor.NewScalar(1))",
+                "py": "$inst$ - 1"
+            }
+        ]
+    },
+    {
+        "name": "Multiply",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "$inst$.Multiply($inst$)",
+                "py": "$inst$ * $inst$"
+            },
+            {
+                "dsc": "scalar",
+                "go": "$inst$.Multiply(tensor.NewScalar(2))",
+                "py": "$inst$ * 2"
+            }
+        ]
+    },
+    {
+        "name": "Divide",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "$inst$.Divide($inst$)",
+                "py": "$inst$ / $inst$"
+            },
+            {
+                "dsc": "scalar",
+                "go": "$inst$.Divide(tensor.NewScalar(2))",
+                "py": "$inst$ / 2"
+            }
+        ]
+    },
+    {
+        "name": "Mod",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "tensor.NewDelegate(nil).Add($inst$, tensor.NewScalar(4)).Mod(tensor.NewDelegate(nil).Add($inst$, tensor.NewScalar(1)))",
+                "py": "np.add($inst$, 4) % np.add($inst$, 1)"
+            },
+            {
+                "dsc": "scalar",
+                "go": "$inst$.Mod(tensor.NewScalar(2))",
+                "py": "$inst$ % 2"
+            }
+        ]
+    },
+    {
+        "name": "Negative",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Negative()",
+                "py": "np.negative($inst$)"
+            }
+        ]
+    }
+]
