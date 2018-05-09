@@ -477,43 +477,43 @@ func TestTensorMod(t *testing.T) {
 			Want: tensor.New(1, 1, 1, 1, 1, 1),
 		},
 		"zero value scalar": {
-			Got:  tensor.NewDelegate(nil).Divide((&tensor.Tensor{}), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod((&tensor.Tensor{}), tensor.NewScalar(2)),
 			Want: tensor.New(),
 		},
 		"new empty tensor aka scalar scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(tensor.New(), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(tensor.New(), tensor.NewScalar(2)),
 			Want: tensor.New(),
 		},
 		"vector with one element scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(1)), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(enumerate(tensor.New(1)), tensor.NewScalar(2)),
 			Want: tensor.New(1),
 		},
 		"vector with 9 elements scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(9)), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(enumerate(tensor.New(9)), tensor.NewScalar(2)),
 			Want: tensor.New(9),
 		},
 		"matrix one element scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(1, 1)), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(enumerate(tensor.New(1, 1)), tensor.NewScalar(2)),
 			Want: tensor.New(1, 1),
 		},
 		"square matrix scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(3, 3)), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(enumerate(tensor.New(3, 3)), tensor.NewScalar(2)),
 			Want: tensor.New(3, 3),
 		},
 		"square matrix view scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(3, 3).View()), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(enumerate(tensor.New(3, 3).View()), tensor.NewScalar(2)),
 			Want: tensor.New(3, 3),
 		},
 		"matrix three rows two cols scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(3, 2)), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(enumerate(tensor.New(3, 2)), tensor.NewScalar(2)),
 			Want: tensor.New(3, 2),
 		},
 		"three dim tensor scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(4, 3, 2)), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(enumerate(tensor.New(4, 3, 2)), tensor.NewScalar(2)),
 			Want: tensor.New(4, 3, 2),
 		},
 		"six dim tensor one element scalar": {
-			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(1, 1, 1, 1, 1, 1)), tensor.NewScalar(2)),
+			Got:  tensor.NewDelegate(nil).Mod(enumerate(tensor.New(1, 1, 1, 1, 1, 1)), tensor.NewScalar(2)),
 			Want: tensor.New(1, 1, 1, 1, 1, 1),
 		},
 	}
