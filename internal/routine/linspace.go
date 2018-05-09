@@ -100,7 +100,7 @@ func Linspace(size int) func(dt dtype.DType) math.BinaryFunc {
 				n++
 			}
 		case dtype.String:
-			panic(errorc.New("invalid linspace on boolean type"))
+			panic(errorc.New("invalid linspace on string type"))
 		}
 
 		panic(errorc.New("unsupported type: %q", dt))

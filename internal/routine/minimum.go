@@ -107,25 +107,11 @@ func Minimum(dt dtype.DType) math.BinaryFunc {
 		}
 	case dtype.Float32:
 		return func(_ []int, d, l, r unsafe.Pointer) {
-			lv, rv := *(*float32)(l), *(*float32)(r)
-			if stdmath.IsNaN(float64(lv)) || stdmath.IsNaN(float64(rv)) {
-				*(*float32)(d) = float32(stdmath.NaN())
-			} else if lv < rv {
-				*(*float32)(d) = lv
-			} else {
-				*(*float32)(d) = rv
-			}
+			*(*float32)(d) = float32(stdmath.Min(float64(*(*float32)(l)), float64(*(*float32)(r))))
 		}
 	case dtype.Float64:
 		return func(_ []int, d, l, r unsafe.Pointer) {
-			lv, rv := *(*float64)(l), *(*float64)(r)
-			if stdmath.IsNaN(lv) || stdmath.IsNaN(rv) {
-				*(*float64)(d) = stdmath.NaN()
-			} else if lv < rv {
-				*(*float64)(d) = lv
-			} else {
-				*(*float64)(d) = rv
-			}
+			*(*float64)(d) = stdmath.Min(*(*float64)(l), *(*float64)(r))
 		}
 	case dtype.Complex64:
 		return func(_ []int, d, l, r unsafe.Pointer) {

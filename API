@@ -24,6 +24,7 @@ API (tensor):
   [x] - tensor.Subtract(a, b *Tensor) *Tensor
   [x] - tensor.Multiply(a, b *Tensor) *Tensor
   [x] - tensor.Divide(a, b *Tensor) *Tensor
+  [ ] - tensor.Mod(a, b *Tensor) *Tensor
   [ ] - tensor.Resize(t *Tensor, shape ...int) *Tensor
   [x] - (*Tensor) Delegate() *Delegate
  "delegate.go":
@@ -34,6 +35,7 @@ API (tensor):
   [x] - (*Delegate) Subtract(a, b *Tensor) *Tensor
   [x] - (*Delegate) Multiply(a, b *Tensor) *Tensor
   [x] - (*Delegate) Divide(a, b *Tensor) *Tensor
+  [ ] - (*Delegate) Mod(a, b *Tensor) *Tensor
   [x] - (*Delegate) Maximum(a, b *Tensor) *Tensor
   [x] - (*Delegate) Minimum(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor
@@ -86,9 +88,8 @@ API (tensor):
   [.] - (*Tensor) Subtract(u *Tensor) *Tensor
   [.] - (*Tensor) Multiply(u *Tensor) *Tensor
   [.] - (*Tensor) Divide(u *Tensor) *Tensor
+  [ ] - (*Tensor) Mod(u *Tensor) *Tensor
   [.] - (*Tensor) Negative() *Tensor
-  [ ] - (*Tensor) Mod(TODO) *Tensor
-  [ ] - (*Tensor) FMod(TODO) *Tensor
  "logic.go":
   [ ] - (*Tensor) Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor
   [ ] - (*Tensor) SameAs(u *Tensor) bool
