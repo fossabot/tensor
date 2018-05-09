@@ -24,7 +24,7 @@ API (tensor):
   [x] - tensor.Subtract(a, b *Tensor) *Tensor
   [x] - tensor.Multiply(a, b *Tensor) *Tensor
   [x] - tensor.Divide(a, b *Tensor) *Tensor
-  [ ] - tensor.Mod(a, b *Tensor) *Tensor
+  [.] - tensor.Mod(a, b *Tensor) *Tensor
   [ ] - tensor.Resize(t *Tensor, shape ...int) *Tensor
   [x] - (*Tensor) Delegate() *Delegate
  "delegate.go":
@@ -35,7 +35,7 @@ API (tensor):
   [x] - (*Delegate) Subtract(a, b *Tensor) *Tensor
   [x] - (*Delegate) Multiply(a, b *Tensor) *Tensor
   [x] - (*Delegate) Divide(a, b *Tensor) *Tensor
-  [ ] - (*Delegate) Mod(a, b *Tensor) *Tensor
+  [.] - (*Delegate) Mod(a, b *Tensor) *Tensor
   [x] - (*Delegate) Maximum(a, b *Tensor) *Tensor
   [x] - (*Delegate) Minimum(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor
@@ -66,8 +66,8 @@ API (tensor):
   [x] - (*Tensor) Zeros() *Tensor
   [x] - (*Tensor) Ones() *Tensor
   [x] - (*Tensor) Fill(v *Tensor) *Tensor
-  [.] - (*Tensor) Arange(start, step *Tensor) *Tensor
-  [.] - (*Tensor) Linspace(start, end *Tensor) *Tensor
+  [x] - (*Tensor) Arange(start, step *Tensor) *Tensor
+  [x] - (*Tensor) Linspace(start, end *Tensor) *Tensor
   [x] - (*Tensor) Eye() *Tensor
  "shape.go":
   [ ] - (*Tensor) T() *Tensor
@@ -88,7 +88,7 @@ API (tensor):
   [.] - (*Tensor) Subtract(u *Tensor) *Tensor
   [.] - (*Tensor) Multiply(u *Tensor) *Tensor
   [.] - (*Tensor) Divide(u *Tensor) *Tensor
-  [ ] - (*Tensor) Mod(u *Tensor) *Tensor
+  [.] - (*Tensor) Mod(u *Tensor) *Tensor
   [.] - (*Tensor) Negative() *Tensor
  "logic.go":
   [ ] - (*Tensor) Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor
@@ -109,7 +109,6 @@ API (tensor):
   [ ] - (*Tensor) Mean() TODO
   [ ] - (*Tensor) Median() TODO
   [ ] - (*Tensor) Std() TODO
-  [ ] - (*Tensor) CorrCoef() TODO
  "sort.go":
   [ ] - (*Tensor) Sort() TODO
  "random.go":

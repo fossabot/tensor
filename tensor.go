@@ -93,6 +93,12 @@ func (t *Tensor) Delegate() *Delegate {
 	return NewDelegate(t)
 }
 
+func (t *Tensor) mustScalar(name string) {
+	if t.Size() != 1 {
+		panic(errorc.New("%v value must be a scalar (shape %v)", name, t.Shape()))
+	}
+}
+
 func (t *Tensor) init() {
 	if t.idx == nil && t.buf == nil {
 		*t = *New()

@@ -20,6 +20,7 @@ func (t *Tensor) Ones() *Tensor {
 // not equal.
 func (t *Tensor) Fill(v *Tensor) *Tensor {
 	t.init()
+	v.init()
 
 	// Check if v is assignable to t.
 	_ = math.ElementWiseDstShape(t.idx, v.idx, false)
@@ -29,14 +30,35 @@ func (t *Tensor) Fill(v *Tensor) *Tensor {
 	return t
 }
 
-// Arange TODO.
-func (*Tensor) Arange(start, step *Tensor) *Tensor {
-	return nil
+// Arange fills the tensor starting from a 'start' scalar at zero position and
+// increasing it every iteration by a given 'step' scalar.
+func (t *Tensor) Arange(start, step *Tensor) *Tensor {
+	start.mustScalar("start")
+	step.mustScalar("step")
+
+	t.init()
+	start.init()
+	step.init()
+
+	math.Binary(t.idx, start.idx, step.idx, t.buf, start.buf, step.buf, true, routine.Arange)
+
+	return t
 }
 
-// Linspace TODO.
-func (*Tensor) Linspace(start, end *Tensor) *Tensor {
-	return nil
+// Linspace fills the tensor with evenly spaced samples within a given
+// ['start', 'end'] interval. Both, 'start' and 'end' tensors must be scalars.
+func (t *Tensor) Linspace(start, end *Tensor) *Tensor {
+	start.mustScalar("start")
+	end.mustScalar("end")
+
+	t.init()
+	start.init()
+	end.init()
+
+	fn := routine.Linspace(t.Size())
+	math.Binary(t.idx, start.idx, end.idx, t.buf, start.buf, end.buf, true, fn)
+
+	return t
 }
 
 // Eye sets all main diagonal elements to one. All other elements will be set
