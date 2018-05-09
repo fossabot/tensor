@@ -41,9 +41,18 @@ func Unary(di, si *index.Index, db, sb *buffer.Buffer, needsPos bool, op func(dt
 // destination buffer and calls unary function giving corresponding from source
 // buffer.
 func unaryRawEach(db, sb *buffer.Buffer, fn UnaryFunc) {
-	srcAt := sb.At()
-	db.Iterate(func(i int, dst unsafe.Pointer) {
-		fn(nil, dst, srcAt(i))
+	if db.Size() >= sb.Size() {
+		srcAt := sb.At()
+		db.Iterate(func(i int, dst unsafe.Pointer) {
+			fn(nil, dst, srcAt(i))
+		})
+
+		return
+	}
+
+	dstAt := db.At()
+	sb.Iterate(func(i int, src unsafe.Pointer) {
+		fn(nil, dstAt(i), src)
 	})
 }
 
@@ -56,7 +65,12 @@ func unaryIdxEach(di, si *index.Index, db, sb *buffer.Buffer, fn UnaryFunc) {
 		dbAt, sbAt = db.At(), sb.At()
 	)
 
-	di.Iterate(func(pos []int) {
+	idx := di
+	if di.Size() < si.Size() {
+		idx = si
+	}
+
+	idx.Iterate(func(pos []int) {
 		fn(pos, dbAt(diAt(pos)), sbAt(siAt(pos)))
 	})
 }
