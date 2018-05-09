@@ -53,6 +53,14 @@ func (d *Delegate) Divide(a, b *Tensor) (res *Tensor) {
 	return d.call(a, b, routine.Divide)
 }
 
+// Mod computes remainders of elements 'a' divided by elements from tensor 'b'
+// element-wise. The result will be saved to delegate's destination. If the
+// destination is nil, a new tensor will be created. This method allows to use
+// either tensors with scalars or tensors that have equal shapes.
+func (d *Delegate) Mod(a, b *Tensor) (res *Tensor) {
+	return d.call(a, b, routine.Mod)
+}
+
 // Maximum is a element-wise maximum of tensor elements. It propagates NaN
 // values. The result will be saved to delegate's destination. If the
 // destination is nil, a new tensor will be created. This method allows to use

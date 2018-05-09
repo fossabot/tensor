@@ -64,6 +64,22 @@
         ]
     },
     {
+        "name": "Mod",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "dsc": "same",
+                "go": "tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add($inst$, tensor.NewScalar(4)), tensor.NewDelegate(nil).Add($inst$, tensor.NewScalar(1)))",
+                "py": "np.mod(np.add($inst$, 4), np.add($inst$, 1))"
+            },
+            {
+                "dsc": "scalar",
+                "go": "tensor.NewDelegate(nil).Divide($inst$, tensor.NewScalar(2))",
+                "py": "np.divide($inst$, 2)"
+            }
+        ]
+    },
+    {
         "name": "Maximum",
         "rtyp": "*tensor.Tensor",
         "calls": [

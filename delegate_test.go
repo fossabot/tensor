@@ -432,6 +432,111 @@ func TestTensorDivide(t *testing.T) {
 	}
 }
 
+func TestTensorMod(t *testing.T) {
+	tests := map[string]struct {
+		Got, Want *tensor.Tensor
+	}{
+		"zero value same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add((&tensor.Tensor{}), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add((&tensor.Tensor{}), tensor.NewScalar(1))),
+			Want: tensor.New(),
+		},
+		"new empty tensor aka scalar same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(tensor.New(), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(tensor.New(), tensor.NewScalar(1))),
+			Want: tensor.New(),
+		},
+		"vector with one element same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(enumerate(tensor.New(1)), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(enumerate(tensor.New(1)), tensor.NewScalar(1))),
+			Want: tensor.New(1),
+		},
+		"vector with 9 elements same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(enumerate(tensor.New(9)), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(enumerate(tensor.New(9)), tensor.NewScalar(1))),
+			Want: tensor.New(9),
+		},
+		"matrix one element same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(enumerate(tensor.New(1, 1)), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(enumerate(tensor.New(1, 1)), tensor.NewScalar(1))),
+			Want: tensor.New(1, 1),
+		},
+		"square matrix same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(enumerate(tensor.New(3, 3)), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(enumerate(tensor.New(3, 3)), tensor.NewScalar(1))),
+			Want: tensor.New(3, 3),
+		},
+		"square matrix view same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(enumerate(tensor.New(3, 3).View()), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(enumerate(tensor.New(3, 3).View()), tensor.NewScalar(1))),
+			Want: tensor.New(3, 3),
+		},
+		"matrix three rows two cols same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(enumerate(tensor.New(3, 2)), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(enumerate(tensor.New(3, 2)), tensor.NewScalar(1))),
+			Want: tensor.New(3, 2),
+		},
+		"three dim tensor same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(enumerate(tensor.New(4, 3, 2)), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(enumerate(tensor.New(4, 3, 2)), tensor.NewScalar(1))),
+			Want: tensor.New(4, 3, 2),
+		},
+		"six dim tensor one element same": {
+			Got:  tensor.NewDelegate(nil).Mod(tensor.NewDelegate(nil).Add(enumerate(tensor.New(1, 1, 1, 1, 1, 1)), tensor.NewScalar(4)), tensor.NewDelegate(nil).Add(enumerate(tensor.New(1, 1, 1, 1, 1, 1)), tensor.NewScalar(1))),
+			Want: tensor.New(1, 1, 1, 1, 1, 1),
+		},
+		"zero value scalar": {
+			Got:  tensor.NewDelegate(nil).Divide((&tensor.Tensor{}), tensor.NewScalar(2)),
+			Want: tensor.New(),
+		},
+		"new empty tensor aka scalar scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(tensor.New(), tensor.NewScalar(2)),
+			Want: tensor.New(),
+		},
+		"vector with one element scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(1)), tensor.NewScalar(2)),
+			Want: tensor.New(1),
+		},
+		"vector with 9 elements scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(9)), tensor.NewScalar(2)),
+			Want: tensor.New(9),
+		},
+		"matrix one element scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(1, 1)), tensor.NewScalar(2)),
+			Want: tensor.New(1, 1),
+		},
+		"square matrix scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(3, 3)), tensor.NewScalar(2)),
+			Want: tensor.New(3, 3),
+		},
+		"square matrix view scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(3, 3).View()), tensor.NewScalar(2)),
+			Want: tensor.New(3, 3),
+		},
+		"matrix three rows two cols scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(3, 2)), tensor.NewScalar(2)),
+			Want: tensor.New(3, 2),
+		},
+		"three dim tensor scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(4, 3, 2)), tensor.NewScalar(2)),
+			Want: tensor.New(4, 3, 2),
+		},
+		"six dim tensor one element scalar": {
+			Got:  tensor.NewDelegate(nil).Divide(enumerate(tensor.New(1, 1, 1, 1, 1, 1)), tensor.NewScalar(2)),
+			Want: tensor.New(1, 1, 1, 1, 1, 1),
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			if test.Want == nil && test.Got == nil {
+				return
+			}
+
+			if test.Want == nil && test.Got != nil {
+				t.Fatalf("want result to be nil, got %v", test.Got)
+			}
+			if test.Want != nil && test.Got == nil {
+				t.Fatalf("want result to be not nil")
+			}
+			if err := checkTensor(test.Want, test.Got); err != nil {
+				t.Errorf("want err=nil; got %v", err)
+			}
+		})
+	}
+}
+
 func TestTensorMaximum(t *testing.T) {
 	tests := map[string]struct {
 		Got, Want *tensor.Tensor

@@ -126,3 +126,9 @@ func Multiply(a, b *Tensor) *Tensor { return defaultDelegate.Multiply(a, b) }
 // tensor with the computed result will be returned. This function allows to use
 // either tensors with scalars or tensors that have equal shapes.
 func Divide(a, b *Tensor) *Tensor { return defaultDelegate.Divide(a, b) }
+
+// Mod computes remainders of elements 'a' divided by elements from tensor 'b'
+// element-wise. A new tensor with the computed result will be returned. This
+// function allows to use either tensors with scalars or tensors that have equal
+// shapes.
+func Mod(a, b *Tensor) *Tensor { return defaultDelegate.Mod(a, b) }
