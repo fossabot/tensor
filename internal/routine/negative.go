@@ -12,8 +12,8 @@ import (
 // object.
 func Negative(dt dtype.DType) math.NullaryFunc {
 	switch dt {
-	case dtype.Bool:
-		panic(errorc.New("invalid numerical negation on boolean type"))
+	case dtype.Bool, dtype.String:
+		panic(errorc.New("invalid numerical negation on %s type", dt))
 	case dtype.Int:
 		return func(pos []int, d unsafe.Pointer) {
 			*(*int)(d) = -(*(*int)(d))
@@ -74,8 +74,6 @@ func Negative(dt dtype.DType) math.NullaryFunc {
 		return func(_ []int, d unsafe.Pointer) {
 			*(*complex128)(d) = -(*(*complex128)(d))
 		}
-	case dtype.String:
-		panic(errorc.New("invalid numerical negation on string type"))
 	}
 
 	panic(errorc.New("unsupported type: %q", dt))

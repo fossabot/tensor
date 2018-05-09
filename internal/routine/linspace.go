@@ -22,8 +22,8 @@ func Linspace(size int) func(dt dtype.DType) math.BinaryFunc {
 		var n float64
 
 		switch dt {
-		case dtype.Bool:
-			panic(errorc.New("invalid linspace on boolean type"))
+		case dtype.Bool, dtype.String:
+			panic(errorc.New("invalid linspace on %s type", dt))
 		case dtype.Int:
 			return func(_ []int, d, start, end unsafe.Pointer) {
 				*(*int)(d) = *(*int)(start) + int((float64(*(*int)(end))-float64(*(*int)(start)))*n/float64(size-1))
@@ -99,8 +99,6 @@ func Linspace(size int) func(dt dtype.DType) math.BinaryFunc {
 				*(*complex128)(d) = *(*complex128)(start) + (*(*complex128)(end)-*(*complex128)(start))*complex(float64(n), 0)/complex(float64(size-1), 0)
 				n++
 			}
-		case dtype.String:
-			panic(errorc.New("invalid linspace on string type"))
 		}
 
 		panic(errorc.New("unsupported type: %q", dt))

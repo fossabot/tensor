@@ -11,6 +11,8 @@ import (
 // Imag is a nullary function that removes real part from a called object.
 func Imag(dt dtype.DType) math.NullaryFunc {
 	switch dt {
+	case dtype.String:
+		panic(errorc.New("invalid imaginary part of string type"))
 	case dtype.Bool:
 		return func(_ []int, d unsafe.Pointer) {
 			*(*bool)(d) = false
@@ -75,8 +77,6 @@ func Imag(dt dtype.DType) math.NullaryFunc {
 		return func(_ []int, d unsafe.Pointer) {
 			*(*complex128)(d) = complex(0, imag(*(*complex128)(d)))
 		}
-	case dtype.String:
-		panic(errorc.New("invalid imaginary part of string type"))
 	}
 
 	panic(errorc.New("unsupported type: %q", dt))

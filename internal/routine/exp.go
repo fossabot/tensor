@@ -15,7 +15,7 @@ func Exp(dt dtype.DType) math.NullaryFunc {
 	switch dt {
 	case dtype.Bool, dtype.Int, dtype.Int8, dtype.Int16, dtype.Int32, dtype.Int64,
 		dtype.Uint, dtype.Uint8, dtype.Uint16, dtype.Uint32, dtype.Uint64,
-		dtype.Uintptr:
+		dtype.Uintptr, dtype.String:
 		return func(_ []int, d unsafe.Pointer) {
 			panic(errorc.New("invalid exponential on %s type", dt))
 		}
@@ -35,8 +35,6 @@ func Exp(dt dtype.DType) math.NullaryFunc {
 		return func(_ []int, d unsafe.Pointer) {
 			*(*complex128)(d) = cmplx.Exp(*(*complex128)(d))
 		}
-	case dtype.String:
-		panic(errorc.New("invalid exponential on %s type", dt))
 	}
 
 	panic(errorc.New("unsupported type: %q", dt))

@@ -114,7 +114,7 @@ API (tensor):
  "random.go":
   [ ] - (*Tensor) Random() TODO
  "explog.go":
-  [ ] - (*Tensor) Exp() *Tensor
+  [.] - (*Tensor) Exp() *Tensor
   [ ] - (*Tensor) Power(v *Tensor) *Tensor
   [ ] - (*Tensor) Sqrt() *Tensor
   [ ] - (*Tensor) Log() *Tensor

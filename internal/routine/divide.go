@@ -12,8 +12,8 @@ import (
 // Divide is a binary function responsible for division.
 func Divide(dt dtype.DType) math.BinaryFunc {
 	switch dt {
-	case dtype.Bool:
-		panic(errorc.New("invalid division on boolean type"))
+	case dtype.Bool, dtype.String:
+		panic(errorc.New("invalid division on %s type", dt))
 	case dtype.Int:
 		return func(_ []int, d, l, r unsafe.Pointer) {
 			v := *(*int)(r)
@@ -194,8 +194,6 @@ func Divide(dt dtype.DType) math.BinaryFunc {
 
 			*(*complex128)(d) = complex(re, im)
 		}
-	case dtype.String:
-		panic(errorc.New("invalid division of strings"))
 	}
 
 	panic(errorc.New("unsupported type: %q", dt))

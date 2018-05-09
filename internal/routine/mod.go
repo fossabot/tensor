@@ -13,8 +13,8 @@ import (
 // division.
 func Mod(dt dtype.DType) math.BinaryFunc {
 	switch dt {
-	case dtype.Bool:
-		panic(errorc.New("invalid reminder on boolean type"))
+	case dtype.Bool, dtype.String:
+		panic(errorc.New("invalid reminder on %s type", dt))
 	case dtype.Int:
 		return func(_ []int, d, l, r unsafe.Pointer) {
 			*(*int)(d) = *(*int)(l) % *(*int)(r)
@@ -67,12 +67,8 @@ func Mod(dt dtype.DType) math.BinaryFunc {
 		return func(_ []int, d, l, r unsafe.Pointer) {
 			*(*float64)(d) = stdmath.Mod(*(*float64)(l), *(*float64)(r))
 		}
-	case dtype.Complex64:
-		panic(errorc.New("reminder of complex64 type not supported"))
-	case dtype.Complex128:
-		panic(errorc.New("reminder of complex128 type not supported"))
-	case dtype.String:
-		panic(errorc.New("invalid reminder on string type"))
+	case dtype.Complex64, dtype.Complex128:
+		panic(errorc.New("reminder of %s type not supported", dt))
 	}
 
 	panic(errorc.New("unsupported type: %q", dt))
