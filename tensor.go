@@ -1,6 +1,8 @@
 package tensor
 
 import (
+	"reflect"
+
 	"github.com/ppknap/tensor/internal/buffer"
 	"github.com/ppknap/tensor/internal/dtype"
 	"github.com/ppknap/tensor/internal/errorc"
@@ -66,7 +68,27 @@ func NewScalar(scalar interface{}) *Tensor {
 	return t
 }
 
-// Delegate TODO.
+// NewVector creates a new 1-dimensional tensor from a given array. The type and
+// size of the newly created object will be inherited from a given argument.
+func NewVector(slice interface{}) *Tensor {
+	if slice == nil {
+		panic(errorc.New("nil argument provided"))
+	}
+
+	v := reflect.Indirect(reflect.ValueOf(slice))
+	if k := v.Kind(); k != reflect.Slice && k != reflect.Array {
+		panic(errorc.New("argument type is not array-like (got %v)", k))
+	}
+
+	t := New(v.Len()).AsType(dtype.FromKind(v.Type().Elem().Kind()))
+	t.Each(func(pos []int, _ *Tensor) {
+		t.ItemSet(NewScalar(v.Index(pos[0]).Interface()), pos...)
+	})
+
+	return t
+}
+
+// Delegate creates a new delegate with its destination set to a called tensor.
 func (t *Tensor) Delegate() *Delegate {
 	return NewDelegate(t)
 }

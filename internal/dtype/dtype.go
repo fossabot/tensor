@@ -2,7 +2,10 @@ package dtype
 
 import (
 	"fmt"
+	"reflect"
 	"unsafe"
+
+	"github.com/ppknap/tensor/internal/errorc"
 )
 
 // DType represents supported data types. Its value is stored as a bitmask with
@@ -35,6 +38,35 @@ const (
 	// represents.
 	flagDynamic DType = 1<<8 + iota
 )
+
+// FromKind transforms reflect Kind value to coresponding DType object.
+func FromKind(k reflect.Kind) DType {
+	if dt, ok := kindDType[k]; ok {
+		return dt
+	}
+
+	panic(errorc.New("unsupported reflect.Kind (%s)", k))
+}
+
+var kindDType = map[reflect.Kind]DType{
+	reflect.Bool:       Bool,
+	reflect.Int:        Int,
+	reflect.Int8:       Int8,
+	reflect.Int16:      Int16,
+	reflect.Int32:      Int32,
+	reflect.Int64:      Int64,
+	reflect.Uint:       Uint,
+	reflect.Uint8:      Uint8,
+	reflect.Uint16:     Uint16,
+	reflect.Uint32:     Uint32,
+	reflect.Uint64:     Uint64,
+	reflect.Uintptr:    Uintptr,
+	reflect.Float32:    Float32,
+	reflect.Float64:    Float64,
+	reflect.Complex64:  Complex64,
+	reflect.Complex128: Complex128,
+	reflect.String:     String,
+}
 
 // Size returns the size in bytes of provided type.
 func (dt DType) Size() uintptr { return uintptr(dt >> 32) }
