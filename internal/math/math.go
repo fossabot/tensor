@@ -5,12 +5,12 @@ import (
 	"github.com/ppknap/tensor/internal/index"
 )
 
-// EWArgShape returns the required destination shape for element-wise operation
-// to succeed. It panics when such operation is not possible.
+// ElementWiseDstShape returns the required destination shape for element-wise
+// operation to succeed. It panics when such operation is not possible.
 //
 // If commutativity argument is true, the indexes are indicated as commutative
 // that is: li (+) ri <==> ri (+) li.
-func EWArgShape(li, ri *index.Index, commutativity bool) (shape []int) {
+func ElementWiseDstShape(li, ri *index.Index, commutativity bool) (shape []int) {
 	switch {
 	case li == nil && ri == nil:
 		return nil

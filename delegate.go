@@ -30,7 +30,7 @@ func (d *Delegate) Add(a, b *Tensor) (res *Tensor) {
 		panic(errorc.New("nil argument provided"))
 	}
 
-	var shape = math.EWArgShape(a.idx, b.idx, true)
+	var shape = math.ElementWiseDstShape(a.idx, b.idx, true)
 
 	if res = d.dst; res == nil {
 		res = New(shape...).AsType(dtype.Promote(a.DType(), b.DType()))
@@ -48,7 +48,21 @@ func (d *Delegate) Add(a, b *Tensor) (res *Tensor) {
 // tensor will be created. This method allows to use either tensors with scalars
 // or tensors that have equal shapes.
 func (d *Delegate) Subtract(a, b *Tensor) (res *Tensor) {
-	return nil
+	if a == nil || b == nil {
+		panic(errorc.New("nil argument provided"))
+	}
+
+	var shape = math.ElementWiseDstShape(a.idx, b.idx, true)
+
+	if res = d.dst; res == nil {
+		res = New(shape...).AsType(dtype.Promote(a.DType(), b.DType()))
+	} else if ds := res.Shape(); !index.EqShape(ds, shape) {
+		panic(errorc.New("invalid dst shape %v for %v", ds, shape))
+	}
+
+	math.Binary(res.idx, a.idx, b.idx, res.buf, a.buf, b.buf, false, routine.Subtract)
+
+	return res
 }
 
 // Multiply multiplies elements from tensors 'a' and 'b' element-wise. The
@@ -56,7 +70,21 @@ func (d *Delegate) Subtract(a, b *Tensor) (res *Tensor) {
 // a new tensor will be created. This method allows to use either tensors with
 // scalars or tensors that have equal shapes.
 func (d *Delegate) Multiply(a, b *Tensor) (res *Tensor) {
-	return nil
+	if a == nil || b == nil {
+		panic(errorc.New("nil argument provided"))
+	}
+
+	var shape = math.ElementWiseDstShape(a.idx, b.idx, true)
+
+	if res = d.dst; res == nil {
+		res = New(shape...).AsType(dtype.Promote(a.DType(), b.DType()))
+	} else if ds := res.Shape(); !index.EqShape(ds, shape) {
+		panic(errorc.New("invalid dst shape %v for %v", ds, shape))
+	}
+
+	math.Binary(res.idx, a.idx, b.idx, res.buf, a.buf, b.buf, false, routine.Multiply)
+
+	return res
 }
 
 // Divide divides elements 'a' by elements from tensor 'b' element-wise. The
@@ -64,7 +92,21 @@ func (d *Delegate) Multiply(a, b *Tensor) (res *Tensor) {
 // a new tensor will be created. This method allows to use either tensors with
 // scalars or tensors that have equal shapes.
 func (d *Delegate) Divide(a, b *Tensor) (res *Tensor) {
-	return nil
+	if a == nil || b == nil {
+		panic(errorc.New("nil argument provided"))
+	}
+
+	var shape = math.ElementWiseDstShape(a.idx, b.idx, true)
+
+	if res = d.dst; res == nil {
+		res = New(shape...).AsType(dtype.Promote(a.DType(), b.DType()))
+	} else if ds := res.Shape(); !index.EqShape(ds, shape) {
+		panic(errorc.New("invalid dst shape %v for %v", ds, shape))
+	}
+
+	math.Binary(res.idx, a.idx, b.idx, res.buf, a.buf, b.buf, false, routine.Divide)
+
+	return res
 }
 
 // Maximum is a element-wise maximum of tensor elements. It propagates NaN

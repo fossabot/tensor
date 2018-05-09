@@ -20,20 +20,20 @@ API (tensor):
   [ ] - tensor.NewVector(v interface{}) *Tensor
   [ ] - tensor.NewMatrix(v interface{}) *Tensor
   [ ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
-  [.] - tensor.Add(a, b *Tensor) *Tensor
-  [.] - tensor.Subtract(a, b *Tensor) *Tensor
-  [.] - tensor.Multiply(a, b *Tensor) *Tensor
-  [.] - tensor.Divide(a, b *Tensor) *Tensor
+  [x] - tensor.Add(a, b *Tensor) *Tensor
+  [x] - tensor.Subtract(a, b *Tensor) *Tensor
+  [x] - tensor.Multiply(a, b *Tensor) *Tensor
+  [x] - tensor.Divide(a, b *Tensor) *Tensor
   [ ] - tensor.Resize(t *Tensor, shape ...int) *Tensor
   [ ] - (*Tensor) Delegate() *Delegate
  "delegate.go":
   [x] - type Delegate struct {...}
   [x] - tensor.NewDelegate(dst *Tensor) *Delegate
   [ ] - (*Delegate) Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
-  [.] - (*Delegate) Add(a, b *Tensor) *Tensor
-  [.] - (*Delegate) Subtract(a, b *Tensor) *Tensor
-  [.] - (*Delegate) Multiply(a, b *Tensor) *Tensor
-  [.] - (*Delegate) Divide(a, b *Tensor) *Tensor
+  [x] - (*Delegate) Add(a, b *Tensor) *Tensor
+  [x] - (*Delegate) Subtract(a, b *Tensor) *Tensor
+  [x] - (*Delegate) Multiply(a, b *Tensor) *Tensor
+  [x] - (*Delegate) Divide(a, b *Tensor) *Tensor
   [.] - (*Delegate) Maximum(a, b *Tensor) *Tensor
   [.] - (*Delegate) Minimum(a, b *Tensor) *Tensor
   [ ] - (*Delegate) Resize(t *Tensor, shape ...int) *Tensor

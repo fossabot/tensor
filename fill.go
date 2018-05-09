@@ -22,7 +22,7 @@ func (t *Tensor) Fill(v *Tensor) *Tensor {
 	t.init()
 
 	// Check if v is assignable to t.
-	_ = math.EWArgShape(t.idx, v.idx, false)
+	_ = math.ElementWiseDstShape(t.idx, v.idx, false)
 
 	math.Unary(t.idx, v.idx, t.buf, v.buf, false, routine.Fill)
 
