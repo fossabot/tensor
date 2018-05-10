@@ -116,7 +116,7 @@ API (tensor):
  "explog.go":
   [.] - (*Tensor) Exp() *Tensor
   [ ] - (*Tensor) Power(v *Tensor) *Tensor
-  [ ] - (*Tensor) Sqrt() *Tensor
+  [.] - (*Tensor) Sqrt() *Tensor
   [ ] - (*Tensor) Log() *Tensor
   [ ] - (*Tensor) Log10() *Tensor
  "cmplx.go":
