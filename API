@@ -118,7 +118,7 @@ API (tensor):
   [ ] - (*Tensor) Power(v *Tensor) *Tensor
   [.] - (*Tensor) Sqrt() *Tensor
   [.] - (*Tensor) Log() *Tensor
-  [ ] - (*Tensor) Log10() *Tensor
+  [.] - (*Tensor) Log10() *Tensor
  "cmplx.go":
   [.] - (*Tensor) Real() *Tensor
   [.] - (*Tensor) Imag() *Tensor
