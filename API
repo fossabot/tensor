@@ -98,7 +98,7 @@ API (tensor):
   [ ] - (*Tensor) All() bool
   [ ] - (*Tensor) Any() bool
  "trigono.go":
-  [ ] - (*Tensor) Sin() *Tensor
+  [.] - (*Tensor) Sin() *Tensor
   [ ] - (*Tensor) Cos() *Tensor
   [ ] - (*Tensor) Tan() *Tensor
  "stat.go":
