@@ -99,7 +99,7 @@ API (tensor):
   [ ] - (*Tensor) Any() bool
  "trigono.go":
   [.] - (*Tensor) Sin() *Tensor
-  [ ] - (*Tensor) Cos() *Tensor
+  [.] - (*Tensor) Cos() *Tensor
   [ ] - (*Tensor) Tan() *Tensor
  "stat.go":
   [ ] - (*Tensor) Min() *Tensor
