@@ -100,7 +100,7 @@ API (tensor):
  "trigono.go":
   [.] - (*Tensor) Sin() *Tensor
   [.] - (*Tensor) Cos() *Tensor
-  [ ] - (*Tensor) Tan() *Tensor
+  [.] - (*Tensor) Tan() *Tensor
  "stat.go":
   [ ] - (*Tensor) Min() *Tensor
   [.] - (*Tensor) Minimum(u *Tensor) *Tensor
