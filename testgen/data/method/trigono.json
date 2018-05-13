@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Sin",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Sin()",
+                "py": "np.sin($inst$)"
+            }
+        ]
+    },
+    {
+        "name": "Cos",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Cos()",
+                "py": "np.cos($inst$)"
+            }
+        ]
+    },
+    {
+        "name": "Tan",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Tan()",
+                "py": "np.tan($inst$)"
+            }
+        ]
+    }
+]
