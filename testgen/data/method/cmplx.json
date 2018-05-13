@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Real",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Real()",
+                "py": "$inst$.real"
+            }
+        ]
+    },
+    {
+        "name": "Imag",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Imag()",
+                "py": "$inst$.imag"
+            }
+        ]
+    }
+]
