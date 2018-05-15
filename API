@@ -91,10 +91,9 @@ API (tensor):
   [x] - (*Tensor) Mod(u *Tensor) *Tensor
   [x] - (*Tensor) Negative() *Tensor
  "logic.go":
-  [ ] - (*Tensor) Comp(u *Tensor, comp func(a, b *Tensor) int) *Tensor
   [ ] - (*Tensor) SameAs(u *Tensor) bool
-  [ ] - (*Tensor) Equal(TODO) *Tensor
-  [ ] - (*Tensor) Less(TODO) *Tensor
+  [ ] - (*Tensor) Equal(TODO) *Tensor  //mv
+  [ ] - (*Tensor) Less(TODO) *Tensor //mv
   [ ] - (*Tensor) All() bool
   [ ] - (*Tensor) Any() bool
  "trigono.go":
@@ -115,7 +114,7 @@ API (tensor):
   [ ] - (*Tensor) Random() TODO
  "explog.go":
   [.] - (*Tensor) Exp() *Tensor
-  [ ] - (*Tensor) Power(v *Tensor) *Tensor
+  [.] - (*Tensor) Pow(v *Tensor) *Tensor
   [.] - (*Tensor) Sqrt() *Tensor
   [.] - (*Tensor) Log() *Tensor
   [.] - (*Tensor) Log10() *Tensor
