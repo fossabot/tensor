@@ -94,16 +94,16 @@ API (tensor):
   [ ] - (*Tensor) SameAs(u *Tensor) bool
   [ ] - (*Tensor) Equal(TODO) *Tensor  //mv
   [ ] - (*Tensor) Less(TODO) *Tensor //mv
-  [ ] - (*Tensor) All() bool
+  [.] - (*Tensor) All() bool
   [ ] - (*Tensor) Any() bool
  "trigono.go":
   [.] - (*Tensor) Sin() *Tensor
   [.] - (*Tensor) Cos() *Tensor
   [.] - (*Tensor) Tan() *Tensor
  "stat.go":
-  [ ] - (*Tensor) Min() *Tensor
+  [r] - (*Tensor) Min() *Tensor
   [.] - (*Tensor) Minimum(u *Tensor) *Tensor
-  [ ] - (*Tensor) Max() *Tensor
+  [r] - (*Tensor) Max() *Tensor
   [.] - (*Tensor) Maximum(u *Tensor) *Tensor
   [ ] - (*Tensor) Mean() TODO
   [ ] - (*Tensor) Median() TODO
@@ -128,7 +128,7 @@ API (tensor):
   [ ] - (*Tensor) Trace() *Tensor
  "prodsum.go"
   [ ] - (*Tensor) Prod() *Tensor
-  [ ] - (*Tensor) Sum() *Tensor
+  [r] - (*Tensor) Sum() *Tensor
   [ ] - (*Tensor) CumSum() *Tensor
 
 API (dtype):
