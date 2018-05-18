@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Exp",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Exp()",
+                "py": "np.exp($inst$)"
+            }
+        ]
+    },
+    {
+        "name": "Pow",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Pow(tensor.NewScalar(5))",
+                "py": "np.power($inst$, 5)"
+            }
+        ]
+    },
+    {
+        "name": "Sqrt",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Sqrt()",
+                "py": "np.sqrt($inst$)"
+            }
+        ]
+    },
+    {
+        "name": "Log",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Log()",
+                "py": "np.log($inst$)"
+            }
+        ]
+    },
+    {
+        "name": "Log10",
+        "rtyp": "*tensor.Tensor",
+        "calls": [
+            {
+                "go": "$inst$.Log10()",
+                "py": "np.log10($inst$)"
+            }
+        ]
+    }
+]
