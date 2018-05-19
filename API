@@ -95,7 +95,7 @@ API (tensor):
   [ ] - (*Tensor) Equal(TODO) *Tensor  //mv
   [ ] - (*Tensor) Less(TODO) *Tensor //mv
   [.] - (*Tensor) All() bool
-  [ ] - (*Tensor) Any() bool
+  [.] - (*Tensor) Any() bool
  "trigono.go":
   [.] - (*Tensor) Sin() *Tensor
   [.] - (*Tensor) Cos() *Tensor
