@@ -97,9 +97,9 @@ API (tensor):
   [.] - (*Tensor) All() bool
   [.] - (*Tensor) Any() bool
  "trigono.go":
-  [.] - (*Tensor) Sin() *Tensor
-  [.] - (*Tensor) Cos() *Tensor
-  [.] - (*Tensor) Tan() *Tensor
+  [x] - (*Tensor) Sin() *Tensor
+  [x] - (*Tensor) Cos() *Tensor
+  [x] - (*Tensor) Tan() *Tensor
  "stat.go":
   [r] - (*Tensor) Min() *Tensor
   [.] - (*Tensor) Minimum(u *Tensor) *Tensor
@@ -119,8 +119,8 @@ API (tensor):
   [.] - (*Tensor) Log() *Tensor
   [.] - (*Tensor) Log10() *Tensor
  "cmplx.go":
-  [.] - (*Tensor) Real() *Tensor
-  [.] - (*Tensor) Imag() *Tensor
+  [x] - (*Tensor) Real() *Tensor
+  [x] - (*Tensor) Imag() *Tensor
  linalg.go":
   [ ] - (*Tensor) Dot(u *Tensor) *Tensor
   [ ] - (*Tensor) Diag() *Tensor
