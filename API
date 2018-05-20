@@ -105,7 +105,7 @@ API (tensor):
   [.] - (*Tensor) Minimum(u *Tensor) *Tensor
   [r] - (*Tensor) Max() *Tensor
   [.] - (*Tensor) Maximum(u *Tensor) *Tensor
-  [ ] - (*Tensor) Mean() TODO
+  [r] - (*Tensor) Mean() TODO
   [ ] - (*Tensor) Median() TODO
   [ ] - (*Tensor) Std() TODO
  "sort.go":
