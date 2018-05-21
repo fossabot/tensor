@@ -59,8 +59,7 @@ API (tensor):
   [x] - (*Tensor) Int() int
   [x] - (*Tensor) Float() float64
   [x] - (*Tensor) Cmplx() complex128
- "format.go":
-  [ ] - var PrintElementsThreshold = 8
+ "fmt.go":
   [ ] - (*Tensor) String() string
  "fill.go":
   [x] - (*Tensor) Zeros() *Tensor
@@ -113,11 +112,11 @@ API (tensor):
  "random.go":
   [ ] - (*Tensor) Random() TODO
  "explog.go":
-  [.] - (*Tensor) Exp() *Tensor
-  [.] - (*Tensor) Pow(v *Tensor) *Tensor
-  [.] - (*Tensor) Sqrt() *Tensor
-  [.] - (*Tensor) Log() *Tensor
-  [.] - (*Tensor) Log10() *Tensor
+  [x] - (*Tensor) Exp() *Tensor
+  [x] - (*Tensor) Pow(v *Tensor) *Tensor
+  [x] - (*Tensor) Sqrt() *Tensor
+  [x] - (*Tensor) Log() *Tensor
+  [x] - (*Tensor) Log10() *Tensor
  "cmplx.go":
   [x] - (*Tensor) Real() *Tensor
   [x] - (*Tensor) Imag() *Tensor
