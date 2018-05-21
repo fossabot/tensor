@@ -972,42 +972,42 @@ func (dt DType) AsStringPtr(p unsafe.Pointer) unsafe.Pointer {
 
 // AsStringFunc produces a converting function that returns string
 // representation of a given value.
-func (dt DType) AsStringFunc() func(unsafe.Pointer) string {
+func (dt DType) AsStringFunc(fmtstr string) func(unsafe.Pointer) string {
 	switch dt {
 	case Bool:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*bool)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*bool)(p)) }
 	case Int:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*int)(p)) }
 	case Int8:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int8)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*int8)(p)) }
 	case Int16:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int16)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*int16)(p)) }
 	case Int32:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int32)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*int32)(p)) }
 	case Int64:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*int64)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*int64)(p)) }
 	case Uint:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*uint)(p)) }
 	case Uint8:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint8)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*uint8)(p)) }
 	case Uint16:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint16)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*uint16)(p)) }
 	case Uint32:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint32)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*uint32)(p)) }
 	case Uint64:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uint64)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*uint64)(p)) }
 	case Uintptr:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*uintptr)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*uintptr)(p)) }
 	case Float32:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*float32)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*float32)(p)) }
 	case Float64:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*float64)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*float64)(p)) }
 	case Complex64:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*complex64)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*complex64)(p)) }
 	case Complex128:
-		return func(p unsafe.Pointer) string { return fmt.Sprint(*(*complex128)(p)) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*complex128)(p)) }
 	case String:
-		return func(p unsafe.Pointer) string { return *(*string)(p) }
+		return func(p unsafe.Pointer) string { return fmt.Sprintf(fmtstr, *(*string)(p)) }
 	}
 
 	panic(errorc.New("unsupported type: %q", dt))

@@ -188,7 +188,7 @@ func (b *Buffer) Iterate(f func(i int, p unsafe.Pointer)) {
 func (b *Buffer) String() string {
 	b.init()
 
-	vs, scf := []string(nil), b.typ.AsStringFunc()
+	vs, scf := []string(nil), b.typ.AsStringFunc("%v")
 
 	b.Iterate(func(_ int, p unsafe.Pointer) {
 		vs = append(vs, scf(p))
