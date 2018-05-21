@@ -1013,6 +1013,49 @@ func (dt DType) AsStringFunc(fmtstr string) func(unsafe.Pointer) string {
 	panic(errorc.New("unsupported type: %q", dt))
 }
 
+// AsInterfaceFunc produces a converting function that returns interface
+// representation of a given value.
+func (dt DType) AsInterfaceFunc() func(unsafe.Pointer) interface{} {
+	switch dt {
+	case Bool:
+		return func(p unsafe.Pointer) interface{} { return *(*bool)(p) }
+	case Int:
+		return func(p unsafe.Pointer) interface{} { return *(*int)(p) }
+	case Int8:
+		return func(p unsafe.Pointer) interface{} { return *(*int8)(p) }
+	case Int16:
+		return func(p unsafe.Pointer) interface{} { return *(*int16)(p) }
+	case Int32:
+		return func(p unsafe.Pointer) interface{} { return *(*int32)(p) }
+	case Int64:
+		return func(p unsafe.Pointer) interface{} { return *(*int64)(p) }
+	case Uint:
+		return func(p unsafe.Pointer) interface{} { return *(*uint)(p) }
+	case Uint8:
+		return func(p unsafe.Pointer) interface{} { return *(*uint8)(p) }
+	case Uint16:
+		return func(p unsafe.Pointer) interface{} { return *(*uint16)(p) }
+	case Uint32:
+		return func(p unsafe.Pointer) interface{} { return *(*uint32)(p) }
+	case Uint64:
+		return func(p unsafe.Pointer) interface{} { return *(*uint64)(p) }
+	case Uintptr:
+		return func(p unsafe.Pointer) interface{} { return *(*uintptr)(p) }
+	case Float32:
+		return func(p unsafe.Pointer) interface{} { return *(*float32)(p) }
+	case Float64:
+		return func(p unsafe.Pointer) interface{} { return *(*float64)(p) }
+	case Complex64:
+		return func(p unsafe.Pointer) interface{} { return *(*complex64)(p) }
+	case Complex128:
+		return func(p unsafe.Pointer) interface{} { return *(*complex128)(p) }
+	case String:
+		return func(p unsafe.Pointer) interface{} { return *(*string)(p) }
+	}
+
+	panic(errorc.New("unsupported type: %q", dt))
+}
+
 // Convert takes provided pointer and its data type and converts pointer's value
 // to data representation given by called object. There are not any write
 // operations on passed values.
