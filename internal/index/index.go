@@ -144,14 +144,20 @@ func (idx *Index) MergeShape(b *Index) []int {
 // Iterate walks over N-dimensional index calling f with every possible indices.
 // Slice given as function argument is reused by iterator logic and must not be
 // modified. The last dimmension is iterated over first.
-func (idx *Index) Iterate(f func(pos []int)) {
-	// Scalars and zero slices are not supported by indexing iterator.
-	if idx == nil || len(idx.shape) == 0 || idx.Size() == 0 {
+func (idx *Index) Iterate(f func(pos []int) bool) {
+	// Scalars and zero slices support.
+	if idx == nil {
+		f(nil)
 		return
 	}
 
-	pos := make([]int, len(idx.shape))
-	for i := 0; i >= 0; {
+	if len(idx.shape) == 0 {
+		f(idx.shape)
+		return
+	}
+
+	pos, ok := make([]int, len(idx.shape)), true
+	for i := 0; i >= 0 && ok; {
 		switch {
 		case pos[i] == idx.shape[i]:
 			pos[i] = 0
@@ -161,7 +167,7 @@ func (idx *Index) Iterate(f func(pos []int)) {
 		case i < len(pos)-1:
 			i++
 		case pos[i] < idx.shape[i]:
-			f(pos)
+			ok = f(pos)
 			pos[i]++
 		}
 	}

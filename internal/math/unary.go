@@ -70,8 +70,9 @@ func unaryIdxEach(di, si *index.Index, db, sb *buffer.Buffer, fn UnaryFunc) {
 		idx = si
 	}
 
-	idx.Iterate(func(pos []int) {
+	idx.Iterate(func(pos []int) bool {
 		fn(pos, dbAt(diAt(pos)), sbAt(siAt(pos)))
+		return true
 	})
 }
 

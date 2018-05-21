@@ -58,8 +58,9 @@ func binaryIdxEach(di, li, ri *index.Index, db, lb, rb *buffer.Buffer, fn Binary
 		dbAt, lbAt, rbAt = db.At(), lb.At(), rb.At()
 	)
 
-	di.Iterate(func(pos []int) {
+	di.Iterate(func(pos []int) bool {
 		fn(pos, dbAt(diAt(pos)), lbAt(liAt(pos)), rbAt(riAt(pos)))
+		return true
 	})
 }
 

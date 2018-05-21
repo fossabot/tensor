@@ -25,8 +25,9 @@ func (t *Tensor) Copy() *Tensor {
 	cpSetptr, cpAt := cp.buf.Setptr(), cp.idx.At()
 	tBufAt, tIdxAt := t.buf.At(), t.idx.At()
 
-	cp.idx.Iterate(func(pos []int) {
+	cp.idx.Iterate(func(pos []int) bool {
 		cpSetptr(cpAt(pos), typ, tBufAt(tIdxAt(pos)))
+		return true
 	})
 
 	return cp

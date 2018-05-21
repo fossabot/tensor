@@ -474,11 +474,13 @@ func TestIndexIterate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			var indices [][]int
 
-			test.Index.Iterate(func(idx []int) {
+			test.Index.Iterate(func(idx []int) bool {
 				cp := make([]int, len(idx))
 				copy(cp, idx)
 
 				indices = append(indices, cp)
+
+				return true
 			})
 
 			if !reflect.DeepEqual(indices, test.Indices) {

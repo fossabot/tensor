@@ -42,7 +42,8 @@ func nullaryRawEach(db *buffer.Buffer, fn NullaryFunc) {
 func nullaryIdxEach(di *index.Index, db *buffer.Buffer, fn NullaryFunc) {
 	diAt, dbAt := di.At(), db.At()
 
-	di.Iterate(func(pos []int) {
+	di.Iterate(func(pos []int) bool {
 		fn(pos, dbAt(diAt(pos)))
+		return true
 	})
 }
