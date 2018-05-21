@@ -11,6 +11,7 @@ func main() {
 	fmt.Printf("Float vec: %v\n---\n", tensor.NewVector([]float64{5, 3, 56}))
 	fmt.Printf("Float vec dbg on: % #v\n---\n", tensor.NewVector([]float64{5, 3, 56}))
 	fmt.Printf("Float vec dbg: %#v\n---\n", tensor.NewVector([]float64{5, 3, 56}))
+	fmt.Printf("Matrix dbg: %#v\n---\n", tensor.NewMatrix([][]float64{{54.4, 35.4}, {1, 3}, {5.3, 0}}))
 	fmt.Printf("Float vec one elem: %#+1v\n---\n", tensor.NewVector([]float64{5, 3, 56, 4}))
 	fmt.Printf("Float vec precission: %#1.5v\n---\n", tensor.NewVector([]float64{5, 3, 56}))
 	fmt.Printf("Cmpx mat: %#v\n---\n", tensor.New(3, 5).Fill(tensor.NewScalar(4+5i)))

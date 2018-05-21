@@ -69,7 +69,7 @@ func NewScalar(scalar interface{}) *Tensor {
 }
 
 // NewVector creates a new 1-dimensional tensor from a given array. The type and
-// size of the newly created object will be inherited from a given argument.
+// size of a newly created object will be inherited from a given argument.
 func NewVector(slice interface{}) *Tensor {
 	if slice == nil {
 		panic(errorc.New("nil argument provided"))
@@ -83,6 +83,48 @@ func NewVector(slice interface{}) *Tensor {
 	t := New(v.Len()).AsType(dtype.FromKind(v.Type().Elem().Kind()))
 	t.Each(func(pos []int, _ *Tensor) {
 		t.ItemSet(NewScalar(v.Index(pos[0]).Interface()), pos...)
+	})
+
+	return t
+}
+
+// NewMatrix creates a new 2-dimensional tensor from a given two dimensional
+// array. Inner arrays will be treated as rows and their lengths must match.
+// The type and shape of a newly created object will be inherited from a given
+// argument.
+func NewMatrix(slice2d interface{}) *Tensor {
+	if slice2d == nil {
+		panic(errorc.New("nil argument provided"))
+	}
+
+	v := reflect.Indirect(reflect.ValueOf(slice2d))
+	if k := v.Kind(); k != reflect.Slice && k != reflect.Array {
+		panic(errorc.New("argument type is not array-like (got %v)", k))
+	}
+
+	if k := v.Type().Elem().Kind(); k != reflect.Slice && k != reflect.Array {
+		panic(errorc.New("inner type is not array-like (got %v)", k))
+	}
+
+	ins := make([]reflect.Value, 0, v.Len())
+	for i := 0; i < v.Len(); i++ {
+		var in = v.Index(i)
+
+		if l := in.Len(); len(ins) > 0 && ins[0].Len() != l {
+			panic(errorc.New("inner lengths do not match (got %d != %d)", ins[0].Len(), l))
+		}
+
+		ins = append(ins, in)
+	}
+
+	var innerLen int
+	if len(ins) > 0 {
+		innerLen = ins[0].Len()
+	}
+
+	t := New(v.Len(), innerLen).AsType(dtype.FromKind(v.Type().Elem().Elem().Kind()))
+	t.Each(func(pos []int, _ *Tensor) {
+		t.ItemSet(NewScalar(ins[pos[0]].Index(pos[1]).Interface()), pos...)
 	})
 
 	return t

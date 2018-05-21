@@ -18,7 +18,7 @@ API (tensor):
   [x] - tensor.New(shape ...int) *Tensor
   [x] - tensor.NewScalar(v interface{}) *Tensor
   [x] - tensor.NewVector(v interface{}) *Tensor
-  [ ] - tensor.NewMatrix(v interface{}) *Tensor
+  [x] - tensor.NewMatrix(v interface{}) *Tensor
   [ ] - tensor.Comp(a, b *Tensor, comp func(a, b *Tensor) int) *Tensor
   [x] - tensor.Add(a, b *Tensor) *Tensor
   [x] - tensor.Subtract(a, b *Tensor) *Tensor
@@ -152,7 +152,6 @@ API (dtype):
   [x] - const String = dtype.String
 
 Planed features:
-[ ] - txtfmt package: custom display options for I/O formatting.
 [ ] - broadcasting.
 [ ] - masks.
 [ ] - custom fields.
