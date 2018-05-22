@@ -176,9 +176,27 @@ func (idx *Index) Iterate(f func(pos []int) bool) {
 // Slice gets a subset of the index indices and creates a new Index instance
 // which will compute a valid array index using new shape coordinates.
 func (idx *Index) Slice(dim, from int, to ...int) *Index {
+	if nd := idx.NDim(); nd == 0 {
+		panic(errorc.New("slice on scalar value"))
+	} else if dim >= nd {
+		panic(errorc.New("invalid dimension %d (max: %d)", dim, nd-1))
+	}
+
+	if len(to) > 1 {
+		panic(errorc.New("too many slice bound arguments (%v)", to))
+	}
+
 	limit := idx.shape[dim]
 	if len(to) > 0 {
 		limit = to[0]
+	}
+
+	if from < 0 || limit < 0 {
+		panic(errorc.New("negative bounds (from: %v, to: %v)", from, limit))
+	}
+
+	if max := idx.shape[dim]; from > max || limit > max {
+		panic(errorc.New("bounds out of range (from: %v, to: %v, max: %v)", from, limit, max))
 	}
 
 	shape := cloneInts(idx.shape)

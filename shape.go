@@ -25,9 +25,14 @@ func (t *Tensor) Split(dim int) []*Tensor {
 	return []*Tensor{t}
 }
 
-// Slice TODO.
+// Slice creates a view over Tensor elements taking them from a specified range
+// along given dimmension. When the 'to' argument is omitted, the upper slicing
+// limit will be set to dimmension size. Scalars cannot be sliced.
 func (t *Tensor) Slice(dim, from int, to ...int) *Tensor {
-	return t
+	return &Tensor{
+		idx: t.idx.Slice(dim, from, to...),
+		buf: t.buf,
+	}
 }
 
 // Reshape TODO.

@@ -74,7 +74,7 @@ API (tensor):
   [ ] - (*Tensor) H() *Tensor
   [ ] - (*Tensor) Destruct() []*Tensor
   [ ] - (*Tensor) Split(dim int) []*Tensor
-  [ ] - (*Tensor) Slice(dim, from int, to ...int) *Tensor
+  [x] - (*Tensor) Slice(dim, from int, to ...int) *Tensor
   [ ] - (*Tensor) Reshape(shape ...int) *Tensor
   [ ] - (*Tensor) Resize(shape ...int) *Tensor
   [ ] - (*Tensor) Ravel() *Tensor
