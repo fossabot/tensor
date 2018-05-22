@@ -11,10 +11,11 @@ import (
 // tensor content as well as format underlying elements. There are a number of
 // format strings one can use e.g.:
 //
-//  `%v`   - display all tensor elements with their default format flags,
+//  `%v`   - display up to 1000 tensor elements in each dimmension with their
+//           default format flags,
 //  `%3v`  - limit the number of displayed elements in each dimmension,
 //  `%.5f` - display floating point elements with the precision set to 5 runes,
-//  `%-v`  - elements in dim > 1 tensors will be left justified along the columns,
+//  `%-v`  - elements with dim > 1 tensors will be left justified along the columns,
 //  `%#X`  - alternative format for underlying elements,
 //  `%#v`  - special "debug" format. It displays useful information about the
 //           tensor. This includes tensor "head" with maximum 10 elements.
