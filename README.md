@@ -1,3 +1,3 @@
-[![Build Status](https://travis-ci.org/ppknap/tensor.svg?branch=master)](https://travis-ci.org/ppknap/tensor) [![GoDoc](https://godoc.org/github.com/ppknap/tensor?status.svg)](http://godoc.org/github.com/ppknap/tensor)
+[![Build Status](https://travis-ci.org/ppknap/tensor.svg?branch=master)](https://travis-ci.org/ppknap/tensor) [![Maintainability](https://api.codeclimate.com/v1/badges/72ae1cd5aabbbdbcb55f/maintainability)](https://codeclimate.com/github/ppknap/tensor/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/72ae1cd5aabbbdbcb55f/test_coverage)](https://codeclimate.com/github/ppknap/tensor/test_coverage) [![GoDoc](https://godoc.org/github.com/ppknap/tensor?status.svg)](http://godoc.org/github.com/ppknap/tensor)
 
 # Tensor
