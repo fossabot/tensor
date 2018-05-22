@@ -21,7 +21,10 @@ install:
 script:
   - go tool vet -all .
   - golint -set_exit_status ./...
-  - go test -v -timeout 20s -race ./...
+  - go test -v -timeout 20s -race ./... -coverprofile=coverage.txt -covermode=atomic
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 notifications:
   email: false
