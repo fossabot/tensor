@@ -1,0 +1,27 @@
+language: go
+
+go:
+  - 1.10.x
+  - tip
+
+os:
+  - linux
+  - osx
+
+matrix:
+  allow_failures:
+    - go: tip
+
+before_install:
+  - go get -v github.com/golang/lint/golint
+
+install:
+  - go get -t -v ./...
+
+script:
+  - go tool vet -all .
+  - golint -set_exit_status ./...
+  - go test -v -timeout 20s -race ./...
+
+notifications:
+  email: false

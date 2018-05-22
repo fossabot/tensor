@@ -36,7 +36,7 @@ func (t *Tensor) Format(f fmt.State, c rune) {
 }
 
 func (t *Tensor) fmtDebugStr(w io.Writer) {
-	type DBG struct {
+	type Debug struct {
 		addr   uintptr
 		size   int
 		shape  []int
@@ -46,7 +46,7 @@ func (t *Tensor) fmtDebugStr(w io.Writer) {
 		head10 []interface{}
 	}
 
-	dbg := DBG{
+	dbg := Debug{
 		addr:   (uintptr)(unsafe.Pointer(t)),
 		size:   t.Size(),
 		shape:  t.Shape(),

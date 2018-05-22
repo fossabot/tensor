@@ -13,6 +13,7 @@ import (
 // should not create instances of this type. The zero DType is not a valid type.
 type DType = dtype.DType
 
+// Group of all supported data types.
 const (
 	Bool       = dtype.Bool       // bool type.
 	Int        = dtype.Int        // int type.

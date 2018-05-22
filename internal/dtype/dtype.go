@@ -13,6 +13,7 @@ import (
 // depend on any values of this type since their format is unstable.
 type DType uint64
 
+// Group of all supported data types.
 const (
 	Bool       DType = DType(unsafe.Sizeof(bool(false)))<<32 | 1
 	Int        DType = DType(unsafe.Sizeof(int(0)))<<32 | 2
