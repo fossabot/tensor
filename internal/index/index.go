@@ -173,15 +173,21 @@ func (idx *Index) Iterate(f func(pos []int) bool) {
 	}
 }
 
+// Split creates N sub-indexes each as a view over a single dimmension element
+// set. This means that N is equal to the length of a given dimension.
+func (idx *Index) Split(dim int) []*Index {
+	splits := make([]*Index, idx.shape[dim])
+
+	for i := range splits {
+		splits[i] = idx.Slice(dim, i, i+1)
+	}
+
+	return splits
+}
+
 // Slice gets a subset of the index indices and creates a new Index instance
 // which will compute a valid array index using new shape coordinates.
 func (idx *Index) Slice(dim, from int, to ...int) *Index {
-	if nd := idx.NDim(); nd == 0 {
-		panic(errorc.New("slice on scalar value"))
-	} else if dim >= nd {
-		panic(errorc.New("invalid dimension %d (max: %d)", dim, nd-1))
-	}
-
 	if len(to) > 1 {
 		panic(errorc.New("too many slice bound arguments (%v)", to))
 	}
