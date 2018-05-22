@@ -15,7 +15,7 @@ func (t *Tensor) Add(u *Tensor) *Tensor {
 	return t.Delegate().Add(t, u)
 }
 
-// Subtract substracts 'u' elements from 't' element-wise. This method allows
+// Subtract subtracts 'u' elements from 't' element-wise. This method allows
 // to use either a scalar or a tensor that has the same shape as a called one.
 func (t *Tensor) Subtract(u *Tensor) *Tensor {
 	t.init()

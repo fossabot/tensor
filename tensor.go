@@ -155,7 +155,7 @@ var defaultDelegate = NewDelegate(nil)
 // tensors with scalars or tensors that have equal shapes.
 func Add(a, b *Tensor) *Tensor { return defaultDelegate.Add(a, b) }
 
-// Subtract substracts elements 'b' from tensor 'a' element-wise. A new tensor
+// Subtract subtracts elements 'b' from tensor 'a' element-wise. A new tensor
 // with the computed result will be returned. This function allows to use either
 // tensors with scalars or tensors that have equal shapes.
 func Subtract(a, b *Tensor) *Tensor { return defaultDelegate.Subtract(a, b) }

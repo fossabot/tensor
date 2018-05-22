@@ -29,7 +29,7 @@ func (d *Delegate) Add(a, b *Tensor) (res *Tensor) {
 	return d.call(a, b, routine.Add)
 }
 
-// Subtract substracts elements 'b' from tensor 'a' element-wise. The result
+// Subtract subtracts elements 'b' from tensor 'a' element-wise. The result
 // will be saved to delegate's destination. If the destination is nil, a new
 // tensor will be created. This method allows to use either tensors with scalars
 // or tensors that have equal shapes.

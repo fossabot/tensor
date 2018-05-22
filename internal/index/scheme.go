@@ -4,7 +4,7 @@ import (
 	"github.com/ppknap/tensor/internal/errorc"
 )
 
-// IdxScheme defines the order of dimmensions in continuos memory.
+// IdxScheme defines the order of dimmensions in continuous memory.
 type IdxScheme Flags
 
 // DefaultIdxScheme defines the default indexing scheme when not set explicitly.
@@ -12,11 +12,11 @@ const DefaultIdxScheme = IdxSchemeRowMajor
 
 const (
 	// IdxSchemeRowMajor represents row major order where the horizontal values
-	// of a matrix lie side by side in continuos 1D array. It is also known as
+	// of a matrix lie side by side in continuous 1D array. It is also known as
 	// C element order.
 	IdxSchemeRowMajor IdxScheme = 1 << iota
 	// IdxSchemeColMajor represents column-major order where the vertical values
-	// of a matrix lie side by side in continuos 1D array. This is also known as
+	// of a matrix lie side by side in continuous 1D array. This is also known as
 	// Fortran order and is used in MatLab data indexing.
 	IdxSchemeColMajor
 )
